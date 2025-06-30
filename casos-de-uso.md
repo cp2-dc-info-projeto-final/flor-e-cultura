@@ -1,103 +1,344 @@
-# Documento de Casos de Uso
+## Casos de Uso:
 
-## Lista dos Casos de Uso
+### Caso de uso 1: Cadastro de usuário.
 
- - [CDU 01](#CDU-01): Quisque id neque a erat imperdiet dictum et ut mauris.
- - [CDU 02](#CDU-02): Morbi fringilla dolor at mattis vestibulum.
- - [CDU 03](#CDU-03): Duis nec orci quis velit faucibus hendrerit tempus vel libero.
+#### Atores:
 
+- Usuário.
+  
+#### Fluxo principal:
 
-## Lista dos Atores
+- O usuário seleciona a opção “Criar conta”.
+  
+- O sistema leva o usuário até a tela de registro contendo um formulário.
+  
+- O usuário preenche os campos do formulário (informando e-mail e criando uma senha).
+  
+- O sistema consulta o banco de dados para verificar a disponibilidade das informações fornecidas.
+  
+- O banco de dados retorna uma confirmação positiva.
+  
+- O sistema realiza o cadastro, salvando os dados do novo usuário.
+  
+- O sistema encaminha o usuário para a página principal do site.
 
- - Cras tempor
- - Donec a lorem
+#### Fluxo Alternativo A: O email já está cadastrado
 
-## Diagrama de Casos de Uso
+- O sistema apresenta formulário de cadastro.
+ 
+- O usuário preenche os campos.
 
-![Diagrama de Casos de Uso](diagramas/diagrama-exemplo.png)
+- O sistema consulta o banco de dados.
 
-## Descrição dos Casos de Uso
+- O banco de dados retorna que o email informado já está em uso.
 
-### CDU 01
+- O sistema exibe uma mensagem de erro informando que o email digitado já está em uso.
 
-Quisque id neque a erat imperdiet dictum et ut mauris.
+- O usuário digita um novo email no formulário e tenta novamente.
 
-#### Atores
+- O sistema registra as informações no banco de dados e informa usuário.
 
-1. Cras tempor
-2. Donec a lorem
+#### Fluxo Alternativo B: Campo vazio
 
-#### Fluxo Principal
+- O sistema apresenta formulário de cadastro.
 
-1. Vivamus nec velit id risus sodales fermentum ut a mi.
-2. Nunc a ligula ac libero pellentesque auctor ornare at sem.
-3. In quis ante scelerisque felis luctus malesuada.
-4. Pellentesque mattis dui quis eleifend accumsan.
+- O usuário não preenche um dos campos e clica no botão de "Criar Conta"
 
-**Diagrama de sequência XX**
+- O sistema analisa os campos de cadastro e pede que o usuário preencha todos os campos.
 
-![Diagrama de Sequência](diagramas/diagrama-exemplo.png)
+- O usuário preenche todos os campos  e clica no botão de "Criar Conta".
 
-#### Fluxo Alternativo A
-
-1. Pellentesque id mauris id ex fringilla iaculis.
-2. Maecenas ut dui at sapien rhoncus porttitor in sed turpis.
-3. Maecenas fringilla augue id sodales volutpat.
-4. Nulla vehicula lectus eu eros faucibus porta.
-5. Morbi non sem in diam dictum aliquet sit amet at metus.
-6. Aenean dictum diam in tempus ornare.
-
-#### Fluxo Alternativo B
-
-1. Ut elementum dolor id lorem elementum, et condimentum eros laoreet.
-2. Nulla sollicitudin arcu nec suscipit volutpat.
-3. Aliquam mattis sapien nec ornare faucibus.
-4. Sed eu massa nec enim condimentum commodo at eget ligula.
-5. Nam ultricies velit nec erat feugiat condimentum.
-6. Nam vitae lacus porttitor, sodales orci vel, lobortis arcu.
+- O sistema registra as informações no banco de dados e informa usuário.
 
 
-### CDU 02
+#### Fluxo Alternativo C: Senha diferente dos padrões exigidos
 
-Morbi fringilla dolor at mattis vestibulum.
+- O sistema apresenta formulário de cadastro.
 
-#### Atores
+- O usuário insere uma senha.
 
-1. Cras tempor
+- O sistema analisa se a senha está dentro dos padrões exigidos  (mínimo 8 caracteres e 1 símbolo)
 
-#### Fluxo Principal
+- O sistema exibe uma mensagem de erro e informa ao usuário que a senha está fora dos padrões.
 
-1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-2. Mauris varius massa ac fermentum scelerisque.
-3. Morbi in tortor dignissim, bibendum tellus et, varius odio.
-4. Mauris egestas leo a suscipit feugiat.
+- O sistema exibe uma mensagem sugerindo que o usuário coloque a senha correta.
+  
+- O sistema registra as informações no banco de dados e informa usuário.
 
-#### Fluxo Alternativo A
+### Caso de Uso 2: Login.
 
-1. Nulla elementum diam eu elementum rutrum.
-2. Aenean scelerisque est at nunc ornare, ac condimentum justo sollicitudin.
-3. Quisque eget risus ut est lacinia sollicitudin ac non diam.
-4. Quisque ac nulla convallis, lobortis nibh ac, tristique enim.
-5. Nulla ultricies metus nec risus mollis, interdum ultrices justo malesuada.
+#### Atores: 
 
-### CDU 03
+- Usuário
 
-Duis nec orci quis velit faucibus hendrerit tempus vel libero.
+#### Fluxo principal:
 
-#### Atores
+- O usuário seleciona a opção "Login".
 
-1. Donec a lorem
+- O sistema leva o usuário até a tela de preenchimento de senha e email.
 
-#### Fluxo Principal
+- Usuário preenche os campos da tela.
 
-1. Praesent interdum lectus sit amet augue tincidunt imperdiet.
-2. Duis ac dolor vel nisi imperdiet vehicula et non sem.
-3. Nunc imperdiet tortor consequat, lobortis purus non, interdum risus.
+- O sistema consulta o banco de dados para a confirmação dos dados inseridos.
 
-#### Fluxo Alternativo A
+- O banco de dados retorna uma confirmação positiva.
 
-1. Aliquam efficitur arcu ac fermentum egestas.
-2. Pellentesque ac diam vitae erat bibendum hendrerit.
-3. Mauris sed purus sit amet lectus efficitur placerat et eu diam.
-4. Aenean ullamcorper tellus quis nibh porttitor congue.
-5. Phasellus laoreet erat eget condimentum dictum.
+- O sistema encaminha o usuário para a página principal do site.
+
+#### Fluxo Alternativo A: Email inválido
+
+- O sistema apresenta a página de formulário de Login.
+
+- O usuário insere um email.
+
+- O sistema consulta o banco de dados.
+
+- O banco de dados retorna que o email informado já está em uso.
+
+- O sistema sugere que o usuário digite outro email.
+
+
+
+### Caso de Uso 3: Excluir usuário.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal: 
+
+- O usuário acessa o menu do seu perfil com as configurações da sua conta.
+
+- O usuário aperta o botão excluir conta.
+
+- O sistema solicita a senha do usuário para proseguir com a exclusão.
+  
+- O usário digita a senha.
+  
+- O sistema analisa a veracidade da senha no banco de dados.
+  
+- O banco de dados retorna uma confirmação positiva.
+  
+- O sistema pergunta se quer confirmar a exclusão.
+  
+- O usuário aperta o botão confirmar.
+  
+- O sistema apaga os dados do usuário no banco de dados.
+  
+- O sistema apresenta mensagem de sucesso.
+  
+- O sistema realoca o usuário para a página de login e cadastro.
+
+
+
+### Caso de Uso 4: Editar dados de cadastro.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal: 
+
+- O usuário acessa o menu do seu perfil com as configurações da sua conta.
+
+- O usuário aperta o botão "editar dados de cadastro da conta".
+
+- O sistema solicita a senha do usuário para mudar os dados de cadastro.
+  
+- O usário digita a senha.
+  
+- O sistema analisa a veracidade da senha no banco de dados.
+  
+- O banco de dados retorna uma confirmação positiva.
+  
+- O sistema exibe os dados de cadastro do usuário.
+  
+- O usuário aperta o botão confirmar.
+  
+- O sistema apaga os dados do usuário no banco de dados.
+
+  ### Caso de Uso 5: Busca de produtos.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal: 
+
+- O usuário aperta na barra de pesquisa.
+
+- O usuário digita o tipo de flor que deseja.
+
+- O usuário aperta no botão "Enter".
+
+- O sistema consulta o banco de dados.
+
+- O banco retorna a flor desejada.
+
+- A busca é finalizada.
+ 
+ ### Caso de Uso 6: Categorias.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal:  
+
+- O usuário seleciona o menu "Categorias".
+
+- O sistema carrega a lista de categorias disponíveis.
+
+- O usuário clica na categoria desejada.
+
+- O sistema busca os produtos pertecentes àquela categoria no banco de dados.
+
+- O sistema exibe os produtos filtrados pela categoria selecionada com informações.
+
+ ### Caso de Uso 7: Carrinho de compras.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal:  
+
+- O usuário clica no ícone do "carrinho de compras".
+
+- O sistema redireciona o usuário para a página contendo os itens desejados.
+
+- O usuário pode iniciar o processo de compra dos produtos desejados.
+
+- O usuário preenche o cadastro com suas informações de endereço.
+
+- O usuário seleciona uma forma de pagamento.
+  
+- O usuário finaliza a compra e é redirecionado para a pagina inicial.
+
+ ### Caso de Uso 8: Pagina de pedidos.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal:  
+
+- O usuário clica no icone da pagina de pedidos.
+
+- O sistema redireciona o usuário para a pagina contendo informações de seus pedidos.
+
+- O usuário consulta seus pedidos e volta para pagina inicial.
+
+ ### Caso de Uso 9: Logout
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal:  
+
+- O usuário aperta o botão de "Logout".
+
+- O sistema apresenta uma mensagem perguntando "Quer confirmar o Logout?".
+
+- O usuário confirma.
+
+- O sistema apaga o login do usuário.
+
+- O sistema realoca o usuário à página inicial.
+
+### Caso de Uso 10: Gerenciar Catálogo de produtos.
+
+#### Atores: 
+
+- Usuário
+
+#### Fluxo principal: 
+
+- O administrador acessa o sistema.
+
+- Seleciona a opção "Catálogo de Produtos".
+
+- Visualiza a lista de produtos cadastrados.
+
+- Clica em "Adicionar Produto".
+
+- Preenche as informações do produto (nome, descrição, preço, imagem, categoria).
+
+- Clica em "Salvar".
+
+- O sistema adiciona o novo produto ao catálogo.
+
+### Caso de Uso 11: Gerenciar Categoria.
+
+#### Atores:
+
+- Admninistrador
+
+#### Fluxos principal:
+
+- O administrador acessa o sistema.
+
+- Seleciona a opção "Categorias".
+
+- Visualiza as categorias existentes.
+
+- Clica em "Adicionar Categoria".
+
+- Insere o nome da nova categoria.
+
+- Clica em "Salvar".
+
+- O sistema cadastra a nova categoria.
+
+### Caso de Uso 12: Editar pedidos.
+
+#### Atores:
+
+- Administrador
+
+#### Fluxo principal: 
+
+- O administrador acessa o sistema.
+
+- O administrador seleciona "Pedidos" e visualiza.
+
+- O administrador clica em um pedido para ver detalhes.
+
+- O administrador atualiza o status do pedido, por exempo, "em entrega" ou "concluído".
+
+- O sistema registra a atualização.
+
+### Caso de Uso 13: Gerenciar clientes. 
+
+#### Atores: 
+
+- Administrador
+
+#### Fluxo principal: 
+
+- O administrador acessa o sistema.
+
+- O administrador vai até a seção "Clientes".
+
+- O administrador visualiza a lista de clientes cadastrados.
+
+- O administrador clica sobre um cliente para ver detalhes.
+
+- O administrador pode optar por editar ou excluir o cadastro.
+
+### Caso de Uso 14: Acessar relatório de vendas.
+
+#### Atores: 
+
+- Administrador
+
+#### Fluxo principal:
+
+- O administrador acessa o sistema.
+
+- O administrador seleciona "Relatórios" no menu.
+
+- O administrador escolhe o período desejado.
+
+- O sistema exibe o relatório com as vendas no período.
