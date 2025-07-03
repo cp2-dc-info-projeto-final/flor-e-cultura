@@ -195,6 +195,8 @@
   
 - O sistema edita os dados do usuário no banco de dados.
 
+
+
   ### Caso de Uso 5: Busca de produtos.
 
 #### Atores: 
@@ -202,6 +204,8 @@
 - Usuário
 
 #### Fluxo principal: 
+
+- O sistema apresenta a página inicial do site.
 
 - O usuário aperta na barra de pesquisa.
 
@@ -214,6 +218,38 @@
 - O banco retorna a flor desejada.
 
 - A busca é finalizada.
+
+#### Fluxo Alternativo A: Campo vazio
+
+- O sistema apresenta a página inicial do site.
+
+- O usuário aperta na barra de pesquisa.
+
+- O usuário não preenche o campo e aperta a barra de pesquisa.
+
+- O sistema analisa e pede que o usuário digite o tipo de flor desejada.
+
+- O usuário digita a flor desejada e clica na barra de pesquisa.
+
+- O sistema verifica no banco de dados se tem a flor desejada.
+
+- O banco de dados retorna verdadeiro.
+
+- O sistema direciona o usuário para a página com a flor desejada.
+
+#### Fluxo Alternativo B: Estoque vazio
+
+- O sistema apresenta a página inicial do site.
+
+- O usuário aperta na barra de pesquisa.
+
+- O usuário digita o tipo de flor que deseja e aperta no botão "Enter".
+
+- O sistema consulta o banco de dados.
+
+- O banco de dados retorna negativo.
+
+- O sistema apresenta mensagem dizendo que a flor digitada não tem no momento.
  
  ### Caso de Uso 6: Categorias.
 
