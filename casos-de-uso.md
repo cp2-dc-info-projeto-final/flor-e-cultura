@@ -95,9 +95,35 @@
 
 - O banco de dados retorna que o email informado já está em uso.
 
-- O sistema sugere que o usuário digite outro email.
+- O sistema exibe uma mensagem dizendo que o email está inválido e sugere que o usuário digite outro email.
 
+#### Fluxo Alternativo B: Senha inválida
 
+- O sistema apresenta a página de formulário de Login.
+
+- O usuário insere uma senha.
+
+- O sistema consulta o banco de dados.
+
+- O banco de dados retorna que a senha informada está inválida.
+
+- O sistema exibe uma mensagem dizendo que a senha está invalida e sugere que o usuário insira uma senha correta.
+
+#### Fluxo Alternativo C: Campo vazio
+
+- O sistema apresenta a página de formulário de Login.
+
+- O usuário não preenche um dos campos e clica no botão de "Login".
+
+- O sistema analisa os campos de cadastro e pede que o usuário preencha todos os campos.
+
+- O usuário preenche todos os campos (insere email e senha)  e clica no botão de "Login".
+
+- O sistema verifica no banco de dados se as informações estão corretas.
+
+- O banco de dados retorna verdadeiro.
+
+- O sistema redireciona o usuário para a página inicial do site.
 
 ### Caso de Uso 3: Excluir usuário.
 
@@ -129,7 +155,27 @@
   
 - O sistema realoca o usuário para a página de login e cadastro.
 
+#### Fluxo Alternativo A: Senha incorreta.
 
+- O usuário acessa o menu do seu perfil com as configurações da sua conta e aperta no botão "Excluir conta".
+
+- O sistema pede que o usuário insira senha para continuar.
+
+- O usuário insere a senha.
+
+- O sistema verifica no banco de dados se a senha está correta.
+
+- O banco de dados retorna negativo.
+
+- O sistema envia uma mensagem de erro e pede que ao usuário que ele insira a senha correta.
+
+- O usuário insere a senha correta.
+
+- O sistema verifica no banco de dados se a senha está correta.
+
+- O banco de dados retorna uma confirmação positiva.
+
+- O sistema envia uma mensagem de sucesso e envia o usuário para a página de cadastro e login. 
 
 ### Caso de Uso 4: Editar dados de cadastro.
 
@@ -142,20 +188,14 @@
 - O usuário acessa o menu do seu perfil com as configurações da sua conta.
 
 - O usuário aperta o botão "editar dados de cadastro da conta".
-
-- O sistema solicita a senha do usuário para mudar os dados de cadastro.
-  
-- O usário digita a senha.
-  
-- O sistema analisa a veracidade da senha no banco de dados.
-  
-- O banco de dados retorna uma confirmação positiva.
   
 - O sistema exibe os dados de cadastro do usuário.
+
+- O usuário edita dados do seu cadastro e aperta o botão confirmar.
   
-- O usuário aperta o botão confirmar.
-  
-- O sistema apaga os dados do usuário no banco de dados.
+- O sistema edita os dados do usuário no banco de dados.
+
+
 
   ### Caso de Uso 5: Busca de produtos.
 
@@ -164,6 +204,8 @@
 - Usuário
 
 #### Fluxo principal: 
+
+- O sistema apresenta a página inicial do site.
 
 - O usuário aperta na barra de pesquisa.
 
@@ -176,6 +218,38 @@
 - O banco retorna a flor desejada.
 
 - A busca é finalizada.
+
+#### Fluxo Alternativo A: Campo vazio
+
+- O sistema apresenta a página inicial do site.
+
+- O usuário aperta na barra de pesquisa.
+
+- O usuário não preenche o campo e aperta a barra de pesquisa.
+
+- O sistema analisa e pede que o usuário digite o tipo de flor desejada.
+
+- O usuário digita a flor desejada e clica na barra de pesquisa.
+
+- O sistema verifica no banco de dados se tem a flor desejada.
+
+- O banco de dados retorna verdadeiro.
+
+- O sistema direciona o usuário para a página com a flor desejada.
+
+#### Fluxo Alternativo B: Estoque vazio
+
+- O sistema apresenta a página inicial do site.
+
+- O usuário aperta na barra de pesquisa.
+
+- O usuário digita o tipo de flor que deseja e aperta no botão "Enter".
+
+- O sistema consulta o banco de dados.
+
+- O banco de dados retorna negativo.
+
+- O sistema apresenta mensagem dizendo que a flor digitada não tem no momento.
  
  ### Caso de Uso 6: Categorias.
 
@@ -237,7 +311,7 @@
 
 #### Fluxo principal:  
 
-- O usuário aperta o botão de "Logout".
+- O usuário acessa o menu do seu perfil com as configurações da sua conta e aperta o botão de "Logout".
 
 - O sistema apresenta uma mensagem perguntando "Quer confirmar o Logout?".
 

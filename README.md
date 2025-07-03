@@ -1,4 +1,4 @@
-# Nome do Meu Projeto
+# Flor e Cultura
 
 Projeto Final 2025 do Curso Técnico Integrado de Desenvolvimento de Sistemas - Colégio Pedro II - Campus Duque de Caxias
 
