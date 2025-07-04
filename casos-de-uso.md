@@ -195,7 +195,17 @@
   
 - O sistema edita os dados do usuário no banco de dados.
 
+#### Fluxo Alternativo A: Cancelar edição
 
+- O usuário acessa o menu do seu perfil com as configurações da sua conta.
+
+- O usuário aperta o botão "editar dados de cadastro da conta".
+  
+- O sistema exibe os dados de cadastro do usuário.
+
+- O usuário decide que não quer mais editar e aperta o botão cancelar.
+
+- O sistema redireciona o usuário para o menu do seu perfil com  as configurações da sua conta.
 
   ### Caso de Uso 5: Busca de produtos.
 
@@ -289,6 +299,16 @@
   
 - O usuário finaliza a compra e é redirecionado para a pagina inicial.
 
+#### Fluxo Alternativo A: Cancelar produto do Carrinho de compras
+
+- O usuário clica no ícone do "carrinho de compras".
+
+- O sistema redireciona o usuário para a página contendo os itens desejados.
+
+- O usuário aperta na lixeira (excluir produto).
+
+- O sistema exclui produto do banco de dados.
+
  ### Caso de Uso 8: Pagina de pedidos.
 
 #### Atores: 
@@ -319,13 +339,23 @@
 
 - O sistema apaga o login do usuário.
 
-- O sistema realoca o usuário à página inicial.
+- O sistema realoca o usuário para o menu do seu perfil com  as configurações da sua conta.
+
+#### Fluxo Alternativo A: Cancelar Logout
+
+- O usuário acessa o menu do seu perfil com as configurações da sua conta e aperta o botão de "Logout".
+
+- O sistema apresenta uma mensagem perguntando "Quer confirmar o Logout?".
+
+- O usuário decide que não quer mais fazer Logout e aperta o botão cancelar.
+
+- O sistema redireciona o usuário para o menu do seu perfil com  as configurações da sua conta.
 
 ### Caso de Uso 10: Gerenciar Catálogo de produtos.
 
 #### Atores: 
 
-- Usuário
+- Administrador 
 
 #### Fluxo principal: 
 
@@ -342,6 +372,17 @@
 - Clica em "Salvar".
 
 - O sistema adiciona o novo produto ao catálogo.
+
+#### Fluxo Alternativo A: Excluir produto do catálogo
+
+- O administrador acessa o sistema.
+
+- Seleciona a opção "Catálogo de Produtos".
+
+- Visualiza a lista de produtos cadastrados.
+
+- Clica em "Excluir produto do catálogo".
+
 
 ### Caso de Uso 11: Gerenciar Categoria.
 
