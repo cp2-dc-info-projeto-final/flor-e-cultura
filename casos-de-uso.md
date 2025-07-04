@@ -383,6 +383,8 @@
 
 - Clica em "Excluir produto do catálogo".
 
+- O sistema exclui produto do banco de dados.
+
 
 ### Caso de Uso 11: Gerenciar Categoria.
 
@@ -405,6 +407,18 @@
 - Clica em "Salvar".
 
 - O sistema cadastra a nova categoria.
+
+#### Fluxo Alternativo A: Excluir categoria
+
+- O administrador acessa o sistema.
+
+- Seleciona a opção "Categorias".
+
+- Visualiza as categorias existentes.
+
+- Clica em "Excluir Categoria".
+
+- O sistema exclui categoria do banco de dados.
 
 ### Caso de Uso 12: Editar pedidos.
 
