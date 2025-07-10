@@ -9,7 +9,7 @@ INSERT INTO usuario (login, email) VALUES
 ('zoroastra', 'zoroastra@email.com');
 
 
-CREATE IF NOT EXISTS TABLE usuarios (
+CREATE TABLE usuarios (
   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   nome_completo TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
