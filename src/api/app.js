@@ -4,14 +4,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-const cors = require('cors');
-app.use(cors());
+// CORS para liberar requests do frontend na porta 5173
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  credentials: true,
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -38,8 +42,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
