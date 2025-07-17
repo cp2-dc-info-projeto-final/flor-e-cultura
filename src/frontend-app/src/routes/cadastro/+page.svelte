@@ -39,6 +39,8 @@
           nome = '';
           email = '';
           dataNascimento = '';
+          cpf  = '';
+          telefone  = '';
           senha = '';
           confirmarSenha = '';
         } else {

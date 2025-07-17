@@ -101,7 +101,7 @@ router.put('/:id', async function(req, res, next) {
     }
     
     // Verificar se o usuário existe
-    const userExists = await pool.query('SELECT id FROM usuario WHERE id = $1', [id]);
+    const userExists = await pool.query('SELECT id FROM usuarios WHERE id = $1', [id]);
     if (userExists.rows.length === 0) {
       return res.status(404).json({
         success: false,
@@ -110,7 +110,7 @@ router.put('/:id', async function(req, res, next) {
     }
     
     // Verificar se o login já está em uso por outro usuário
-    const existingUser = await pool.query('SELECT id FROM usuario WHERE login = $1 AND id != $2', [login, id]);
+    const existingUser = await pool.query('SELECT id FROM usuarios WHERE login = $1 AND id != $2', [login, id]);
     if (existingUser.rows.length > 0) {
       return res.status(409).json({
         success: false,
@@ -119,7 +119,7 @@ router.put('/:id', async function(req, res, next) {
     }
     
     const result = await pool.query(
-      'UPDATE usuario SET login = $1, email = $2 WHERE id = $3 RETURNING *',
+      'UPDATE usuarios SET login = $1, email = $2 WHERE id = $3 RETURNING *',
       [login, email, id]
     );
     
@@ -143,7 +143,7 @@ router.delete('/:id', async function(req, res, next) {
     const { id } = req.params;
     
     // Verificar se o usuário existe
-    const userExists = await pool.query('SELECT id FROM usuario WHERE id = $1', [id]);
+    const userExists = await pool.query('SELECT id FROM usuarios WHERE id = $1', [id]);
     if (userExists.rows.length === 0) {
       return res.status(404).json({
         success: false,
@@ -151,7 +151,7 @@ router.delete('/:id', async function(req, res, next) {
       });
     }
     
-    await pool.query('DELETE FROM usuario WHERE id = $1', [id]);
+    await pool.query('DELETE FROM usuarios WHERE id = $1', [id]);
     
     res.json({
       success: true,
