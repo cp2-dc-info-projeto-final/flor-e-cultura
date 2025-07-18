@@ -1,7 +1,18 @@
 <script>
-    let usuarios = [];
+    import { onMount } from 'svelte';
+    
+    let usuarios = [{
+        id: 0,
+        nome_completo: "",
+        email: '',
+        senha: '',
+        cpf: '',
+        telefone: '',
+        data_nascimento: '',
+        tipo_usuario: 1
+      }];
+    usuarios.pop()
     let erro = '';
-  
     // Busca os usuários quando o componente é montado
     async function buscarUsuarios() {
     try {
@@ -18,6 +29,33 @@
       erro = 'Erro ao conectar com o servidor';
     }
   }
+ 
+      // Função para remover um usuário
+    async function removerUsuario(id) {
+      try {
+        const res = await fetch(`http://localhost:3000/users/${id}`, {
+          method: 'DELETE'
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+          erro = data.message || 'Erro ao buscar usuários';
+          return;
+        }
+
+        usuarios = data.data;
+       // Atualiza a lista local removendo o usuário da UI
+       usuarios = usuarios.filter(usuario => usuario.id !== id);
+      } catch (e) {
+        erro = 'Erro ao conectar com o servidor';
+      }
+  }
+
+
+  onMount(() => {
+        buscarUsuarios();
+  });
   </script>
   
   <h1>Lista de Usuários</h1>
@@ -30,7 +68,6 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nome</th>
           <th>Email</th>
           <th>Senha</th>
@@ -43,17 +80,21 @@
       <tbody>
         {#each usuarios as usuario}
           <tr>
-            <td>{usuario.id}</td>
-            <td>{usuario.nome_completo}</td>
+            <td>{usuario.nome_completo}</td> 
             <td>{usuario.email}</td>
             <td>{usuario.senha}</td>
             <td>{usuario.cpf}</td>
             <td>{usuario.telefone}</td>
             <td>{usuario.data_nascimento}</td>
             <td>{usuario.tipo_usuario}</td>
+            <td>
+              <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" on:click={() => removerUsuario(usuario.id)}>Remover</button>
+            </td>
           </tr>
         {/each}
       </tbody>
     </table>
   {/if}
   
+
+
