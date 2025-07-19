@@ -33,48 +33,55 @@
       // Função para remover um usuário
     async function removerUsuario(id) {
       try {
-        const res = await fetch(`http://localhost:3000/users/${id}`, {
-          method: 'DELETE'
-        });
 
-        const data = await res.json();
+          const res = await fetch(`http://localhost:3000/users/${id}`, {
+            method: 'DELETE'
+          });
 
-        if (!data.success) {
-          erro = data.message || 'Erro ao buscar usuários';
-          return;
-        }
+          const data = await res.json();
 
-        usuarios = data.data;
-       // Atualiza a lista local removendo o usuário da UI
-       usuarios = usuarios.filter(usuario => usuario.id !== id);
-      } catch (e) {
-        erro = 'Erro ao conectar com o servidor';
+          if (!data.success) {
+            erro = data.message || 'Erro ao buscar usuários';
+            return;
+          }
+
+         /* POSIVEL CORTEEEEEEEEEEEEEEEEEEEEE usuarios = data.data;
+          // Atualiza a lista local removendo o usuário da UI
+          usuarios = usuarios.filter(usuario => usuario.id !== id);
+          alert(usuarios)*/
+          buscarUsuarios();
+
+      } catch (erro) {
+        
+       console.error('erro ao conectar o servidor',erro);
       }
   }
 
 
   onMount(() => {
         buscarUsuarios();
+        
   });
   </script>
   
-  <h1>Lista de Usuários</h1>
+  <h1 style="text-align: center;" ><b >LISTA DE USUARIOS</b></h1>
+  <br>  
   
   {#if erro}
     <p style="color: red">{erro}</p>
   {:else if usuarios.length === 0}
     <p>Nenhum usuário encontrado.</p>
   {:else}
-    <table>
-      <thead>
+    <table class="w-full text-sm text-left rtl:text-right text-white dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
         <tr>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Senha</th>
-          <th>CPF</th>
-          <th>Telefone</th>
-          <th>Data de Nascimento</th>
-          <th>Tipo de Usuário</th>
+          <th scope="col" class="px-6 py-3">Nome</th>
+          <th scope="col" class="px-6 py-3">Email</th>
+          <th scope="col" class="px-6 py-3">Senha</th>
+          <th scope="col" class="px-6 py-3">CPF</th>
+          <th scope="col" class="px-6 py-3">Telefone</th>
+          <th scope="col" class="px-6 py-3">Data de Nascimento</th>
+          <th scope="col" class="px-6 py-3">Tipo de Usuário</th>
         </tr>
       </thead>
       <tbody>
