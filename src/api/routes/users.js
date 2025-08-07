@@ -45,6 +45,32 @@ router.get('/:id', async function(req, res, next) {
   }
 });
 
+/* GET parametrizado - Buscar usuário por nome */
+router.get('/nome/:nome', async function(req, res, next) {
+  try {
+    const { nome } = req.params;
+    const result = await pool.query('SELECT * FROM usuarios WHERE nome_completo LIKE $1', ['%'+nome+'%']);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuário não encontrado'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: result.rows
+   });
+  } catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+});
+
 /* POST - Criar novo usuário */
 router.post('/', async function(req, res, next) {
   try {

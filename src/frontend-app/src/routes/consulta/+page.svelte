@@ -13,10 +13,11 @@
       }];
     usuarios.pop()
     let erro = '';
+    let search = '';
     // Busca os usuários quando o componente é montado
     async function buscarUsuarios() {
     try {
-      const res = await fetch('http://localhost:3000/users');
+      const res = await fetch('http://localhost:3000/users/');
       const data = await res.json();
 
       if (!data.success) {
@@ -30,6 +31,27 @@
     }
   }
  
+  // Busca os usuários quando o componente é montado
+  async function buscarUsuariosPorNome(nome) {
+      try {
+        const res = await fetch(`http://localhost:3000/users/nome/${nome}`);
+        const data = await res.json();
+
+        if (!data.success) {
+          erro = data.message || 'Erro ao buscar usuários';
+          return;
+        }
+        else{
+          erro = '';
+        }
+
+        usuarios = data.data;
+      } catch (e) {
+        erro = 'Erro ao conectar com o servidor';
+      }
+    }
+ 
+
       // Função para remover um usuário
     async function removerUsuario(id) {
       try {
@@ -62,11 +84,38 @@
         buscarUsuarios();
         
   });
+
+   // Quando o usuário digitar, chamamos a busca
+   $: if (search.length >= 3) {
+    buscarUsuariosPorNome(search);
+  }
+  else if (search.length === 0) {
+    erro = '';
+    buscarUsuarios();
+    
+  }
+
+   else {
+    usuarios = []; // Limpa a lista se menos de 3 caracteres
+  }
+  
   </script>
   
   <h1 style="text-align: center;" ><b >LISTA DE USUARIOS</b></h1>
   <br>  
   
+  <input
+  type="text"
+  placeholder="Pesquisar usuário por nome..."
+  bind:value={search}
+/>
+
+<ul>
+  {#each usuarios as user}
+    <li>{user.name}</li>
+  {/each}
+</ul>
+
   {#if erro}
     <p style="color: red">{erro}</p>
   {:else if usuarios.length === 0}
