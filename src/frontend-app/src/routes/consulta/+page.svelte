@@ -5,7 +5,6 @@
         id: 0,
         nome_completo: "",
         email: '',
-        senha: '',
         cpf: '',
         telefone: '',
         data_nascimento: '',
@@ -84,7 +83,6 @@
         buscarUsuarios();
         
   });
-
    // Quando o usuário digitar, chamamos a busca
    $: if (search.length >= 3) {
     buscarUsuariosPorNome(search);
@@ -98,7 +96,6 @@
    else {
     usuarios = []; // Limpa a lista se menos de 3 caracteres
   }
-  
   </script>
   
   <h1 style="text-align: center;" ><b >LISTA DE USUARIOS</b></h1>
@@ -126,7 +123,7 @@
         <tr>
           <th scope="col" class="px-6 py-3">Nome</th>
           <th scope="col" class="px-6 py-3">Email</th>
-          <th scope="col" class="px-6 py-3">Senha</th>
+        
           <th scope="col" class="px-6 py-3">CPF</th>
           <th scope="col" class="px-6 py-3">Telefone</th>
           <th scope="col" class="px-6 py-3">Data de Nascimento</th>
@@ -138,11 +135,14 @@
           <tr>
             <td>{usuario.nome_completo}</td> 
             <td>{usuario.email}</td>
-            <td>{usuario.senha}</td>
+           
             <td>{usuario.cpf}</td>
             <td>{usuario.telefone}</td>
             <td>{usuario.data_nascimento}</td>
             <td>{usuario.tipo_usuario}</td>
+            <td>
+              <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" on:click={() => window.location.href = "/editar?id="+usuario.id}>Editar</button>
+            </td>
             <td>
               <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" on:click={() => removerUsuario(usuario.id)}>Remover</button>
             </td>

@@ -25,7 +25,7 @@ onMount(() => {
 
 <nav class="bg-white border-gray-200 dark:bg-pink-100">
 	<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-	<a href="bbbbb" class="flex items-center space-x-3 rtl:space-x-reverse">
+	<a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
 		<span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">𝐅𝐥𝐨𝐫&𝐂𝐮𝐥𝐭𝐮𝐫𝐚</span>
 	</a>
 	<div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse space-x-4">
