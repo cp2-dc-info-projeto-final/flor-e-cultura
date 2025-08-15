@@ -15,6 +15,7 @@
     let search = '';
     // Busca os usuários quando o componente é montado
     async function buscarUsuarios() {
+
     try {
       const res = await fetch('http://localhost:3000/users/');
       const data = await res.json();

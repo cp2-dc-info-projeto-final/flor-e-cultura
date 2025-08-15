@@ -2,6 +2,18 @@
   import { onMount } from 'svelte';
 
   // Variáveis do formulário
+
+  let usuario = [{
+        id: 0,
+        nome_completo: "",
+        email: '',
+        cpf: '',
+        telefone: '',
+        data_nascimento: '',
+        tipo_usuario: 1
+      }];
+  usuario.pop()
+
   let nome = '';
   let email = '';
   let dataNascimento = '';
@@ -9,28 +21,52 @@
   let telefone = '';
   let senha = '';
   let confirmarSenha = '';
+  let erro = '';
+  let id = '';
+  let carregando = true;
 
+  async function carregarUsuario() {
+    try {
+      const res = await fetch('http://localhost:3000/users/');
+      const data = await res.json();
 
+      if (!data.success) {
+        erro = data.message || 'Erro ao buscar usuário';
+        return;
+      }
+
+      usuario = data.data;
+    } catch (e) {
+      erro = 'Erro ao conectar com o servidor';
+    }
+  }
   
   // Buscar os dados do usuário ao carregar a página
   onMount(async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    id = urlParams.get('id');
     if (!id) {
       alert('ID de usuário não encontrado.');
       return;
     }
-
+  
     try {
       const res = await fetch(`http://localhost:3000/users/${id}`);
       const dados = await res.json();
-
-      nome = dados.nome_completo;
-      email = dados.email;
-      dataNascimento = dados.data_nascimento;
-      cpf = dados.cpf;
-      telefone = dados.telefone;
+      const user = dados.data || dados;
+      nome = user.nome_completo;
+      email = user.email;
+      dataNascimento = user.data_nascimento;
+      cpf = user.cpf;
+      telefone = user.telefone;
+      senha = user.senha;
+      confirmarSenha = senha;
     } catch (err) {
       console.error('Erro ao buscar dados do usuário:', err);
       alert('Erro ao buscar dados do usuário.');
+    }
+    finally {
+      carregando = false;
     }
   });
 
@@ -72,8 +108,10 @@
       alert('Erro ao conectar com o servidor.');
     }
   }
+  
 </script>
 
+{#if !carregando}
 <section>
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -118,3 +156,6 @@
         </div>
     </div>
   </section>
+  {:else}
+  <p class="text-center text-white">Carregando dados do usuário...</p>
+{/if}
