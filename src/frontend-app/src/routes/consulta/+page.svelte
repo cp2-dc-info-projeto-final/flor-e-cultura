@@ -96,6 +96,7 @@
 
    else {
     usuarios = []; // Limpa a lista se menos de 3 caracteres
+    erro = 'Digite pelo menos 3 caracteres para buscar.';
   }
   </script>
   
