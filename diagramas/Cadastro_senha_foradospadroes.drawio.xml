@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.1.0">
+  <diagram name="Página-1" id="eEDMbfrfapBdLnt48J2H">
+    <mxGraphModel dx="1426" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cZdY3uz-VYPH136sX4sS-1" value="Cadastro: senha fora dos padrões exigidos" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=240;height=40;" vertex="1" parent="1">
+          <mxGeometry x="100" y="110" width="950" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-2" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" vertex="1" parent="1">
+          <mxGeometry x="120" y="170" width="20" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-7" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="cZdY3uz-VYPH136sX4sS-2">
+          <mxGeometry x="5" y="50" width="10" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-3" value="Frontend" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="330" y="170" width="100" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-8" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="cZdY3uz-VYPH136sX4sS-3">
+          <mxGeometry x="40" y="60" width="10" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-4" value="Backend" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="740" y="170" width="100" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-14" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="cZdY3uz-VYPH136sX4sS-4">
+          <mxGeometry x="40" y="90" width="10" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-17" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="cZdY3uz-VYPH136sX4sS-4">
+          <mxGeometry x="50" y="180" width="10" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-18" value="5. O sistema percebe que a senha&lt;div&gt;está fora dos padrões exigidos&lt;/div&gt;" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" target="cZdY3uz-VYPH136sX4sS-17" parent="cZdY3uz-VYPH136sX4sS-4" source="cZdY3uz-VYPH136sX4sS-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="45" y="150" as="sourcePoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-9" value="1.O usuário clica no botão &#39;cadastro&#39;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=5;" edge="1" target="cZdY3uz-VYPH136sX4sS-8" parent="1" source="cZdY3uz-VYPH136sX4sS-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="235" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-10" value="2. O sistema apresenta a página de formulário&lt;div&gt;de cadastro&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1" target="cZdY3uz-VYPH136sX4sS-7">
+          <mxGeometry x="0.0213" y="-10" relative="1" as="geometry">
+            <mxPoint x="300" y="305" as="targetPoint" />
+            <mxPoint x="370" y="320" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="260" y="320" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-11" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="370" y="360" width="10" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-12" value="3. O usuário cria uma senha fora dos padões&lt;div&gt;e clica no botão &#39;criar conta&#39;&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" target="cZdY3uz-VYPH136sX4sS-11" parent="1" source="cZdY3uz-VYPH136sX4sS-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="385" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="250" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-13" value="7. Exibe a mensagem pedindo para criar&lt;div&gt;&amp;nbsp;uma senha dentro dos padrões&lt;/div&gt;&lt;div&gt;(mínimo 8 caracteres e 1 símbolo)&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=-5;" edge="1" source="cZdY3uz-VYPH136sX4sS-11" parent="1" target="cZdY3uz-VYPH136sX4sS-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="455" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-15" value="4. O sistema analisa se a senha está dentro dos padrões exigidos&lt;div&gt;(mínimo 8 caracteres e 1 símbolo)&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="cZdY3uz-VYPH136sX4sS-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="300" as="sourcePoint" />
+            <mxPoint x="780" y="370" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="610" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZdY3uz-VYPH136sX4sS-16" value="6. Envia uma mensagem pedindo para criar uma senha dentro dos padões" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=-5;" edge="1" source="cZdY3uz-VYPH136sX4sS-14" parent="1" target="cZdY3uz-VYPH136sX4sS-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
