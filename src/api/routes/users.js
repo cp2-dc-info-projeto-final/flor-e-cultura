@@ -116,16 +116,24 @@ router.post('/', async function(req, res, next) {
 router.put('/:id', async function(req, res, next) {
   try {
     const { id } = req.params;
-    const { login, email } = req.body;
-    
+    const {
+      nome_completo,
+      email,
+      senha,
+      cpf,
+      telefone,
+      data_nascimento,
+      tipo_usuario
+    } = req.body;
+
     // Validação básica
-    if (!login || !email) {
+    if (!nome_completo || !email || !senha || !cpf || !telefone || !data_nascimento || !tipo_usuario) {
       return res.status(400).json({
         success: false,
-        message: 'Login e email são obrigatórios'
+        message: 'Os dados são obrigatórios'
       });
     }
-    
+
     // Verificar se o usuário existe
     const userExists = await pool.query('SELECT id FROM usuarios WHERE id = $1', [id]);
     if (userExists.rows.length === 0) {
@@ -134,21 +142,25 @@ router.put('/:id', async function(req, res, next) {
         message: 'Usuário não encontrado'
       });
     }
-    
+
     // Verificar se o login já está em uso por outro usuário
-    const existingUser = await pool.query('SELECT id FROM usuarios WHERE login = $1 AND id != $2', [login, id]);
+    const existingUser = await pool.query(
+      'SELECT id FROM usuarios WHERE nome_completo = $1 AND id != $2',
+      [nome_completo, id]
+    );
     if (existingUser.rows.length > 0) {
       return res.status(409).json({
         success: false,
         message: 'Login já está em uso por outro usuário'
       });
     }
-    
+
+    // Atualizar o usuário
     const result = await pool.query(
-      'UPDATE usuarios SET login = $1, email = $2 WHERE id = $3 RETURNING *',
-      [login, email, id]
+      'UPDATE usuarios SET nome_completo = $1, email = $2, senha = $3, cpf = $4, telefone = $5, data_nascimento = $6, tipo_usuario = $7 WHERE id = $8 RETURNING *',
+      [nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario, id]
     );
-    
+
     res.json({
       success: true,
       message: 'Usuário atualizado com sucesso',
@@ -162,6 +174,7 @@ router.put('/:id', async function(req, res, next) {
     });
   }
 });
+
 
 /* DELETE - Remover usuário */
 router.delete('/:id', async function(req, res, next) {
