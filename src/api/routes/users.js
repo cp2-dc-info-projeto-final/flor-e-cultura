@@ -77,22 +77,32 @@ router.post('/', async function(req, res, next) {
     const { nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario } = req.body;
     
     // Validação básica
-    if (!nome_completo || !email) {
+    if (!nome_completo || !email || !cpf) {
       return res.status(400).json({
         success: false,
-        message: 'Login e email são obrigatórios'
+        message: 'Nome, email e CPF são obrigatórios.'
       });
     }
-    
-    /* Verificar se o login já existe
-    const existingUser = await pool.query('SELECT id FROM usuario WHERE login = $1', [login]);
-    if (existingUser.rows.length > 0) {
+
+    // Verificar se o email já existe
+    const emailExistente = await pool.query('SELECT id FROM usuarios WHERE email = $1', [email]);
+    if (emailExistente.rows.length > 0) {
       return res.status(409).json({
         success: false,
-        message: 'Login já está em uso'
+        message: 'Email já cadastrado.'
       });
-    }*/
-    
+    }
+
+    // Verificar se o CPF já existe
+    const cpfExistente = await pool.query('SELECT id FROM usuarios WHERE cpf = $1', [cpf]);
+    if (cpfExistente.rows.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: 'CPF já cadastrado.'
+      });
+    }
+
+    // Inserir novo usuário
     const result = await pool.query(
       'INSERT INTO usuarios (nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
       [nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario]
@@ -103,14 +113,16 @@ router.post('/', async function(req, res, next) {
       message: 'Usuário criado com sucesso',
       data: result.rows[0]
     });
+
   } catch (error) {
     console.error('Erro ao criar usuário:', error);
     res.status(500).json({
       success: false,
-      message: 'Erro interno do servidor'
+      message: 'Erro interno no servidor.'
     });
   }
 });
+
 
 /* PUT - Atualizar usuário */
 router.put('/:id', async function(req, res, next) {

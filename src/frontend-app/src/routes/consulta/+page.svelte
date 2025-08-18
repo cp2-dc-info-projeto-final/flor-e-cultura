@@ -1,21 +1,11 @@
 <script>
-    import { onMount } from 'svelte';
-    
-    let usuarios = [{
-        id: 0,
-        nome_completo: "",
-        email: '',
-        cpf: '',
-        telefone: '',
-        data_nascimento: '',
-        tipo_usuario: 1
-      }];
-    usuarios.pop()
-    let erro = '';
-    let search = '';
-    // Busca os usuários quando o componente é montado
-    async function buscarUsuarios() {
+  import { onMount } from 'svelte';
 
+  let usuarios = [];
+  let erro = '';
+  let search = '';
+
+  async function buscarUsuarios() {
     try {
       const res = await fetch('http://localhost:3000/users/');
       const data = await res.json();
@@ -25,134 +15,117 @@
         return;
       }
 
+      erro = '';
       usuarios = data.data;
     } catch (e) {
       erro = 'Erro ao conectar com o servidor';
     }
   }
- 
-  // Busca os usuários quando o componente é montado
+
   async function buscarUsuariosPorNome(nome) {
-      try {
-        const res = await fetch(`http://localhost:3000/users/nome/${nome}`);
-        const data = await res.json();
+    try {
+      const res = await fetch(`http://localhost:3000/users/nome/${nome}`);
+      const data = await res.json();
 
-        if (!data.success) {
-          erro = data.message || 'Erro ao buscar usuários';
-          return;
-        }
-        else{
-          erro = '';
-        }
-
-        usuarios = data.data;
-      } catch (e) {
-        erro = 'Erro ao conectar com o servidor';
+      if (!data.success) {
+        erro = data.message || 'Erro ao buscar usuários';
+        return;
       }
+
+      erro = '';
+      usuarios = data.data;
+    } catch (e) {
+      erro = 'Erro ao conectar com o servidor';
     }
- 
-
-      // Função para remover um usuário
-    async function removerUsuario(id) {
-      try {
-
-          const res = await fetch(`http://localhost:3000/users/${id}`, {
-            method: 'DELETE'
-          });
-
-          const data = await res.json();
-
-          if (!data.success) {
-            erro = data.message || 'Erro ao buscar usuários';
-            return;
-          }
-
-         /* POSIVEL CORTEEEEEEEEEEEEEEEEEEEEE usuarios = data.data;
-          // Atualiza a lista local removendo o usuário da UI
-          usuarios = usuarios.filter(usuario => usuario.id !== id);
-          alert(usuarios)*/
-          buscarUsuarios();
-
-      } catch (erro) {
-        
-       console.error('erro ao conectar o servidor',erro);
-      }
   }
 
+  async function removerUsuario(id) {
+    try {
+      const res = await fetch(`http://localhost:3000/users/${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        erro = data.message || 'Erro ao remover usuário';
+        return;
+      }
+
+      if (search.length >= 3) {
+        buscarUsuariosPorNome(search);
+      } else {
+        buscarUsuarios();
+      }
+
+    } catch (e) {
+      console.error('Erro ao conectar ao servidor', e);
+    }
+  }
 
   onMount(() => {
-        buscarUsuarios();
-        
-  });
-   // Quando o usuário digitar, chamamos a busca
-   $: if (search.length >= 3) {
-    buscarUsuariosPorNome(search);
-  }
-  else if (search.length === 0) {
-    erro = '';
     buscarUsuarios();
-    
-  }
+  });
 
-   else {
-    usuarios = []; // Limpa a lista se menos de 3 caracteres
-    erro = 'Digite pelo menos 3 caracteres para buscar.';
+  $: {
+    if (search.length >= 3) {
+      buscarUsuariosPorNome(search);
+    } else if (search.length === 0) {
+      buscarUsuarios();
+    } else {
+      usuarios = [];
+      erro = 'Digite pelo menos 3 caracteres para buscar.';
+    }
   }
-  </script>
-  
-  <h1 style="text-align: center;" ><b >LISTA DE USUARIOS</b></h1>
-  <br>  
-  
+</script>
+
+<!-- Container principal -->
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+  <h1 class="text-2xl font-bold text-center mb-6">LISTA DE USUÁRIOS</h1>
+
+  <!-- Campo de pesquisa -->
   <input
-  type="text"
-  placeholder="Pesquisar usuário por nome..."
-  bind:value={search}
-/>
+    type="text"
+    placeholder="Pesquisar usuário por nome..."
+    bind:value={search}
+    class="w-full mb-6 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
 
-<ul>
-  {#each usuarios as user}
-    <li>{user.name}</li>
-  {/each}
-</ul>
-
+  <!-- Exibe mensagens -->
   {#if erro}
-    <p style="color: red">{erro}</p>
+    <p class="text-red-500 mb-4">{erro}</p>
   {:else if usuarios.length === 0}
-    <p>Nenhum usuário encontrado.</p>
+    <p class="text-gray-600">Nenhum usuário encontrado.</p>
   {:else}
-    <table class="w-full text-sm text-left rtl:text-right text-white dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
-        <tr>
-          <th scope="col" class="px-6 py-3">Nome</th>
-          <th scope="col" class="px-6 py-3">Email</th>
-        
-          <th scope="col" class="px-6 py-3">CPF</th>
-          <th scope="col" class="px-6 py-3">Telefone</th>
-          <th scope="col" class="px-6 py-3">Data de Nascimento</th>
-          <th scope="col" class="px-6 py-3">Tipo de Usuário</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each usuarios as usuario}
-          <tr>
-            <td>{usuario.nome_completo}</td> 
-            <td>{usuario.email}</td>
-           
-            <td>{usuario.cpf}</td>
-            <td>{usuario.telefone}</td>
-            <td>{usuario.data_nascimento}</td>
-            <td>{usuario.tipo_usuario}</td>
-            <td>
-              <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" on:click={() => window.location.href = "/editar?id="+usuario.id}>Editar</button>
-            </td>
-            <td>
-              <button class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" on:click={() => removerUsuario(usuario.id)}>Remover</button>
-            </td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+    <!-- Lista de cards responsivos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {#each usuarios as usuario}
+        <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
+          <div class="space-y-1">
+            <p><span class="font-semibold">Nome:</span> {usuario.nome_completo}</p>
+            <p><span class="font-semibold">Email:</span> {usuario.email}</p>
+            <p><span class="font-semibold">CPF:</span> {usuario.cpf}</p>
+            <p><span class="font-semibold">Telefone:</span> {usuario.telefone}</p>
+            <p><span class="font-semibold">Nascimento:</span> {usuario.data_nascimento}</p>
+            <p><span class="font-semibold">Tipo:</span> {usuario.tipo_usuario}</p>
+          </div>
+
+          <!-- Botões -->
+          <div class="mt-4 flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+            <button
+              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm w-full"
+              on:click={() => window.location.href = `/editar?id=${usuario.id}`}
+            >
+              Editar
+            </button>
+            <button
+              class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm w-full"
+              on:click={() => removerUsuario(usuario.id)}
+            >
+              Remover
+            </button>
+          </div>
+        </div>
+      {/each}
+    </div>
   {/if}
-  
-
-
+</div>
