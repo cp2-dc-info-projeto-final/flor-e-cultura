@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 const pool = require('../db/config');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { verifyToken, isAdmin } = require('../middlewares/auth');
 
 /* GET - Buscar todos os usuários */
-router.get('/', async function(req, res, next) {
+router.get('/', verifyToken, isAdmin, async function(req, res, next) {
   try {
     const result = await pool.query('SELECT * FROM usuarios ORDER BY id');
     res.json({
@@ -12,6 +15,35 @@ router.get('/', async function(req, res, next) {
     });
   } catch (error) {
     console.error('Erro ao buscar usuários:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+});
+
+/* GET parametrizado - Buscar usuário autenticado */
+router.get('/me', verifyToken, async function(req, res) {
+  try {
+    // parâmetro obtido do token pelo middleware
+    const id = req.user.id;
+    const result = await pool.query('SELECT id, email, tipo_usuario FROM usuarios WHERE id = $1', [id]);
+
+    if (result.rows.length === 0) {
+      // http status 404 - Not Found
+      return res.status(404).json({
+        success: false,
+        message: 'Usuário não encontrado'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+    // http status 500 - Internal Server Error
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -72,7 +104,7 @@ router.get('/nome/:nome', async function(req, res, next) {
 });
 
 /* POST - Criar novo usuário */
-router.post('/', async function(req, res, next) {
+router.post('/', verifyToken, isAdmin, async function(req, res) {
   try {
     const { nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario } = req.body;
     
@@ -93,6 +125,10 @@ router.post('/', async function(req, res, next) {
       });
     }
 
+     // Hash da senha
+     const hashedPassword = await bcrypt.hash(senha, 12);
+
+     
     // Verificar se o CPF já existe
     const cpfExistente = await pool.query('SELECT id FROM usuarios WHERE cpf = $1', [cpf]);
     if (cpfExistente.rows.length > 0) {
@@ -105,7 +141,7 @@ router.post('/', async function(req, res, next) {
     // Inserir novo usuário
     const result = await pool.query(
       'INSERT INTO usuarios (nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario]
+      [nome_completo, email, hashedPassword, cpf, telefone, data_nascimento, tipo_usuario]
     );
     
     res.status(201).json({
@@ -122,6 +158,89 @@ router.post('/', async function(req, res, next) {
     });
   }
 });
+
+/* POST - Autenticar usuário */
+router.post('/login', async function(req, res) {
+  try {
+    const { email, senha } = req.body;
+    // obtém o usuário do banco de dados
+    const result = await pool.query(`SELECT 
+      id, email, senha as passwordHash, tipo_usuario
+      FROM usuarios 
+      WHERE email = $1`, [email]);
+
+    /*
+     tratar login inválido igual senha incorreta
+     confere maior segurança por não expor indiretamente
+     se existe uma conta com aquele login 
+    */
+    if (result.rows.length === 0) {
+      // https status 401 - unauthorized
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciais inválidas'
+      });
+    }
+
+    // Objeto de usuário
+    const user = result.rows[0];
+
+    /*
+     verifica a senha passando senha do forntend e hash armazenada
+     a partir da hash não se pode descobrir a senha
+     mas fornecendo a senha dá para aplicar a hash e ver coincidem
+    */
+    
+    bcrypt.compare(senha, user.passwordhash, (err, isMatch) => {
+      if (err) {
+        console.error('Erro no bcrypt:', err);
+        // https status 500 - internal server error
+        return res.status(500).json({
+          success: false,
+          message: 'Erro interno do servidor'
+        });
+      }
+      
+      if (!isMatch) {
+        // https status 401 - unauthorized
+        return res.status(401).json({
+          success: false,
+          message: 'Credenciais inválidas'
+        });
+      }
+
+      // Cria o token com as informações do usuário logado e sua chave pública
+      const token = jwt.sign(
+        { 
+          id: user.id, 
+          email: user.email,
+          // tipo do usuário, que vem do banco
+          tipo_usuario: user.tipo_usuario 
+          // a senha não entra no token para não ser exposta
+        }, 
+        process.env.JWT_SECRET, //chave secreta, nunca exponha!! >>> PERIGO <<<
+        { expiresIn: '1h' } 
+      );
+
+      // O token contém as informções do usuário com a chave para posterior validação
+      return res.status(200).json({
+        success: true,
+        token: token,
+        message: 'Autenticado com sucesso!'
+      });
+    });
+
+  } catch (error) {
+    console.error('Erro ao autenticar usuário:', error);
+    // http status 500 - Internal Server Error
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+  
+});
+
 
 
 /* PUT - Atualizar usuário */
@@ -157,8 +276,8 @@ router.put('/:id', async function(req, res, next) {
 
     // Verificar se o login já está em uso por outro usuário
     const existingUser = await pool.query(
-      'SELECT id FROM usuarios WHERE nome_completo = $1 AND id != $2',
-      [nome_completo, id]
+      'SELECT id FROM usuarios WHERE email = $1 AND id != $2',
+      [email, id]
     );
     if (existingUser.rows.length > 0) {
       return res.status(409).json({

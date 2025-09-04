@@ -131,7 +131,7 @@
           </button>
 
           <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-            Já possui uma conta? <a href="#" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Faça login</a>
+            Já possui uma conta? <a href="/login" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Faça login</a>
           </p>
         </form>
       </div>
