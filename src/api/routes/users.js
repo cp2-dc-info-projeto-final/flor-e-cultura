@@ -106,6 +106,7 @@ router.get('/nome/:nome', async function(req, res, next) {
 /* POST - Criar novo usuário */
 router.post('/', verifyToken, isAdmin, async function(req, res) {
   try {
+    console.log("entrou");
     const { nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario } = req.body;
     
     // Validação básica
@@ -221,6 +222,14 @@ router.post('/login', async function(req, res) {
         process.env.JWT_SECRET, //chave secreta, nunca exponha!! >>> PERIGO <<<
         { expiresIn: '1h' } 
       );
+
+      //ADICIONADO POR JUDIS
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: false, // true em produção com HTTPS
+        sameSite: 'Lax', // ou 'None' se for necessário para domínios/portas cruzadas
+        maxAge: 1000 * 60 * 60 // 1h
+      });
 
       // O token contém as informções do usuário com a chave para posterior validação
       return res.status(200).json({

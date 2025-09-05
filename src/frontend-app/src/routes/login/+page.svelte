@@ -24,7 +24,9 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          },
+          },  
+          //INCLUIDO POR JUDIS
+          credentials: 'include',
           body: JSON.stringify(usuario)
         });
   

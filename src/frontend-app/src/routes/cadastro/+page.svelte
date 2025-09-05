@@ -36,7 +36,8 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(usuario)
+        credentials: 'include',
+        body: JSON.stringify(usuario) 
       });
 
       const result = await response.json();
