@@ -36,7 +36,31 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
+
+
+
+
+
+
+
+
+
+        //tem que colocar token, e verificar isAdmin!***********************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         body: JSON.stringify(usuario) 
       });
 

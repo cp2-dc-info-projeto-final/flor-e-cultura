@@ -1,53 +1,33 @@
-<script>
-    
-    let email = '';
-    let senha = '';
-    let mensagemErro = '';
-    let mensagemSucesso = '';
-  
-    async function loginUsuario() {
-      // Limpa mensagens anteriores
-      mensagemErro = '';
-      mensagemSucesso = '';
-  
-     
-  
-      const usuario = {
-        
-        email,
-        senha,
-        tipo_usuario: 1
-      };
-  
-      try {
-        const response = await fetch('http://localhost:3000/users/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },  
-          //INCLUIDO POR JUDIS
-          credentials: 'include',
-          body: JSON.stringify(usuario)
-        });
-  
-        const result = await response.json();
-  
-        if (response.ok && result.success) {
-          mensagemSucesso = 'Login feito com sucesso!';
-          // Limpa os campos
-          
-          email = '';
-          senha = '';
-          
-        } else {
-          mensagemErro = result.message || 'Erro ao logar usuário.';
-        }
-      } catch (error) {
-        console.error('Erro ao logar usuário:', error);
-        mensagemErro = 'Erro ao conectar com o servidor.';
+<script lang="ts">
+  import { login } from '$lib/auth';
+  import { goto } from '$app/navigation';
+
+  let email = '';
+  let senha = '';
+  let mensagemErro = '';
+  let mensagemSucesso = '';
+
+  async function loginUsuario() {
+    mensagemErro = '';
+    mensagemSucesso = '';
+
+    try {
+      const response = await login({ email, senha });
+
+      if (response.success) {
+        mensagemSucesso = 'Login feito com sucesso!';
+        email = '';
+        senha = '';
+        goto('/'); // Redireciona para a página principal
+      } else {
+        mensagemErro = response.message || 'Erro ao logar usuário.';
       }
+    } catch (error) {
+      console.error('Erro ao logar usuário:', error);
+      mensagemErro = 'Erro ao conectar com o servidor.';
     }
-  </script>
+  }
+</script>
   
   <section>
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
