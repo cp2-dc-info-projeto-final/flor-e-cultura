@@ -8,6 +8,7 @@ const { verifyToken, isAdmin } = require('../middlewares/auth');
 /* GET - Buscar todos os usuários */
 router.get('/', verifyToken, isAdmin, async function(req, res, next) {
   try {
+    console.log('oi pessoal, eu cheguei aqui! Eu sou o burnoutinho ieeee');
     const result = await pool.query('SELECT * FROM usuarios ORDER BY id');
     res.json({
       success: true,
@@ -104,7 +105,7 @@ router.get('/nome/:nome', async function(req, res, next) {
 });
 
 /* POST - Criar novo usuário */
-router.post('/', verifyToken, isAdmin, async function(req, res) {
+router.post('/', async function(req, res) {
   try {
     console.log("entrou");
     const { nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario } = req.body;

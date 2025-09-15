@@ -31,7 +31,8 @@ const verifyToken = (req, res, next) => {
 
 // Middleware para verificar se o usuário é admin
 const isAdmin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
+  console.log(req.user);
+  if (req.user && req.user.tipo_usuario === 'admin') {
     next();
   } else {
     // http status 403 - Forbidden

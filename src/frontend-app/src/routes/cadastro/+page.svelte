@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+  import api from '$lib/api'; // API backend
+  import { goto } from '$app/navigation'; // navegação
   let nome = '';
   let email = '';
   let dataNascimento = '';
@@ -31,57 +33,22 @@
     };
 
     try {
-      const response = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+      // utilizando axios no lugar do fetch
+      // passagem automática do token no header utilizando o Bearer
+      const response = await api.post('/users', usuario);
 
+      mensagemSucesso = 'Usuário cadastrado com sucesso!';
+      // Limpa os campos
+      nome = '';
+      email = '';
+      dataNascimento = '';
+      cpf = '';
+      telefone = '';
+      senha = '';
+      confirmarSenha = '';
 
-
-
-
-
-
-
-
-        //tem que colocar token, e verificar isAdmin!***********************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        body: JSON.stringify(usuario) 
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        mensagemSucesso = 'Usuário cadastrado com sucesso!';
-        // Limpa os campos
-        nome = '';
-        email = '';
-        dataNascimento = '';
-        cpf = '';
-        telefone = '';
-        senha = '';
-        confirmarSenha = '';
-      } else {
-        mensagemErro = result.message || 'Erro ao cadastrar usuário.';
-      }
-    } catch (error) {
-      console.error('Erro ao cadastrar usuário:', error);
-      mensagemErro = 'Erro ao conectar com o servidor.';
+    } catch (e: any) {
+      mensagemErro = e.response?.data?.message || 'Erro ao salvar usuário.';
     }
   }
 </script>
