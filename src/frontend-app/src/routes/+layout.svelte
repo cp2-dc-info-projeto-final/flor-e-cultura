@@ -1,25 +1,81 @@
 <script lang="ts">
 	let { children } = $props();
 	import '../shared.css';
-	import { onMount } from 'svelte'
-onMount(() => {
-  const button = document.getElementById('dropdownDefaultButton');
-  const dropdown = document.getElementById('dropdown');
+	import { onMount } from 'svelte';
+	import { logout, getCurrentUser, getToken, type User } from "$lib/auth";
+  	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
 
-  if (button && dropdown) {
-    button.addEventListener('click', () => {
-      dropdown.classList.toggle('hidden');
-    });
+	onMount(() => {
+		const token = getToken();
+		if (token) {
+			goto('/'); // já está logado, redireciona para home
+		}
+		});
 
-    // Fecha ao clicar fora
-    document.addEventListener('click', (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (!button.contains(target) && !dropdown.contains(target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
-  }
-});
+	let user: User | null = null;
+	let hasToken = false;
+
+	// Verifica token sincronamente (instantâneo)
+    function updateAuthStatus() {
+		const token = getToken();
+
+		if (token) {
+			getCurrentUser()
+			.then(userData => {
+				user = userData;
+				hasToken = true;
+			})
+			.catch(() => {
+				// Token inválido: limpa tudo
+				user = null;
+				hasToken = false;
+				logout(); // <- limpa o token no localStorage/cookies
+			});
+		} else {
+			user = null;
+			hasToken = false;
+		}
+	}
+
+	
+	// função para logout (só apaga o token)
+    async function handleLogout() {
+		console.log('Logout iniciado...');
+		try {
+			await logout(); // limpa o token
+			user = null;
+			hasToken = false;
+
+			// Use um delayzinho pra garantir desmontagem do layout
+			setTimeout(() => {
+			goto('/login');
+			}, 100); // ou até 0ms já ajuda
+		} catch (error) {
+			console.error('Erro no logout:', error);
+		}
+    }
+
+
+	onMount(() => {
+		updateAuthStatus();
+		const button = document.getElementById('dropdownDefaultButton');
+		const dropdown = document.getElementById('dropdown');
+
+		if (button && dropdown) {
+			button.addEventListener('click', () => {
+			dropdown.classList.toggle('hidden');
+			});
+
+			// Fecha ao clicar fora
+			document.addEventListener('click', (event: MouseEvent) => {
+			const target = event.target as Node;
+			if (!button.contains(target) && !dropdown.contains(target)) {
+				dropdown.classList.add('hidden');
+			}
+			});
+		}
+	});
 </script>
 
 
@@ -70,7 +126,7 @@ onMount(() => {
 			<a href="/Categorias" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Categorias</a>
 		</li>
 		<li>
-			<a href="/configuracoes" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</a>
+			<a  on:click={handleLogout} class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</a>
 		</li>
 		<li>
 			<a href="/consulta" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Ver Usuarios</a>
