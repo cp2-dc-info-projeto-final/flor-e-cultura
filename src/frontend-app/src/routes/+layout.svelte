@@ -2,7 +2,7 @@
 	let { children } = $props();
 	import '../shared.css';
 	import { onMount } from 'svelte';
-	import { logout, getCurrentUser, getToken, type User } from "$lib/auth";
+	import { logout, getCurrentUser, getToken, type User, isAuthenticated } from "$lib/auth";
   	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 
@@ -11,7 +11,8 @@
 		if (token) {
 			goto('/'); // já está logado, redireciona para home
 		}
-		});
+	});
+
 
 	let user: User | null = null;
 	let hasToken = false;
