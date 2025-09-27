@@ -11,6 +11,33 @@ CREATE TABLE usuarios (
   tipo_usuario TEXT NOT NULL DEFAULT 'cliente'
 );
 
+CREATE TABLE produtos (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  nome_produto TEXT NOT NULL,
+  descricao TEXT NOT NULL,
+  preco DECIMAL(10, 2) NOT NULL, 
+  quantidade INT NOT NULL DEFAULT 0,   -- Estoque disponível
+  criado_em TIMESTAMP DEFAULT NOW(),  -- Data de criação
+  atualizado_em TIMESTAMP DEFAULT NOW() -- Data da última atualização
+
+
+);
+
+CREATE TABLE carrinho (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  produto_id bigint NOT NULL,
+  quantidade INT NOT NULL DEFAULT 1,
+  criado_em TIMESTAMP DEFAULT NOW(),
+  atualizado_em TIMESTAMP DEFAULT NOW(),
+
+  CONSTRAINT fk_produto
+    FOREIGN KEY(produto_id) REFERENCES produtos(id)
+    ON DELETE CASCADE
+);
+
+
+
+
 INSERT INTO usuarios (nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES
 -- senha efelantinho
 ('hermenegildo', 'hermenegildo@email.com', '$2a$12$f2c.uHGHS4drfaz6HR870OLamkarD57kI.gkr4//Vbbp0vN9IrFfG','000', '213', '2002-02-03', 'admin'),
