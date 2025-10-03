@@ -15,7 +15,7 @@ router.get('/', verifyToken, isAdmin, async function(req, res, next) {
       data: result.rows
     });
   } catch (error) {
-    console.error('Erro ao buscar usuários:', error);
+    console.error('Erro ao buscar produtos:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -52,7 +52,7 @@ router.get('/', verifyToken, isAdmin, async function(req, res, next) {
   }
 }); */
 
-/* GET parametrizado - Buscar usuário por ID */
+/* GET parametrizado - Buscar produtos por ID */
 router.get('/:id', async function(req, res, next) {
   try {
     const { id } = req.params;
@@ -61,7 +61,7 @@ router.get('/:id', async function(req, res, next) {
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Usuário não encontrado'
+        message: 'Produto não encontrado'
       });
     }
     
@@ -70,7 +70,7 @@ router.get('/:id', async function(req, res, next) {
       data: result.rows[0]
     });
   } catch (error) {
-    console.error('Erro ao buscar usuário:', error);
+    console.error('Erro ao buscar produtos:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -78,16 +78,16 @@ router.get('/:id', async function(req, res, next) {
   }
 });
 
-/* GET parametrizado - Buscar usuário por nome */
-router.get('/nome/:nome', async function(req, res, next) {
+/* GET parametrizado - Buscar produto por nome */
+router.get('/nome_produto/:nome_produto', async function(req, res, next) {
   try {
-    const { nome } = req.params;
-    const result = await pool.query('SELECT * FROM produtos WHERE nome_completo LIKE $1', ['%'+nome+'%']);
+    const { nome_produto } = req.params;
+    const result = await pool.query('SELECT * FROM produtos WHERE nome_produto LIKE $1', ['%'+nome_produto+'%']);
     
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Usuário não encontrado'
+        message: 'Produto não encontrado'
       });
     }
     
@@ -96,7 +96,7 @@ router.get('/nome/:nome', async function(req, res, next) {
       data: result.rows
    });
   } catch (error) {
-    console.error('Erro ao buscar usuário:', error);
+    console.error('Erro ao buscar produto:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -104,7 +104,7 @@ router.get('/nome/:nome', async function(req, res, next) {
   }
 });
 
-/* POST - Criar novo usuário */
+/* POST - Criar novo produto */
 router.post('/', async function(req, res) {
   try {
     console.log("entrou");
@@ -114,7 +114,7 @@ router.post('/', async function(req, res) {
     if (!nome_produto || !descricao || !preco || !quantidade ||  !criado_em || !atualizado_em) {
       return res.status(400).json({
         success: false,
-        message: 'Todos os campos são obrigatórios.'
+        message: 'Todos os campos do produto são obrigatórios.'
       });
     }
 
@@ -128,7 +128,7 @@ router.post('/', async function(req, res) {
     }*/
 
      // Hash da senha
-     const hashedPassword = await bcrypt.hash(senha, 12);
+     //const hashedPassword = await bcrypt.hash(senha, 12);
 
      
     // Verificar se o CPF já existe
@@ -142,7 +142,7 @@ router.post('/', async function(req, res) {
 
     // Inserir novo produto
     const result = await pool.query(
-      'INSERT INTO usuarios (nome_produto, descricao ,preco, quantidade, criado_em, atualizado_em) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      'INSERT INTO produtos (nome_produto, descricao ,preco, quantidade, criado_em, atualizado_em) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [nome_produto, descricao ,preco, quantidade, criado_em, atualizado_em]
     );
     
@@ -162,7 +162,7 @@ router.post('/', async function(req, res) {
 });
 
 /* POST - Autenticar usuário */
-router.post('/login', async function(req, res) {
+/*router.post('/login', async function(req, res) {
   try {
     const { email, senha } = req.body;
     // obtém o usuário do banco de dados
@@ -175,7 +175,8 @@ router.post('/login', async function(req, res) {
      tratar login inválido igual senha incorreta
      confere maior segurança por não expor indiretamente
      se existe uma conta com aquele login 
-    */
+    
+
     if (result.rows.length === 0) {
       // https status 401 - unauthorized
       return res.status(401).json({
@@ -191,7 +192,7 @@ router.post('/login', async function(req, res) {
      verifica a senha passando senha do forntend e hash armazenada
      a partir da hash não se pode descobrir a senha
      mas fornecendo a senha dá para aplicar a hash e ver coincidem
-    */
+    
     
     bcrypt.compare(senha, user.passwordhash, (err, isMatch) => {
       if (err) {
@@ -245,35 +246,33 @@ router.post('/login', async function(req, res) {
 });
 
 
-
-/* PUT - Atualizar usuário */
+/* PUT - Atualizar produtos */
 router.put('/:id', async function(req, res, next) {
   try {
     const { id } = req.params;
     const {
-      nome_completo,
-      email,
-      senha,
-      cpf,
-      telefone,
-      data_nascimento,
-      tipo_usuario
+      nome_produto,
+      descricao,
+      preco, 
+      quantidade, 
+      criado_em,  
+      atualizado_em 
     } = req.body;
 
     // Validação básica
-    if (!nome_completo || !email || !senha || !cpf || !telefone || !data_nascimento || !tipo_usuario) {
+    if (!nome_produto || !descricao || !preco || !quantidade || !criado_em || !data_nascimento || !atualizado_em) {
       return res.status(400).json({
         success: false,
         message: 'Os dados são obrigatórios'
       });
     }
 
-    // Verificar se o usuário existe
-    const userExists = await pool.query('SELECT id FROM usuarios WHERE id = $1', [id]);
+    // Verificar se o produto existe
+    const userExists = await pool.query('SELECT id FROM produtos WHERE id = $1', [id]);
     if (userExists.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Usuário não encontrado'
+        message: 'Produto não encontrado'
       });
     }
 
@@ -289,19 +288,19 @@ router.put('/:id', async function(req, res, next) {
       });
     }
 
-    // Atualizar o usuário
+    // Atualizar o produto
     const result = await pool.query(
-      'UPDATE usuarios SET nome_completo = $1, email = $2, senha = $3, cpf = $4, telefone = $5, data_nascimento = $6, tipo_usuario = $7 WHERE id = $8 RETURNING *',
-      [nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario, id]
+      'UPDATE usuarios SET nome_produto = $1, descricao = $2, preco = $3, quantidade = $4, criado_em = $5, atualizado_em  = $6 WHERE id = $8 RETURNING *',
+      [nome_produto, descricao ,preco, quantidade, criado_em, atualizado_em, id]
     );
 
     res.json({
       success: true,
-      message: 'Usuário atualizado com sucesso',
+      message: 'Produto atualizado com sucesso',
       data: result.rows[0]
     });
   } catch (error) {
-    console.error('Erro ao atualizar usuário:', error);
+    console.error('Erro ao atualizar produto:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -310,28 +309,28 @@ router.put('/:id', async function(req, res, next) {
 });
 
 
-/* DELETE - Remover usuário */
+/* DELETE - Remover produto */
 router.delete('/:id', async function(req, res, next) {
   try {
     const { id } = req.params;
     
     // Verificar se o usuário existe
-    const userExists = await pool.query('SELECT id FROM usuarios WHERE id = $1', [id]);
+    const userExists = await pool.query('SELECT id FROM produtos WHERE id = $1', [id]);
     if (userExists.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Usuário não encontrado'
+        message: 'Produto não encontrado'
       });
     }
     
-    await pool.query('DELETE FROM usuarios WHERE id = $1', [id]);
+    await pool.query('DELETE FROM produtos WHERE id = $1', [id]);
     
     res.json({
       success: true,
-      message: 'Usuário deletado com sucesso'
+      message: 'Produto deletado com sucesso'
     });
   } catch (error) {
-    console.error('Erro ao deletar usuário:', error);
+    console.error('Erro ao deletar produto:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
