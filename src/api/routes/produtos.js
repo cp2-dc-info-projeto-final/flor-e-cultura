@@ -260,7 +260,7 @@ router.put('/:id', async function(req, res, next) {
     } = req.body;
 
     // Validação básica
-    if (!nome_produto || !descricao || !preco || !quantidade || !criado_em || !data_nascimento || !atualizado_em) {
+    if (!nome_produto || !descricao || !preco || !quantidade || !criado_em || !atualizado_em) {
       return res.status(400).json({
         success: false,
         message: 'Os dados são obrigatórios'
@@ -276,7 +276,7 @@ router.put('/:id', async function(req, res, next) {
       });
     }
 
-    // Verificar se o login já está em uso por outro usuário
+    /* Verificar se o login já está em uso por outro usuário
     const existingUser = await pool.query(
       'SELECT id FROM usuarios WHERE email = $1 AND id != $2',
       [email, id]
@@ -287,10 +287,10 @@ router.put('/:id', async function(req, res, next) {
         message: 'Login já está em uso por outro usuário'
       });
     }
-
+*/
     // Atualizar o produto
     const result = await pool.query(
-      'UPDATE usuarios SET nome_produto = $1, descricao = $2, preco = $3, quantidade = $4, criado_em = $5, atualizado_em  = $6 WHERE id = $8 RETURNING *',
+      'UPDATE produtos SET nome_produto = $1, descricao = $2, preco = $3, quantidade = $4, criado_em = $5, atualizado_em  = $6 WHERE id = $7 RETURNING *',
       [nome_produto, descricao ,preco, quantidade, criado_em, atualizado_em, id]
     );
 

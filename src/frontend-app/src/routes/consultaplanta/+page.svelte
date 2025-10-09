@@ -103,7 +103,7 @@
             <div class="mt-4 flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
               <button
                 class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm w-full"
-                on:click={() => goto(`/editar?id=${produtos.id}`)}
+                on:click={() => goto(`/editarprodutos?id=${produtos.id}`)}
               >
                 Editar
               </button>
