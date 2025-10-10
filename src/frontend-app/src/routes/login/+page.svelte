@@ -55,26 +55,26 @@
         <form on:submit|preventDefault={loginUsuario} class="space-y-4 md:space-y-6">
 
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-green-900 dark:text-white">Email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-green-900 ">Email</label>
             <input
               type="email"
               id="email"
               bind:value={email}
               required
               placeholder="email@exemplo.com"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-100 dark:border-gray-600 dark:text-white"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-100 dark:border-gray-600 "
             />
           </div>
 
           <div class="relative">
-            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
+            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 ">Senha</label>
             <input
               type={showSenha ? 'text' : 'password'}
               id="senha"
               bind:value={senha}
               required
               placeholder="••••••••"
-              class="bg-gray-50 border border-gray-300 text-yellow-200 text-sm rounded-lg block w-full pr-10 p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-100 dark:border-gray-600 dark:text-white"
+              class="bg-gray-50 border border-gray-300 text-yellow-200 text-sm rounded-lg block w-full pr-10 p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-100 dark:border-gray-600 dark:text-black"
             />
             <button
               type="button"

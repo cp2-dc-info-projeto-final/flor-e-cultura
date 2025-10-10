@@ -75,38 +75,38 @@
 
         <form on:submit|preventDefault={cadastrarUsuario} class="space-y-4 md:space-y-6">
           <div>
-            <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
+            <label for="nome" class="block mb-2 text-sm font-medium ">Nome</label>
             <input type="text" id="nome" bind:value={nome} required placeholder="Fulano da Silva"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white" />
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600" />
           </div>
 
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Email</label>
             <input type="email" id="email" bind:value={email} required placeholder="email@exemplo.com"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white" />
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600" />
           </div>
 
           <div>
-            <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de nascimento</label>
+            <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Data de nascimento</label>
             <input type="date" id="data-nascimento" bind:value={dataNascimento} required
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white" />
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600" />
           </div>
 
           <div>
-            <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF</label>
+            <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">CPF</label>
             <input type="text" id="cpf" bind:value={cpf} required placeholder="000.000.000-00"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white" />
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600" />
           </div>
 
           <div>
-            <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
+            <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Telefone</label>
             <input type="text" id="telefone" bind:value={telefone} required placeholder="(00) 00000-0000"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white" />
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600" />
           </div>
 
           <!-- Campo senha com botão de olho -->
           <div>
-            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
+            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Senha</label>
             <div class="relative">
               <input
                 type={senhaVisivel ? 'text' : 'password'}
@@ -114,7 +114,7 @@
                 bind:value={senha}
                 required
                 placeholder="••••••••"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pr-10 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white"
+                class="bg-gray-50 border  text-gray-900 text-sm rounded-lg block w-full p-2.5 pr-10 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600 dark:text-black"
               />
               <button
                 type="button"
@@ -141,7 +141,7 @@
 
           <!-- Campo confirmar senha com botão de olho -->
           <div>
-            <label for="confirmarSenha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirme sua senha</label>
+            <label for="confirmarSenha" class="block mb-2 text-sm font-medium text-gray-900 focus:border-pink-700 ">Confirme sua senha</label>
             <div class="relative">
               <input
                 type={confirmarSenhaVisivel ? 'text' : 'password'}
@@ -149,7 +149,7 @@
                 bind:value={confirmarSenha}
                 required
                 placeholder="••••••••"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pr-10 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-white"
+                class="bg-gray-50 border  text-gray-900 text-sm rounded-lg block w-full p-2.5 pr-10 focus:ring-pink-700 focus:border-pink-700 dark:bg-pink-200 dark:border-gray-600 dark:text-black"
               />
               <button
                 type="button"
@@ -174,7 +174,7 @@
           </div>
 
           <button type="submit"
-            class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-700 dark:focus:ring-blue-800">
+            class="w-full text-white bg-lime-400 hover:bg-lime-400 focus:ring-lime-400 focus:outline-none focus:border-lime-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-700 dark:focus:ring-pink-700">
             Criar conta
           </button>
 
