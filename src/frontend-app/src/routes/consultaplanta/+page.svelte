@@ -22,16 +22,22 @@
 
   let searchTimeout: ReturnType<typeof setTimeout>;
 
-  async function buscarUsuarioLogado() {
-    try {
-      const res = await api.get('/users/me');
-      isAdmin = res.data.data.tipo_usuario?.toLowerCase().trim() === 'admin';
-      console.log('Tipo usuário:', res.data.data.tipo_usuario, 'isAdmin:', isAdmin);
-    } catch (e: any) {
+    async function buscarUsuarioLogado() {
+  try {
+    const res = await api.get('/users/me');
+    isAdmin = res.data.data.tipo_usuario?.toLowerCase().trim() === 'admin';
+    console.log('Tipo usuário:', res.data.data.tipo_usuario, 'isAdmin:', isAdmin);
+  } catch (e: any) {
+    if (e.response?.status === 401) {
+      // Usuário não está logado, tudo bem, não é admin
+      isAdmin = false;
+    } else {
       console.error('Erro ao buscar usuário logado:', e);
       isAdmin = false;
     }
   }
+}
+
 
   async function buscarProdutos() {
     erro = '';
@@ -62,8 +68,10 @@
   }
 
   async function removerProduto(id: number) {
+    erro = '';
     try {
       await api.delete(`/produtos/${id}`);
+      // Atualiza lista depois da remoção
       if (search.length >= 3) {
         buscarProdutosPorNome(search);
       } else {
@@ -71,11 +79,12 @@
       }
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao remover produto';
+      alert(erro);  // Opcional: mostrar alerta para o usuário
     }
   }
 
   onMount(async () => {
-    await buscarUsuarioLogado();
+    await buscarUsuarioLogado();  // tenta definir isAdmin
     await buscarProdutos();
   });
 
