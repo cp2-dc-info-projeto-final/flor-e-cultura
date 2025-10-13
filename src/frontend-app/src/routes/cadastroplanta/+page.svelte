@@ -1,12 +1,15 @@
 <script lang="ts">
     import api from '$lib/api'; // API backend
     import { goto } from '$app/navigation'; // navegação
+    import { Label, Fileupload } from "flowbite-svelte";
+
     let nome_produto = '';
     let descricao = '';
     let preco = '';
     let quantidade = '';
     let criado_em = '';
     let atualizado_em = '';
+    let imagem = '';
   
     let mensagemErro = '';
     let mensagemSucesso = '';
@@ -21,7 +24,8 @@
         preco,
         quantidade,
         criado_em,
-        atualizado_em
+        atualizado_em,
+        imagem
 
       };
   
@@ -35,11 +39,17 @@
         quantidade = '';
         criado_em = '';
         atualizado_em = '';
+        imagem = '';
   
       } catch (e: any) {
         mensagemErro = e.response?.data?.message || 'Erro ao salvar produto.';
       }
     }
+
+    let fileuploadprops = {
+    id: "user_avatar"
+  };
+
   </script>
   
   <section>
@@ -63,6 +73,14 @@
           {/if}
   
           <form on:submit|preventDefault={cadastrarProdutos} class="space-y-4 md:space-y-6">
+
+            <div>
+              <Label class="pb-2">Upload file</Label>
+              <Fileupload {...fileuploadprops} />
+            </div>
+
+           
+
             <div>
               <label for="nome_produto" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome do produto</label>
               <input type="text" id="nome_produto" bind:value={nome_produto} required placeholder="Margarida"

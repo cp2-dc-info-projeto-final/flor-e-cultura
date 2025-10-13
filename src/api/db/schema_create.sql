@@ -18,9 +18,8 @@ CREATE TABLE produtos (
   preco DECIMAL(10, 2) NOT NULL, 
   quantidade INT NOT NULL DEFAULT 0,   -- Estoque disponível
   criado_em TIMESTAMP DEFAULT NOW(),  -- Data de criação
-  atualizado_em TIMESTAMP DEFAULT NOW() -- Data da última atualização
+  atualizado_em TIMESTAMP DEFAULT NOW(), -- Data da última atualização
   imagem TEXT
-
 );
 
 CREATE TABLE carrinho (
