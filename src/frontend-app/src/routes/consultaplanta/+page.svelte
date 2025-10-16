@@ -11,6 +11,7 @@
     quantidade: string;
     criado_em: string;
     atualizado_em: string;
+    imagem?: string; // ✅ CORRIGIDO: mudar imagem_url para imagem
   };
 
   let produtos: Produto[] = [];
@@ -22,22 +23,19 @@
 
   let searchTimeout: ReturnType<typeof setTimeout>;
 
-    async function buscarUsuarioLogado() {
-  try {
-    const res = await api.get('/users/me');
-    isAdmin = res.data.data.tipo_usuario?.toLowerCase().trim() === 'admin';
-    console.log('Tipo usuário:', res.data.data.tipo_usuario, 'isAdmin:', isAdmin);
-  } catch (e: any) {
-    if (e.response?.status === 401) {
-      // Usuário não está logado, tudo bem, não é admin
-      isAdmin = false;
-    } else {
-      console.error('Erro ao buscar usuário logado:', e);
-      isAdmin = false;
+  async function buscarUsuarioLogado() {
+    try {
+      const res = await api.get('/users/me');
+      isAdmin = res.data.data.tipo_usuario?.toLowerCase().trim() === 'admin';
+    } catch (e: any) {
+      if (e.response?.status === 401) {
+        isAdmin = false;
+      } else {
+        console.error('Erro ao buscar usuário logado:', e);
+        isAdmin = false;
+      }
     }
   }
-}
-
 
   async function buscarProdutos() {
     erro = '';
@@ -45,6 +43,7 @@
     try {
       const res = await api.get('/produtos');
       produtos = res.data.data;
+      console.log('Produtos carregados:', produtos); // ✅ DEBUG: verificar se imagem vem
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao buscar produtos';
       produtos = [];
@@ -68,10 +67,13 @@
   }
 
   async function removerProduto(id: number) {
+    if (!confirm('Tem certeza que deseja remover este produto?')) {
+      return;
+    }
+
     erro = '';
     try {
       await api.delete(`/produtos/${id}`);
-      // Atualiza lista depois da remoção
       if (search.length >= 3) {
         buscarProdutosPorNome(search);
       } else {
@@ -79,12 +81,11 @@
       }
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao remover produto';
-      alert(erro);  // Opcional: mostrar alerta para o usuário
     }
   }
 
   onMount(async () => {
-    await buscarUsuarioLogado();  // tenta definir isAdmin
+    await buscarUsuarioLogado();
     await buscarProdutos();
   });
 
@@ -124,26 +125,46 @@
   {:else}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each produtos as produto}
-        <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
-          <div class="space-y-1">
+        <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between border border-gray-200">
+          <!-- Imagem do produto - ✅ CORRIGIDO: usar produto.imagem -->
+          {#if produto.imagem}
+            <div class="mb-3 flex justify-center">
+              <img 
+                src={produto.imagem} 
+                alt={produto.nome_produto}
+                class="w-full h-48 object-cover rounded-lg border"
+                on:error={(e) => {
+                  console.error('Erro ao carregar imagem:', produto.imagem);
+                  e.target.style.display = 'none';
+                }}
+                on:load={() => console.log('Imagem carregada:', produto.imagem)}
+              />
+            </div>
+          {:else}
+            <div class="mb-3 flex justify-center items-center h-48 bg-gray-100 rounded-lg border">
+              <span class="text-gray-400">📷 Sem imagem</span>
+            </div>
+          {/if}
+
+          <div class="space-y-2 flex-grow">
             <p><span class="font-semibold">Nome:</span> {produto.nome_produto}</p>
             <p><span class="font-semibold">Descrição:</span> {produto.descricao}</p>
-            <p><span class="font-semibold">Preço:</span> {produto.preco}</p>
+            <p><span class="font-semibold">Preço:</span> R$ {produto.preco}</p>
             <p><span class="font-semibold">Quantidade:</span> {produto.quantidade}</p>
-            <p><span class="font-semibold">Criado em:</span> {produto.criado_em}</p>
-            <p><span class="font-semibold">Atualizado em:</span> {produto.atualizado_em}</p>
+            <p><span class="font-semibold">Criado em:</span> {new Date(produto.criado_em).toLocaleDateString('pt-BR')}</p>
+            <p><span class="font-semibold">Atualizado em:</span> {new Date(produto.atualizado_em).toLocaleDateString('pt-BR')}</p>
           </div>
 
           {#if isAdmin}
             <div class="mt-4 flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
               <button
-                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm w-full"
+                class="bg-green-400 hover:bg-green-600 text-white px-3 py-2 rounded text-sm w-full transition-colors"
                 on:click={() => goto(`/editarprodutos?id=${produto.id}`)}
               >
                 Editar
               </button>
               <button
-                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm w-full"
+                class="bg-red-400 hover:bg-red-600 text-white px-3 py-2 rounded text-sm w-full transition-colors"
                 on:click={() => removerProduto(produto.id)}
               >
                 Remover
