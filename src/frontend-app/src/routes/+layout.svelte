@@ -82,6 +82,7 @@
 <nav class="bg-white border-gray-200 dark:bg-pink-100">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="logofloreculturabg.png" alt="" srcset="" style="height: 100px;">
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">𝐅𝐥𝐨𝐫&𝐂𝐮𝐥𝐭𝐮𝐫𝐚</span>
         </a>
 
@@ -106,8 +107,9 @@
                         </svg>
                     </button>
 
-                   
-
+                    <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Rounded avatar">
+                
+                    
                     <div id="dropdown" class="absolute z-10 hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                             <li>
