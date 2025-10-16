@@ -3,6 +3,8 @@
   import { goto } from '$app/navigation';
   import api from '$lib/api';
 
+  const baseURL = api.defaults.baseURL;
+
   type Produto = {
     id: number;
     nome_produto: string;
@@ -130,7 +132,7 @@
           {#if produto.imagem}
             <div class="mb-3 flex justify-center">
               <img 
-                src={produto.imagem} 
+                src={baseURL + produto.imagem} 
                 alt={produto.nome_produto}
                 class="w-full h-48 object-cover rounded-lg border"
                 on:error={(e) => {
