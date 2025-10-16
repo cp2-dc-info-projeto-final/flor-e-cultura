@@ -3,6 +3,12 @@
     import { onMount } from 'svelte';
     import { logout, getCurrentUser, getToken, type User } from "$lib/auth";
     import { goto } from "$app/navigation";
+    import { carrinho, getTotalItens } from '$lib/stores/carrinho';
+    import { page } from '$app/stores';
+
+    $: totalItens = getTotalItens();
+
+
 
     export let children;
 
@@ -79,6 +85,7 @@
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">𝐅𝐥𝐨𝐫&𝐂𝐮𝐥𝐭𝐮𝐫𝐚</span>
         </a>
 
+
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse space-x-4">
             <!-- CADASTRO - Mostrar apenas quando NÃO estiver logado -->
             {#if !isLoggedIn && !isLoading}
@@ -98,6 +105,8 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
+
+                   
 
                     <div id="dropdown" class="absolute z-10 hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
@@ -150,9 +159,23 @@
                     </li>
                 {/if}
             </ul>
+
+            <div> 
+                <!-- ... outros links ... -->
+                <a href="/carrinho" class="relative">
+                  🛒 Carrinho
+                  {#if totalItens > 0}
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                      {totalItens}
+                    </span>
+                  {/if}
+                </a>
+              </div>
         </div>
     </div>
 </nav>
+
+
 
 {@render children()} <!-- OK em layout -->
 

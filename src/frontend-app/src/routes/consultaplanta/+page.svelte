@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import api from '$lib/api';
+  import { adicionarAoCarrinho, carrinho } from '$lib/stores/carrinho';
 
   const baseURL = api.defaults.baseURL;
 
@@ -13,17 +14,37 @@
     quantidade: string;
     criado_em: string;
     atualizado_em: string;
-    imagem?: string; // ✅ CORRIGIDO: mudar imagem_url para imagem
+    imagem?: string;
   };
 
   let produtos: Produto[] = [];
   let erro = '';
   let search = '';
-
   let isAdmin = false;
   let loading = false;
 
-  let searchTimeout: ReturnType<typeof setTimeout>;
+  let produtoAdicionado: number | null = null;
+
+  function mostrarFeedback(id: number) {
+      produtoAdicionado = id;
+      setTimeout(() => {
+        produtoAdicionado = null;
+      }, 2000);
+  }
+
+  async function adicionarProdutoAoCarrinho(produto: Produto) {
+    adicionarAoCarrinho({
+      id: produto.id,
+      nome_produto: produto.nome_produto,
+      descricao: produto.descricao,
+      preco: produto.preco,
+      quantidade: produto.quantidade,
+      imagem: produto.imagem,
+      criado_em: produto.criado_em,
+      atualizado_em: produto.atualizado_em
+    });
+    mostrarFeedback(produto.id);
+  }
 
   async function buscarUsuarioLogado() {
     try {
@@ -45,7 +66,6 @@
     try {
       const res = await api.get('/produtos');
       produtos = res.data.data;
-      console.log('Produtos carregados:', produtos); // ✅ DEBUG: verificar se imagem vem
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao buscar produtos';
       produtos = [];
@@ -91,17 +111,16 @@
     await buscarProdutos();
   });
 
-  $: if (searchTimeout) clearTimeout(searchTimeout);
-  $: searchTimeout = setTimeout(() => {
+  $: {
     if (search.length >= 3) {
       buscarProdutosPorNome(search);
     } else if (search.length === 0) {
       buscarProdutos();
     } else {
       produtos = [];
-      erro = 'Digite pelo menos 3 caracteres para buscar os produtos.';
+      erro = 'Digite pelo menos 3 caracteres para buscar.';
     }
-  }, 400);
+  }
 </script>
 
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
@@ -128,7 +147,6 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each produtos as produto}
         <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between border border-gray-200">
-          <!-- Imagem do produto - ✅ CORRIGIDO: usar produto.imagem -->
           {#if produto.imagem}
             <div class="mb-3 flex justify-center">
               <img 
@@ -155,6 +173,20 @@
             <p><span class="font-semibold">Quantidade:</span> {produto.quantidade}</p>
             <p><span class="font-semibold">Criado em:</span> {new Date(produto.criado_em).toLocaleDateString('pt-BR')}</p>
             <p><span class="font-semibold">Atualizado em:</span> {new Date(produto.atualizado_em).toLocaleDateString('pt-BR')}</p>
+          </div>
+
+          <div class="mt-4 flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+            <button
+              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm w-full flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              on:click={() => adicionarProdutoAoCarrinho(produto)}
+              disabled={produtoAdicionado === produto.id}
+            >
+              {#if produtoAdicionado === produto.id}
+                <span>✓ Adicionado!</span>
+              {:else}
+                <span>🛒 Adicionar ao Carrinho</span>
+              {/if}
+            </button>
           </div>
 
           {#if isAdmin}
