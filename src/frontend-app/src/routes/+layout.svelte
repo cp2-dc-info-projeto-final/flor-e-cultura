@@ -80,14 +80,16 @@
 </script>
 
 <nav class="bg-white border-gray-200 dark:bg-pink-100">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"> <!--div geral-->
+
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="logofloreculturabg.png" alt="" srcset="" style="height: 100px;">
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">𝐅𝐥𝐨𝐫&𝐂𝐮𝐥𝐭𝐮𝐫𝐚</span>
         </a>
 
 
-        <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse space-x-4">
+        <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse space-x-4"> <!--div 2-->
+
             <!-- CADASTRO - Mostrar apenas quando NÃO estiver logado -->
             {#if !isLoggedIn && !isLoading}
                 <a href="/cadastro" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-400 dark:hover:bg-green-700 dark:focus:ring-blue-800">
@@ -97,7 +99,8 @@
 
             <!-- DROPDOWN CONFIGURAÇÕES - Mostrar apenas quando ESTIVER logado -->
             {#if isLoggedIn && !isLoading}
-                <div class="relative inline-block text-left">
+                <div class="relative inline-block text-left"> <!--div {#if isLoggedIn && !isLoading} -->
+
                     <button id="dropdownDefaultButton"
                         class="text-white bg-blue-700 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-gray-500 dark:hover:bg-gray-700 dark:focus:ring-blue-800"
                         type="button">
@@ -110,7 +113,7 @@
                     <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Rounded avatar">
                 
                     
-                    <div id="dropdown" class="absolute z-10 hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                    <div id="dropdown" class="absolute z-10 hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"> <!--div 2 {#if isLoggedIn && !isLoading} -->
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                             <li>
                                 <a href="/editar" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -118,8 +121,10 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
-                </div>
+                    </div> <!--div 2 {#if isLoggedIn && !isLoading} fechada-->
+
+                </div> <!--div {#if isLoggedIn && !isLoading} fechada-->
+
             {/if}
 
             <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
@@ -128,9 +133,9 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
                 </svg>
             </button>
-        </div>
+        </div> <!--div 2 fechada-->
 
-        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta"> <!--div 3-->
             <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-pink-100 dark:border-gray-700">
                 <li>
                     <a href="/" class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:dark:text-green-400" aria-current="page">Início</a>
@@ -162,7 +167,7 @@
                 {/if}
             </ul>
 
-            <div> 
+            <div> <!--div CARRINHO--> 
                 <!-- ... outros links ... -->
                 <a href="/carrinho" class="relative">
                   🛒 Carrinho
@@ -172,9 +177,10 @@
                     </span>
                   {/if}
                 </a>
-              </div>
-        </div>
-    </div>
+              </div> <!--div CARRINHO FECHADO-->
+
+        </div> <!--div 3 fechada-->
+    </div><!--div geral fechada-->
 </nav>
 
 
