@@ -1,0 +1,190 @@
+import { type VariantProps } from "tailwind-variants";
+import type { Classes } from "../../theme/themeUtils";
+export type ImgVariants = VariantProps<typeof img> & Classes<typeof img>;
+export declare const img: import("tailwind-variants").TVReturnType<{
+    size: {
+        xs: {
+            base: string;
+            figure: string;
+        };
+        sm: {
+            base: string;
+            figure: string;
+        };
+        md: {
+            base: string;
+            figure: string;
+        };
+        lg: {
+            base: string;
+            figure: string;
+        };
+        xl: {
+            base: string;
+            figure: string;
+        };
+        "2xl": {
+            base: string;
+            figure: string;
+        };
+        full: {
+            base: string;
+            figure: string;
+        };
+        none: {
+            base: string;
+            figure: string;
+        };
+    };
+    effect: {
+        grayscale: {
+            base: string;
+        };
+        blur: {
+            base: string;
+        };
+        invert: {
+            base: string;
+        };
+        sepia: {
+            base: string;
+        };
+        saturate: {
+            base: string;
+        };
+        "hue-rotate": {
+            base: string;
+        };
+        none: {
+            base: string;
+        };
+    };
+}, {
+    base: string;
+    figure: string;
+    caption: string;
+}, undefined, {
+    size: {
+        xs: {
+            base: string;
+            figure: string;
+        };
+        sm: {
+            base: string;
+            figure: string;
+        };
+        md: {
+            base: string;
+            figure: string;
+        };
+        lg: {
+            base: string;
+            figure: string;
+        };
+        xl: {
+            base: string;
+            figure: string;
+        };
+        "2xl": {
+            base: string;
+            figure: string;
+        };
+        full: {
+            base: string;
+            figure: string;
+        };
+        none: {
+            base: string;
+            figure: string;
+        };
+    };
+    effect: {
+        grayscale: {
+            base: string;
+        };
+        blur: {
+            base: string;
+        };
+        invert: {
+            base: string;
+        };
+        sepia: {
+            base: string;
+        };
+        saturate: {
+            base: string;
+        };
+        "hue-rotate": {
+            base: string;
+        };
+        none: {
+            base: string;
+        };
+    };
+}, {
+    base: string;
+    figure: string;
+    caption: string;
+}, import("tailwind-variants").TVReturnType<{
+    size: {
+        xs: {
+            base: string;
+            figure: string;
+        };
+        sm: {
+            base: string;
+            figure: string;
+        };
+        md: {
+            base: string;
+            figure: string;
+        };
+        lg: {
+            base: string;
+            figure: string;
+        };
+        xl: {
+            base: string;
+            figure: string;
+        };
+        "2xl": {
+            base: string;
+            figure: string;
+        };
+        full: {
+            base: string;
+            figure: string;
+        };
+        none: {
+            base: string;
+            figure: string;
+        };
+    };
+    effect: {
+        grayscale: {
+            base: string;
+        };
+        blur: {
+            base: string;
+        };
+        invert: {
+            base: string;
+        };
+        sepia: {
+            base: string;
+        };
+        saturate: {
+            base: string;
+        };
+        "hue-rotate": {
+            base: string;
+        };
+        none: {
+            base: string;
+        };
+    };
+}, {
+    base: string;
+    figure: string;
+    caption: string;
+}, undefined, unknown, unknown, undefined>>;

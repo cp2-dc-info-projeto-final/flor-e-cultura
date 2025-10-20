@@ -1,51 +1,20 @@
 <script lang="ts">
     import '../shared.css';
     import { onMount } from 'svelte';
-    import { logout, getCurrentUser, getToken, type User } from "$lib/auth";
+    import { logout } from "$lib/auth";
     import { goto } from "$app/navigation";
     import { carrinho, getTotalItens } from '$lib/stores/carrinho';
+    import { currentUser, isLoadingAuth, isLoggedIn, isAdmin, refreshUser } from '$lib/stores/auth';
     import { page } from '$app/stores';
 
     $: totalItens = getTotalItens();
 
     export let children;
 
-    let user: User | null = null;
-    let hasToken = false;
-    let isLoading = true;
-
-    $: isLoggedIn = hasToken && user !== null;
-
-    function updateAuthStatus() {
-        const token = getToken();
-
-        if (token) {
-            getCurrentUser()
-                .then(userData => {
-                    user = userData;
-                    hasToken = true;
-                })
-                .catch(() => {
-                    user = null;
-                    hasToken = false;
-                    logout();
-                })
-                .finally(() => {
-                    isLoading = false;
-                });
-        } else {
-            user = null;
-            hasToken = false;
-            isLoading = false;
-        }
-    }
-
     async function handleLogout() {
         console.log('Logout iniciado...');
         try {
             await logout();
-            user = null;
-            hasToken = false;
             setTimeout(() => {
                 goto('/login');
             }, 100);
@@ -55,7 +24,8 @@
     }
 
     onMount(() => {
-        updateAuthStatus();
+        // Atualiza o usuário ao montar o componente
+        refreshUser();
 
         // Dropdown de configurações
         const button = document.getElementById('dropdownDefaultButton');
@@ -96,13 +66,14 @@
 
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse space-x-4">
 
-            {#if !isLoggedIn && !isLoading}
+            <!-- CADASTRO - Mostrar apenas quando NÃO estiver logado -->
+            {#if !$isLoggedIn && !$isLoadingAuth}
                 <a href="/cadastro" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-400 dark:hover:bg-green-700 dark:focus:ring-blue-800">
                     Cadastre-se
                 </a>
             {/if}
 
-            {#if isLoggedIn && !isLoading}
+            {#if $isLoggedIn && !$isLoadingAuth}
                 <div class="relative inline-block text-left">
                     <button id="dropdownDefaultButton"
                         class="text-white bg-blue-700 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-gray-500 dark:hover:bg-gray-700 dark:focus:ring-blue-800"
@@ -145,19 +116,22 @@
                     <a href="/consultaplanta" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-pink-100 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700">Categorias</a>
                 </li>
 
-                {#if !isLoggedIn && !isLoading}
+                <!-- LOGIN - Mostrar apenas quando NÃO estiver logado -->
+                {#if !$isLoggedIn && !$isLoadingAuth}
                     <li>
                         <a href="/login" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-pink-100 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700">Login</a>
                     </li>
                 {/if}
 
-                {#if isLoggedIn && !isLoading}
+                <!-- LOGOUT - Mostrar apenas quando ESTIVER logado -->
+                {#if $isLoggedIn && !$isLoadingAuth}
                     <li>
                         <a on:click={handleLogout} class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer">Logout</a>
                     </li>
                 {/if}
 
-                {#if isLoggedIn && user?.tipo_usuario === 'admin' && !isLoading}
+                <!-- VER USUÁRIOS - Mostrar apenas para ADMIN logado -->
+                {#if $isAdmin && !$isLoadingAuth}
                     <li>
                         <a href="/consulta" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Ver Usuários</a>
                     </li>
