@@ -70,7 +70,7 @@
 
 <!-- Interface -->
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-  <h1 class="text-2xl font-bold text-center mb-6">LISTA DE USUÁRIOS</h1>
+  <h1 class="text-2xl font-bold text-center mb-6">𝐋𝐢𝐬𝐭𝐚 𝐝𝐞 𝐔𝐬𝐮𝐚𝐫𝐢𝐨𝐬</h1>
 
   <!-- Campo de busca -->
   <input
@@ -102,16 +102,18 @@
           <!-- Botões -->
           <div class="mt-4 flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
             <button
-              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm w-full"
+              class="bg-green-400 hover:bg-green-600 text-white px-3 py-2 rounded text-sm w-full"
               on:click={() => goto(`/editar?id=${usuario.id}`)}
+              
             >
               Editar
             </button>
             <button
-              class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm w-full"
+              class="bg-pink-400 hover:bg-pink-700 text-white px-3 py-2 rounded text-sm w-full"
               on:click={() => removerUsuario(usuario.id)}
+             
             >
-              Remover
+            🗑️
             </button>
           </div>
         </div>

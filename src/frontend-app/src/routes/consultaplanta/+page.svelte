@@ -131,11 +131,7 @@
 </script>
 
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-  <h1 class="text-2xl font-bold text-center mb-6">🌱 Lista de Plantas</h1>
-
-  <p class="mb-4 font-semibold text-center">
-    Você é admin? {isAdmin ? 'Sim' : 'Não'}
-  </p>
+  <h1 class="text-2xl font-bold text-center mb-6">𝐋𝐢𝐬𝐭𝐚 𝐝𝐞 𝐏𝐥𝐚𝐧𝐭𝐚𝐬</h1>
 
   <input
     type="text"
