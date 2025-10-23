@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import api from '$lib/api';
   import { adicionarAoCarrinho, carrinho } from '$lib/stores/carrinho';
+  import {getToken} from '$lib/auth';
 
   const baseURL = api.defaults.baseURL;
 
@@ -48,8 +49,14 @@
 
   async function buscarUsuarioLogado() {
     try {
-      const res = await api.get('/users/me');
-      isAdmin = res.data.data.tipo_usuario?.toLowerCase().trim() === 'admin';
+      const token = getToken();
+      if (!token) {
+        isAdmin = false;
+      }
+      else{
+        const res = await api.get('/users/me');
+        isAdmin = res.data.data.tipo_usuario?.toLowerCase().trim() === 'admin';
+      }
     } catch (e: any) {
       if (e.response?.status === 401) {
         isAdmin = false;

@@ -45,7 +45,7 @@ const upload = multer({
 // app.use('/uploads', express.static('uploads'));
 
 /* GET - Buscar todos os produtos (qualquer usuário autenticado) */
-router.get('/', verifyToken, async function(req, res, next) {
+router.get('/', async function(req, res, next) {
   try {
     const result = await pool.query('SELECT * FROM produtos ORDER BY id');
     res.json({
@@ -62,7 +62,7 @@ router.get('/', verifyToken, async function(req, res, next) {
 });
 
 /* GET parametrizado - Buscar produto por nome (qualquer usuário autenticado) */
-router.get('/nome_produto/:nome_produto', verifyToken, async function(req, res, next) {
+router.get('/nome_produto/:nome_produto', async function(req, res, next) {
   try {
     const { nome_produto } = req.params;
     const result = await pool.query('SELECT * FROM produtos WHERE nome_produto LIKE $1', ['%' + nome_produto + '%']);
@@ -88,7 +88,7 @@ router.get('/nome_produto/:nome_produto', verifyToken, async function(req, res, 
 });
 
 /* GET parametrizado - Buscar produto por ID (qualquer usuário autenticado) */
-router.get('/:id', verifyToken, async function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
   try {
     const { id } = req.params;
     const result = await pool.query('SELECT * FROM produtos WHERE id = $1', [id]);
