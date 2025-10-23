@@ -3,11 +3,9 @@
     import { onMount } from 'svelte';
     import { logout } from "$lib/auth";
     import { goto } from "$app/navigation";
-    import { carrinho, getTotalItens } from '$lib/stores/carrinho';
+    import { totalItems } from '$lib/stores/carrinho';
     import { currentUser, isLoadingAuth, isLoggedIn, isAdmin, refreshUser } from '$lib/stores/auth';
     import { page } from '$app/stores';
-
-    $: totalItens = getTotalItens();
 
     export let children;
 
@@ -141,9 +139,9 @@
             <div>
                 <a href="/carrinho" class="relative">
                   🛒 Carrinho
-                  {#if totalItens > 0}
+                  {#if $totalItems > 0}
                     <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                      {totalItens}
+                      {$totalItems}
                     </span>
                   {/if}
                 </a>
