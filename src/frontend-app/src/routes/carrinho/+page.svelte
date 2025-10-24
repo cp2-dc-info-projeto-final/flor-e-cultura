@@ -17,11 +17,11 @@
 </svelte:head>
 
 <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
-  <h1 class="text-2xl font-bold text-center mb-6">🛒 Meu Carrinho</h1>
+  <h1 class="text-2xl font-bold text-center mb-6">𝐌𝐞𝐮 𝐜𝐚𝐫𝐫𝐢𝐧𝐡𝐨 🛒 </h1>
 
   {#if $carrinho.length === 0}
     <div class="text-center py-12">
-      <p class="text-gray-600 text-lg mb-4">Seu carrinho está vazio</p>
+      <p class="text-red-600 text-lg mb-4">Seu carrinho está vazio</p>
       <button 
         on:click={() => goto('/consultaplanta')} 
         class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors"
@@ -74,19 +74,19 @@
       <div class="bg-gray-50 px-6 py-4">
         <div class="flex justify-between items-center mb-4">
           <span class="text-lg font-semibold">Total:</span>
-          <span class="text-xl font-bold text-green-600">R$ {total.toFixed(2).replace('.', ',')}</span>
+          <span class="text-xl font-bold text-green-500">R$ {total.toFixed(2).replace('.', ',')}</span>
         </div>
         
         <div class="flex gap-3">
           <button
             on:click={limparCarrinho}
-            class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded-lg transition-colors"
+            class="flex-1 bg-pink-400 hover:bg-pink-700 text-white py-3 px-4 rounded-lg transition-colors"
           >
             Limpar Carrinho
           </button>
           <button
             on:click={finalizarCompra}
-            class="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg transition-colors"
+            class="flex-1 bg-green-500 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors"
           >
             Finalizar Compra
           </button>
@@ -94,7 +94,7 @@
         
         <button 
           on:click={() => goto('/consultaplanta')} 
-          class="w-full mt-3 text-blue-500 hover:text-blue-700 py-2 transition-colors"
+          class="w-full mt-3 text-pink-400 hover:text-pink-700 py-2 transition-colors"
         >
           ← Continuar Comprando
         </button>
