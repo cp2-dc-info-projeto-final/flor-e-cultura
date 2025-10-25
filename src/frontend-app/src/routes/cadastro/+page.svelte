@@ -16,9 +16,18 @@
   let senhaVisivel = false;
   let confirmarSenhaVisivel = false;
 
+  // Controle de aceitação dos termos
+  let aceitaTermos = false;
+
   async function cadastrarUsuario() {
     mensagemErro = '';
     mensagemSucesso = '';
+
+    // Validação da aceitação dos termos (obrigatória)
+    if (!aceitaTermos) {
+      mensagemErro = 'Você deve aceitar os Termos e Condições antes de criar a conta.';
+      return;
+    }
 
     if (senha !== confirmarSenha) {
       mensagemErro = 'As senhas não coincidem!';
@@ -46,6 +55,7 @@
       telefone = '';
       senha = '';
       confirmarSenha = '';
+      aceitaTermos = false;
 
     } catch (e: any) {
       mensagemErro = e.response?.data?.message || 'Erro ao salvar usuário.';
@@ -199,9 +209,31 @@
             </div>
           </div>
 
+          <!-- Checkbox de Termos — versão mais simples e visível -->
+          <div class="mt-2">
+            <label class="flex items-start space-x-3 text-sm text-gray-800 dark:text-gray-200">
+              <input
+                id="aceitaTermos"
+                type="checkbox"
+                bind:checked={aceitaTermos}
+                class="w-4 h-4 rounded border-gray-300 bg-white accent-pink-600 focus:ring-pink-500 dark:bg-gray-800 dark:border-gray-600"
+                style="accent-color: #db2777;"
+                aria-describedby="termos-help"
+              />
+              <span class="font-light text-gray-500 dark:text-gray-400">
+                Eu li e concordo com os
+                <a id="termos-help" href="/termos" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-medium dark:text-green-500">
+                  Termos e Condições
+                </a>.
+              </span>
+            </label>
+          </div>
+
           <button
             type="submit"
-            class="w-full text-white bg-lime-400 hover:bg-lime-400 focus:ring-lime-400 focus:outline-none focus:border-lime-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-700 dark:focus:ring-pink-700"
+            class="w-full text-white bg-lime-400 hover:bg-lime-400 focus:ring-lime-400 focus:outline-none focus:border-lime-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-700 dark:focus:ring-pink-700 disabled:opacity-60"
+            disabled={!aceitaTermos}
+            aria-disabled={!aceitaTermos}
           >
             Criar conta
           </button>
