@@ -6,9 +6,9 @@
     import { totalItems } from '$lib/stores/carrinho';
     import { currentUser, isLoadingAuth, isLoggedIn, isAdmin, refreshUser } from '$lib/stores/auth';
     import { page } from '$app/stores';
-
+  
     export let children;
-
+  
     async function handleLogout() {
         console.log('Logout iniciado...');
         try {
@@ -20,20 +20,15 @@
             console.error('Erro no logout:', error);
         }
     }
-
+  
     onMount(() => {
-        // Atualiza o usuário ao montar o componente
         refreshUser();
-
-        // Dropdown de configurações
         const button = document.getElementById('dropdownDefaultButton');
         const dropdown = document.getElementById('dropdown');
-
         if (button && dropdown) {
             button.addEventListener('click', () => {
                 dropdown.classList.toggle('hidden');
             });
-
             document.addEventListener('click', (event: MouseEvent) => {
                 const target = event.target as Node;
                 if (!button.contains(target) && !dropdown.contains(target)) {
@@ -41,111 +36,137 @@
                 }
             });
         }
-
         // Menu mobile (hambúrguer)
         const toggleButton = document.querySelector('[data-collapse-toggle="navbar-cta"]');
         const menu = document.getElementById('navbar-cta');
-
         if (toggleButton && menu) {
             toggleButton.addEventListener('click', () => {
                 menu.classList.toggle('hidden');
             });
         }
     });
-</script>
-
-<nav class="bg-white border-gray-200 dark:bg-pink-100">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-
-        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="logofloreculturabg.png" alt="" srcset="" style="height: 100px;">
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">𝐅𝐥𝐨𝐫&𝐂𝐮𝐥𝐭𝐮𝐫𝐚</span>
-        </a>
-
-        <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse space-x-4">
-
-            <!-- CADASTRO - Mostrar apenas quando NÃO estiver logado -->
-            {#if !$isLoggedIn && !$isLoadingAuth}
-                <a href="/cadastro" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-400 dark:hover:bg-green-700 dark:focus:ring-blue-800">
-                    Cadastre-se
-                </a>
-            {/if}
-
-            {#if $isLoggedIn && !$isLoadingAuth}
-                <div class="relative inline-block text-left">
-                    
-
-                    <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Rounded avatar">
-
-                    <div id="dropdown" class="absolute z-10 hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="/editar" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    Editar usuário
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            {/if}
-
-            <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-pink-200 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
-                <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
-            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-white md:dark:bg-pink-100 dark:border-gray-700">
-                <li>
-                    <a href="/" class="block py-2 px-3 md:p-0 text-black bg-pink-100 rounded-sm md:bg-transparent md:text-pink-100 md:dark:text-green-400" aria-current="page">Início</a>
-                </li>
-
-                <li>
-                    <a href="/consultaplanta" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-pink-100 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700">Categorias</a>
-                </li>
-
-                <!-- LOGIN - Mostrar apenas quando NÃO estiver logado -->
-                {#if !$isLoggedIn && !$isLoadingAuth}
-                    <li>
-                        <a href="/login" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-pink-100 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700">Login</a>
-                    </li>
-                {/if}
-
-                <!-- LOGOUT - Mostrar apenas quando ESTIVER logado -->
-                {#if $isLoggedIn && !$isLoadingAuth}
-                    <li>
-                        <a on:click={handleLogout} class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer">Logout</a>
-                    </li>
-                {/if}
-
-                <!-- VER USUÁRIOS - Mostrar apenas para ADMIN logado -->
-                {#if $isAdmin && !$isLoadingAuth}
-                    <li>
-                        <a href="/consulta" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-green-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Ver Usuários</a>
-                    </li>
-                {/if}
-            </ul>
-
-            <div>
-                <a href="/carrinho" class="relative">
-                  🛒 Carrinho
-                  {#if $totalItems > 0}
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                      {$totalItems}
-                    </span>
-                  {/if}
-                </a>
-              </div>
-        </div>
+  </script>
+  
+  <nav class="bg-white border-gray-200 dark:bg-pink-100 shadow">
+    <div class="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between">
+      <!-- LOGO -->
+      <a href="/" class="flex items-center gap-3">
+        <img src="logofloreculturabg.png" alt="" style="height: 64px;">
+        <span class="self-center text-2xl font-bold dark:text-black">𝐅𝐥𝐨𝐫&𝐂𝐮𝐥𝐭𝐮𝐫𝐚</span>
+      </a>
+  
+      <div class="flex items-center gap-6">
+        <!-- DESKTOP NAV -->
+        <ul class="hidden md:flex items-center gap-6 font-medium">
+          <li>
+            <a href="/" class="text-black hover:text-pink-600">Início</a>
+          </li>
+          <li>
+            <a href="/consultaplanta" class="text-black hover:text-pink-600">Categorias</a>
+          </li>
+          {#if !$isLoggedIn && !$isLoadingAuth}
+            <li>
+              <a href="/login" class="text-black hover:text-pink-600">Login</a>
+            </li>
+            <li>
+              <a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 dark:bg-green-400 dark:hover:bg-green-700">Cadastre-se</a>
+            </li>
+          {/if}
+          {#if $isLoggedIn && !$isLoadingAuth}
+            <li>
+              <a on:click={handleLogout} class="text-black hover:text-pink-600 cursor-pointer">Logout</a>
+            </li>
+          {/if}
+          {#if $isAdmin && !$isLoadingAuth}
+            <li>
+              <a href="/consulta" class="text-black hover:text-pink-600">Ver Usuários</a>
+            </li>
+          {/if}
+          <!-- Carrinho Desktop -->
+          <li>
+            <a href="/carrinho" class="relative flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
+              <span class="text-xl group-hover:text-pink-600">🛒</span>
+              <span class="font-semibold text-black">Carrinho</span>
+              {#if $totalItems > 0}
+                <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow">
+                  {$totalItems}
+                </span>
+              {/if}
+            </a>
+          </li>
+        </ul>
+  
+        <!-- Avatar Desktop -->
+        {#if $isLoggedIn && !$isLoadingAuth}
+          <img class="hidden md:block w-10 h-10 rounded-full border-2 border-pink-200" src="/docs/images/people/profile-picture-5.jpg" alt="Usuário" />
+        {/if}
+  
+        <!-- Botão menu mobile -->
+        <button data-collapse-toggle="navbar-cta" type="button"
+          class="md:hidden inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-pink-200 dark:focus:ring-gray-600">
+          <span class="sr-only">Abrir menu</span>
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+      </div>
     </div>
-</nav>
-
-{@render children()}
-
-<footer class="bg-white border-gray-200 dark:bg-pink-100">
+  
+    <!-- MOBILE NAV -->
+    <div class="md:hidden hidden" id="navbar-cta">
+      <ul class="flex flex-col gap-4 p-4 font-medium">
+        <li>
+          <a href="/" class="text-black">Início</a>
+        </li>
+        <li>
+          <a href="/consultaplanta" class="text-black">Categorias</a>
+        </li>
+        {#if !$isLoggedIn && !$isLoadingAuth}
+          <li>
+            <a href="/login" class="text-black">Login</a>
+          </li>
+          <li>
+            <a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded">Cadastre-se</a>
+          </li>
+        {/if}
+        {#if $isLoggedIn && !$isLoadingAuth}
+          <li>
+            <a on:click={handleLogout} class="text-black cursor-pointer">Logout</a>
+          </li>
+        {/if}
+        {#if $isAdmin && !$isLoadingAuth}
+          <li>
+            <a href="/consulta" class="text-black">Ver Usuários</a>
+          </li>
+        {/if}
+        <!-- Carrinho Mobile -->
+        <li>
+          <a href="/carrinho" class="flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
+            <span class="text-xl group-hover:text-pink-600">🛒</span>
+            <span class="font-semibold text-black">Carrinho</span>
+            {#if $totalItems > 0}
+              <span class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow ml-2">
+                {$totalItems}
+              </span>
+            {/if}
+          </a>
+        </li>
+        <!-- Avatar Mobile -->
+        {#if $isLoggedIn && !$isLoadingAuth}
+          <li>
+            <img class="w-10 h-10 rounded-full border-2 border-pink-200" src="/docs/images/people/profile-picture-5.jpg" alt="Usuário" />
+          </li>
+        {/if}
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Conteúdo principal -->
+  {@render children()}
+  
+  <!-- Rodapé (apenas uma vez!) -->
+  <footer class="bg-white border-gray-200 dark:bg-pink-100">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
       <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
         © 2023 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>. Todos os direitos reservados.
@@ -165,4 +186,4 @@
         </li>
       </ul>
     </div>
-</footer>
+  </footer>
