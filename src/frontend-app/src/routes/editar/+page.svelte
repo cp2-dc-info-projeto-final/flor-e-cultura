@@ -1,19 +1,8 @@
 <script>
   import { onMount } from 'svelte';
+  import api from '$lib/api';
 
   // Variáveis do formulário
-
-  let usuario = [{
-        id: 0,
-        nome_completo: "",
-        email: '',
-        cpf: '',
-        telefone: '',
-        data_nascimento: '',
-        tipo_usuario: 1
-      }];
-  usuario.pop()
-
   let nome = '';
   let email = '';
   let dataNascimento = '';
@@ -22,58 +11,52 @@
   let senha = '';
   let confirmarSenha = '';
   let erro = '';
+  let sucesso = ''; // <--- feedback de sucesso
   let id = '';
   let carregando = true;
 
-  async function carregarUsuario() {
-    try {
-      const res = await fetch('http://localhost:3000/users/');
-      const data = await res.json();
-
-      if (!data.success) {
-        erro = data.message || 'Erro ao buscar usuário';
-        return;
-      }
-
-      usuario = data.data;
-    } catch (e) {
-      erro = 'Erro ao conectar com o servidor';
-    }
-  }
-  
-  // Buscar os dados do usuário ao carregar a página
+  // Buscar os dados do usuário ao carregar a página (com axios.get)
   onMount(async () => {
     const urlParams = new URLSearchParams(window.location.search);
     id = urlParams.get('id');
     if (!id) {
-      alert('ID de usuário não encontrado.');
+      erro = 'ID de usuário não encontrado.';
+      carregando = false;
       return;
     }
   
     try {
-      const res = await fetch(`http://localhost:3000/users/${id}`);
-      const dados = await res.json();
-      const user = dados.data || dados;
+      const response = await api.get(`http://localhost:3000/users/${id}`);
+      const user = response.data.data || response.data;
       nome = user.nome_completo;
       email = user.email;
-      dataNascimento = user.data_nascimento;
+      dataNascimento = user.data_nascimento ? new Date(user.data_nascimento).toISOString().split('T')[0] : '';
       cpf = user.cpf;
       telefone = user.telefone;
       senha = user.senha;
       confirmarSenha = senha;
     } catch (err) {
       console.error('Erro ao buscar dados do usuário:', err);
-      alert('Erro ao buscar dados do usuário.');
+      if (err.response) {
+          erro = `Erro do servidor: ${err.response.data.message || err.response.status}`;
+      } else if (err.request) {
+          erro = 'Erro ao conectar com o servidor (sem resposta)';
+      } else {
+          erro = `Erro: ${err.message}`;
+      }
     }
     finally {
       carregando = false;
     }
   });
 
-  // Atualizar dados do usuário
+  // Atualizar dados do usuário (com api.put)
   async function editarUsuario() {
+    // Limpa mensagens anteriores ao tentar editar
+    erro = '';
+    sucesso = '';
     if (senha !== confirmarSenha) {
-      alert('As senhas não coincidem!');
+      erro = 'As senhas não coincidem!';
       return;
     }
 
@@ -88,27 +71,25 @@
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/users/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(usuario)
-      });
+      const response = await api.put(`http://localhost:3000/users/${id}`, usuario);
+      const result = response.data;
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert('Usuário atualizado com sucesso!');
+      if (result.success || result) {
+        sucesso = 'Usuário atualizado com sucesso!';
       } else {
-        alert(`Erro: ${result.message}`);
+        erro = result.message || 'Erro desconhecido';
       }
     } catch (error) {
       console.error('Erro ao atualizar usuário:', error);
-      alert('Erro ao conectar com o servidor.');
+      if (error.response) {
+          erro = error.response.data.message || 'Não foi possível atualizar';
+      } else if (error.request) {
+          erro = 'Erro ao conectar com o servidor.';
+      } else {
+          erro = error.message;
+      }
     }
   }
-  
 </script>
 
 {#if !carregando}
@@ -119,43 +100,51 @@
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
                     Edite seus dados
                 </h1>
+                {#if erro}
+                  <div class="text-red-700 bg-red-100 border border-red-400 rounded px-4 py-2">
+                    {erro}
+                  </div>
+                {/if}
+                {#if sucesso}
+                  <div class="text-green-700 bg-green-100 border border-green-400 rounded px-4 py-2">
+                    {sucesso}
+                  </div>
+                {/if}
                 <form on:submit|preventDefault={editarUsuario} class="space-y-4 md:space-y-6" action="#">
                     <div>
                         <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Nome</label>
-                        <input type="text" name="nome" id="nome" bind:value={nome} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-800 dark:focus:border-pink-800" placeholder="Fulano Beltrano Silva" required>
+                        <input type="text" name="nome" id="nome" bind:value={nome} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" placeholder="Fulano Beltrano Silva" required>
                     </div>
                     <div>
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Email</label>
-                        <input type="email" name="email" id="email" bind:value={email} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-800 dark:focus:border-pink-800" placeholder="nome@compania.com" required>
+                        <input type="email" name="email" id="email" bind:value={email} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" placeholder="nome@compania.com" required>
                     </div>
                     <div>
                         <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Data de nascimento</label>
-                        <input type="date" name="data-nascimento" id="data-nascimento" bind:value={dataNascimento} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+                        <input type="date" name="data-nascimento" id="data-nascimento" bind:value={dataNascimento} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
-
                     <div>
                         <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">CPF</label>
-                        <input type="text" bind:value={cpf} name="cpf" id="cpf" placeholder="Seu CPF" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+                        <input type="text" bind:value={cpf} name="cpf" id="cpf" placeholder="Seu CPF" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
                     <div>
                         <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">telefone</label>
-                        <input type="text" bind:value={telefone} name="telefone" id="telefone" placeholder="Seu telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+                        <input type="text" bind:value={telefone} name="telefone" id="telefone" placeholder="Seu telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
                     <div>
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Senha</label>
-                        <input type="password" name="password" id="password" bind:value={senha}  placeholder="•••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+                        <input type="password" name="password" id="password" bind:value={senha}  placeholder="•••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
                     <div>
                         <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Confirme sua senha</label>
-                        <input type="password" name="confirm-password" id="confirm-password" bind:value={confirmarSenha} placeholder="•••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-pink-800" required>
+                        <input type="password" name="confirm-password" id="confirm-password" bind:value={confirmarSenha} placeholder="•••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-pink-800" required>
                     </div>
-                    <button id="cadastro" type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Confirme seus dados</button>
-                    
+                    <button id="cadastro" type="submit" class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Confirme seus dados</button>
                 </form>
             </div>
         </div>
     </div>
   </section>
-  {:else}
+{:else}
   <p class="text-center text-white">Carregando dados do usuário...</p>
 {/if}
