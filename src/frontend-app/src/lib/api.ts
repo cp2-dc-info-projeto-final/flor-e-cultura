@@ -43,4 +43,18 @@ api.interceptors.response.use(
   }
 );
 
+// Interceptor para lidar com respostas 403 (Acesso proibido)
+api.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
+    if (error.response?.status === 403 && typeof window !== 'undefined') {
+      // Redirecionar para página inicial se não estiver na página inicial
+      if (window.location.pathname !== '/') {
+        window.location.href = '/';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

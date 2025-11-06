@@ -53,7 +53,7 @@ router.get('/me', verifyToken, async function(req, res) {
 });
 
 /* GET parametrizado - Buscar usuário por ID */
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', verifyToken, isAdmin, async function(req, res, next) {
   try {
     const { id } = req.params;
     const result = await pool.query('SELECT * FROM usuarios WHERE id = $1', [id]);
@@ -247,21 +247,27 @@ router.post('/login', async function(req, res) {
 
 
 /* PUT - Atualizar usuário */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id', verifyToken, isAdmin, async function(req, res, next) {
   try {
     const { id } = req.params;
     const {
       nome_completo,
       email,
-      senha,
       cpf,
       telefone,
       data_nascimento,
       tipo_usuario
     } = req.body;
 
+    console.log(nome_completo,
+      email,
+      cpf,
+      telefone,
+      data_nascimento,
+      tipo_usuario)
+
     // Validação básica
-    if (!nome_completo || !email || !senha || !cpf || !telefone || !data_nascimento || !tipo_usuario) {
+    if (!nome_completo || !email || !cpf || !telefone || !data_nascimento || !tipo_usuario) {
       return res.status(400).json({
         success: false,
         message: 'Os dados são obrigatórios'
@@ -291,8 +297,8 @@ router.put('/:id', async function(req, res, next) {
 
     // Atualizar o usuário
     const result = await pool.query(
-      'UPDATE usuarios SET nome_completo = $1, email = $2, senha = $3, cpf = $4, telefone = $5, data_nascimento = $6, tipo_usuario = $7 WHERE id = $8 RETURNING *',
-      [nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario, id]
+      'UPDATE usuarios SET nome_completo = $1, email = $2, cpf = $3, telefone = $4, data_nascimento = $5, tipo_usuario = $6 WHERE id = $7 RETURNING *',
+      [nome_completo, email, cpf, telefone, data_nascimento, tipo_usuario, id]
     );
 
     res.json({

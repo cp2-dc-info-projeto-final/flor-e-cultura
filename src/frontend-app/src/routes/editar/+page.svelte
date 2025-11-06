@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import api from '$lib/api';
+  import { goto } from '$app/navigation';
 
   // Variáveis do formulário
   let nome = '';
@@ -8,8 +9,6 @@
   let dataNascimento = '';
   let cpf = '';
   let telefone = '';
-  let senha = '';
-  let confirmarSenha = '';
   let erro = '';
   let sucesso = ''; // <--- feedback de sucesso
   let id = '';
@@ -19,11 +18,6 @@
   onMount(async () => {
     const urlParams = new URLSearchParams(window.location.search);
     id = urlParams.get('id');
-    if (!id) {
-      erro = 'ID de usuário não encontrado.';
-      carregando = false;
-      return;
-    }
   
     try {
       const response = await api.get(`http://localhost:3000/users/${id}`);
@@ -33,8 +27,6 @@
       dataNascimento = user.data_nascimento ? new Date(user.data_nascimento).toISOString().split('T')[0] : '';
       cpf = user.cpf;
       telefone = user.telefone;
-      senha = user.senha;
-      confirmarSenha = senha;
     } catch (err) {
       console.error('Erro ao buscar dados do usuário:', err);
       if (err.response) {
@@ -55,15 +47,10 @@
     // Limpa mensagens anteriores ao tentar editar
     erro = '';
     sucesso = '';
-    if (senha !== confirmarSenha) {
-      erro = 'As senhas não coincidem!';
-      return;
-    }
 
     const usuario = {
       nome_completo: nome,
       email,
-      senha,
       cpf,
       telefone,
       data_nascimento: dataNascimento,
@@ -98,7 +85,7 @@
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
-                    Edite seus dados
+                    Edite seus dados 
                 </h1>
                 {#if erro}
                   <div class="text-red-700 bg-red-100 border border-red-400 rounded px-4 py-2">
@@ -131,15 +118,8 @@
                         <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">telefone</label>
                         <input type="text" bind:value={telefone} name="telefone" id="telefone" placeholder="Seu telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
-                    <div>
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Senha</label>
-                        <input type="password" name="password" id="password" bind:value={senha}  placeholder="•••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
-                    </div>
-                    <div>
-                        <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Confirme sua senha</label>
-                        <input type="password" name="confirm-password" id="confirm-password" bind:value={confirmarSenha} placeholder="•••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-pink-800" required>
-                    </div>
-                    <button id="cadastro" type="submit" class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Confirme seus dados</button>
+                    
+                    <button id="cadastro" type="submit" class="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Confirme seus dados</button>
                 </form>
             </div>
         </div>

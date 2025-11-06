@@ -11,6 +11,7 @@ const verifyToken = (req, res, next) => {
   
   if (!token) {
     // http status 401 = Unauthorized
+    console.log("Foi acionado no verifyToken");
     return res.status(401).json({ message: 'Token não fornecido' });
   }
   
@@ -36,6 +37,7 @@ const isAdmin = (req, res, next) => {
     next();
   } else {
     // http status 403 - Forbidden
+    console.log("Foi acionado no isAdmin");
     return res.status(403).json({ message: 'Acesso negado: requer privilégios de administrador' });
   }
 };

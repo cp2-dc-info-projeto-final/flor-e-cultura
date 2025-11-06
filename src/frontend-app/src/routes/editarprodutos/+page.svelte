@@ -24,12 +24,8 @@
 
   onMount(async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    id = urlParams.get('id');
-    if (!id) {
-      erro = 'ID de produto não encontrado.';
-      carregando = false;
-      return;
-    }
+    id = urlParams.get('id');    
+    const response = await api.get(`http://localhost:3000/users/${id}`);
 
     try {
       const response = await api.get(`http://localhost:3000/produtos/${id}`);
