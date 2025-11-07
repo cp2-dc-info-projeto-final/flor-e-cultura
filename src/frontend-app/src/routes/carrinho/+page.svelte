@@ -1,15 +1,25 @@
 <script lang="ts">
   import { carrinho, removerDoCarrinho, atualizarQuantidade, limparCarrinho, totalPrice } from '$lib/stores/carrinho';
+  import { isLoggedIn, currentUser} from '$lib/stores/auth';
   import { goto } from '$app/navigation';
 
   // variável reativa para o total (totalPrice é um derived store)
   $: total = $totalPrice;
 
-  function finalizarCompra() {
-    alert('Compra finalizada com sucesso! Total: R$ ' + total.toFixed(2));
-    limparCarrinho();
-    goto('/');
+// variável para mensagem
+let mensagem: string | null = null;
+
+function finalizarCompra() {
+  if (!$isLoggedIn) {
+    mensagem = 'Você precisa estar logado para finalizar a compra!';
+    // guarda intenção no sessionStorage
+    sessionStorage.setItem('redirectAfterLogin', '/compra');
+    setTimeout(() => goto('/login'), 2000);
+    return;
   }
+
+  goto('/compra');
+}
 </script>
 
 <svelte:head>
@@ -18,7 +28,11 @@
 
 <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
   <h1 class="text-2xl font-bold text-center mb-6">𝐌𝐞𝐮 𝐜𝐚𝐫𝐫𝐢𝐧𝐡𝐨 🛒 </h1>
-
+  {#if mensagem}
+  <div class="mb-4 p-3 rounded bg-yellow-100 text-yellow-800 border border-yellow-300">
+    {mensagem}
+  </div>
+{/if}
   {#if $carrinho.length === 0}
     <div class="text-center py-12">
       <p class="text-red-600 text-lg mb-4">Seu carrinho está vazio</p>
