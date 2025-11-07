@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import api from '$lib/api';
   import { goto } from '$app/navigation';
   import { Label } from "flowbite-svelte";
@@ -17,6 +18,22 @@
   let mensagemErro = '';
   let mensagemSucesso = '';
 
+  onMount(async () => {
+    try {
+      const response = await api.get('/users/me');
+      const usuario = response.data.data;
+
+      if (usuario.tipo_usuario !== 'admin') {
+        // Se não for admin, redireciona
+        goto('/');
+        return;
+      }
+
+    } catch (err: any) {
+      mensagemErro = 'Erro ao verificar permissões.';
+      goto('/login');
+    }
+  });
   // Manipular seleção de arquivo
   function handleImageSelect(event: Event) {
       const target = event.target as HTMLInputElement;
