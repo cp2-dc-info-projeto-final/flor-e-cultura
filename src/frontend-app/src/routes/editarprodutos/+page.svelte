@@ -11,7 +11,7 @@
   let criado_em = '';
   let atualizado_em = '';
   let erro = '';
-  let id = '';
+  let id: String | null = null;
   let carregando = true;
 
   // Upload de imagem
@@ -23,9 +23,24 @@
   let mensagemSucesso = '';
 
   onMount(async () => {
+
+    try {
+      const response = await api.get('/users/me');
+      const usuario = response.data.data;
+
+      if (usuario.tipo_usuario !== 'admin') {
+        // Se não for admin, redireciona
+        goto('/');
+        return;
+      }
+
+    } catch (err: any) {
+      mensagemErro = 'Erro ao verificar permissões.';
+      goto('/');
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     id = urlParams.get('id');    
-    const response = await api.get(`http://localhost:3000/users/${id}`);
 
     try {
       const response = await api.get(`http://localhost:3000/produtos/${id}`);
