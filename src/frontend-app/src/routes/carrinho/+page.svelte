@@ -52,7 +52,7 @@ function finalizarCompra() {
               <h3 class="font-semibold text-lg">{item.nome_produto}</h3>
               <p class="text-gray-600 text-sm">{item.descricao}</p>
               <p class="text-green-600 font-semibold mt-1">
-                R$ {String(item.preco).replace('.', ',')}
+                { Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(item.preco)}
               </p>
             </div>
             
@@ -88,7 +88,7 @@ function finalizarCompra() {
       <div class="bg-gray-50 px-6 py-4">
         <div class="flex justify-between items-center mb-4">
           <span class="text-lg font-semibold">Total:</span>
-          <span class="text-xl font-bold text-green-500">R$ {total.toFixed(2).replace('.', ',')}</span>
+          <span class="text-xl font-bold text-green-500">{ Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(total)}</span>
         </div>
         
         <div class="flex gap-3">

@@ -56,13 +56,13 @@
   
       {#each $carrinho as item}
         <div class="flex justify-between border-b py-2">
-          <span>{item.nome_produto} (x{item.quantidade})</span>
-          <span>R$ {item.preco}</span>
+          <span> { Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(item.preco)} (x{item.quantidade})</span>
+          <span>{ Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(item.preco)}</span>
         </div>
       {/each}
   
       <div class="mt-4 font-bold text-green-600">
-        Total: R$ {total.toFixed(2)}
+        Total: { Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(total)}
       </div>
   
       <button
