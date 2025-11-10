@@ -46,14 +46,7 @@
         }
     });
 
-    const categorias = [
-    { nome: "Buquês", link: "/consultaplanta/buques" },
-    { nome: "Arranjos", link: "/consultaplanta/arranjos" },
-    { nome: "Presentes", link: "/consultaplanta/presentes" },
-    { nome: "Pelúcias", link: "/consultaplanta/pelucias" },
-    { nome: "Sementes", link: "/consultaplanta/sementes" },
-    { nome: "Vasos", link: "/consultaplanta/vasos" }
-  ];
+    
   </script>
   
   <nav class="bg-white border-gray-200 dark:bg-pink-100 shadow">
