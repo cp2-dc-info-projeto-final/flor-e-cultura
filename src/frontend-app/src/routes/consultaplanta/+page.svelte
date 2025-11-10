@@ -155,7 +155,7 @@
               <img 
                 src={baseURL + produto.imagem} 
                 alt={produto.nome_produto}
-                class="w-full h-48 object-cover rounded-lg border"
+                class="w-full h-80 object-cover rounded-lg border"
                 on:error={(e) => {
                   console.error('Erro ao carregar imagem:', produto.imagem);
                   e.target.style.display = 'none';
@@ -164,7 +164,7 @@
               />
             </div>
           {:else}
-            <div class="mb-3 flex justify-center items-center h-48 bg-gray-100 rounded-lg border">
+            <div class="mb-3 flex justify-center items-center h-80 bg-gray-100 rounded-lg border">
               <span class="text-gray-400">📷 Sem imagem</span>
             </div>
           {/if}

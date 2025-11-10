@@ -1,3 +1,18 @@
+<script lang="ts">
+    const categorias = [
+      { nome: "Buquês", link: "/consultaplanta/buques", imagem: "/imagens/bqrosas.png" },
+      { nome: "Arranjos", link: "/consultaplanta/arranjos", imagem: "/imagens/bqmargarida.png" },
+      { nome: "Presentes", link: "/consultaplanta/presentes", imagem: "/imagens/vasovioleta.png" },
+      { nome: "Pelúcias", link: "/consultaplanta/pelucias", imagem: "/imagens/bqmargarida.png" },
+      { nome: "Sementes", link: "/consultaplanta/sementes", imagem: "/imagens/bqmargarida.png" },
+      { nome: "Vasos", link: "/consultaplanta/vasos", imagem: "/imagens/bqtulipas.png" }
+    ];
+  </script>
+  
+
+
+
+
 <div id="content">
     <div id="carrosel">
         <div id="default-carousel" class="relative w-full" data-carousel="slide">
@@ -12,6 +27,28 @@
                     <img src="/banner2.jpeg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                 </div>
             </div>
+
+
+            <!-- Seção de Categorias -->
+            <section class="bg-white min-h-[20vh] flex flex-col justify-center items-center">
+                <div class="max-w-screen-xl mx-auto px-6 text-center">
+                  <div class="flex flex-wrap justify-center gap-8">
+                    {#each categorias as categoria}
+                      <a href={categoria.link} class="flex flex-col items-center group">
+                        <div class="w-32 h-32 rounded-full bg-pink-200 flex items-center justify-center shadow-lg overflow-hidden hover:bg-pink-300 transition">
+                          <img src={categoria.imagem} alt={categoria.nome}
+                               class="w-full h-full object-cover group-hover:opacity-90" />
+                        </div>
+                        <span class="mt-3 text-lg font-semibold text-pink-800 group-hover:text-pink-900">
+                          {categoria.nome}
+                        </span>
+                      </a>
+                    {/each}
+                  </div>
+                </div>
+              </section>
+              
+  
             <!-- Slider indicators 
             <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                 <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
@@ -37,6 +74,8 @@
             -->
         </div>
     </div>
+    
+
     
     <div class="produtos-bar">
         <div class="bg-white">

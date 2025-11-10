@@ -45,9 +45,20 @@
             });
         }
     });
+
+    const categorias = [
+    { nome: "Buquês", link: "/consultaplanta/buques" },
+    { nome: "Arranjos", link: "/consultaplanta/arranjos" },
+    { nome: "Presentes", link: "/consultaplanta/presentes" },
+    { nome: "Pelúcias", link: "/consultaplanta/pelucias" },
+    { nome: "Sementes", link: "/consultaplanta/sementes" },
+    { nome: "Vasos", link: "/consultaplanta/vasos" }
+  ];
   </script>
   
   <nav class="bg-white border-gray-200 dark:bg-pink-100 shadow">
+
+    
     <div class="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between">
       <!-- LOGO -->
       <a href="/" class="flex items-center gap-3">
@@ -162,6 +173,8 @@
     </div>
   </nav>
   
+  
+  
   <!-- Conteúdo principal -->
   {@render children()}
   
@@ -187,3 +200,4 @@
       </ul>
     </div>
   </footer>
+  
