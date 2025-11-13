@@ -83,7 +83,7 @@
           {/if}
           {#if $isAdmin && !$isLoadingAuth}
             <li>
-              <a href="/consulta" class="text-black hover:text-pink-600">Ver Usuários</a>
+              <a href="/" class="text-black hover:text-pink-600">Adm</a>
             </li>
           {/if}
           <!-- Carrinho Desktop -->
