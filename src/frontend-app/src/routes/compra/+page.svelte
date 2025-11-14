@@ -23,8 +23,7 @@
           quantidade: item.quantidade
         }))
       });
-
-      mensagem = `Compra confirmada para ${$currentUser?.nome}! Total: R$ ${total.toFixed(2)}`;
+      mensagem = `Compra confirmada para ${$currentUser?.nome_completo}! Total: R$ ${total.toFixed(2)}`;
       limparCarrinho();
       setTimeout(() => goto('/'), 3000);
     } catch (err: any) {

@@ -28,7 +28,7 @@ router.get('/me', verifyToken, async function(req, res) {
   try {
     // parâmetro obtido do token pelo middleware
     const id = req.user.id;
-    const result = await pool.query('SELECT id, email, tipo_usuario FROM usuarios WHERE id = $1', [id]);
+    const result = await pool.query('SELECT id, nome_completo, email, tipo_usuario FROM usuarios WHERE id = $1', [id]);
 
     if (result.rows.length === 0) {
       // http status 404 - Not Found
