@@ -34,7 +34,44 @@ CREATE TABLE carrinho (
     ON DELETE CASCADE
 );
 
+-- Tabela de pedidos
+CREATE TABLE pedidos (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  usuario_id BIGINT NOT NULL,
+  total DECIMAL(10, 2) NOT NULL,
+  status TEXT NOT NULL DEFAULT 'PENDENTE',
+  data_pedido TIMESTAMP DEFAULT NOW(),
+  criado_em TIMESTAMP DEFAULT NOW(),
+  atualizado_em TIMESTAMP DEFAULT NOW(),
+  
+  -- Chave estrangeira para usuários
+  CONSTRAINT fk_pedido_usuario
+    FOREIGN KEY (usuario_id) 
+    REFERENCES usuarios(id)
+    ON DELETE CASCADE
+);
 
+-- Tabela de itens do pedido
+CREATE TABLE itens_pedido (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  pedido_id BIGINT NOT NULL,
+  produto_id BIGINT NOT NULL,
+  quantidade INT NOT NULL,
+  preco_unitario DECIMAL(10, 2) NOT NULL,
+  subtotal DECIMAL(10, 2) NOT NULL,
+  criado_em TIMESTAMP DEFAULT NOW(),
+  
+  -- Chaves estrangeiras
+  CONSTRAINT fk_item_pedido
+    FOREIGN KEY (pedido_id) 
+    REFERENCES pedidos(id)
+    ON DELETE CASCADE,
+    
+  CONSTRAINT fk_item_produto
+    FOREIGN KEY (produto_id) 
+    REFERENCES produtos(id)
+    ON DELETE CASCADE
+);
 
 
 INSERT INTO usuarios (nome_completo, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES

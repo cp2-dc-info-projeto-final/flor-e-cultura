@@ -8,7 +8,10 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
 var produtosRouter = require('./routes/produtos');
+var checkoutRouter = require('./routes/checkout');
+var pedidosRouter = require('./routes/pedidos')
 
 
 var app = express();
@@ -27,6 +30,8 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/produtos', produtosRouter);
+app.use('/checkout', checkoutRouter);
+app.use('/pedidos', pedidosRouter);
 // Servir arquivos estáticos da pasta uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
