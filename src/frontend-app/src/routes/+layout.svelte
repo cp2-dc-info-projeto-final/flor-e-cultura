@@ -63,34 +63,39 @@
         <!-- DESKTOP NAV -->
         <ul class="hidden md:flex items-center gap-6 font-medium">
           <li>
-            <a href="/" class="text-black hover:text-pink-600">Início</a>
+            <a href="/" class="text-black hover:text-pink-600">𝐈𝐍𝐈𝐂𝐈𝐎</a>
           </li>
           <li>
-            <a href="/consultaplanta" class="text-black hover:text-pink-600">Categorias</a>
+            <a href="/consultaplanta" class="text-black hover:text-pink-600">𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐀𝐒</a>
           </li>
           {#if !$isLoggedIn && !$isLoadingAuth}
             <li>
-              <a href="/login" class="text-black hover:text-pink-600">Login</a>
+              <a href="/login" class="text-black hover:text-pink-600">𝐋𝐎𝐆𝐈𝐍</a>
             </li>
             <li>
-              <a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 dark:bg-green-400 dark:hover:bg-green-700">Cadastre-se</a>
+              <a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 dark:bg-green-400 dark:hover:bg-green-700">𝐂𝐀𝐃𝐀𝐒𝐓𝐑𝐄-𝐒𝐄</a>
             </li>
           {/if}
           {#if $isLoggedIn && !$isLoadingAuth}
             <li>
-              <a on:click={handleLogout} class="text-black hover:text-pink-600 cursor-pointer">Logout</a>
+              <a on:click={handleLogout} class="text-black hover:text-pink-600 cursor-pointer">𝐋𝐎𝐆𝐎𝐔𝐓</a>
             </li>
           {/if}
           {#if $isAdmin && !$isLoadingAuth}
             <li>
-              <a href="/" class="text-black hover:text-pink-600">Adm</a>
+              <a href="/admcompras" class="text-black hover:text-pink-600">𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐃𝐎𝐑</a>
+            </li>
+          {/if}
+          {#if $isAdmin && !$isLoadingAuth}
+            <li>
+              <a href="/notificacao" class="text-black hover:text-pink-600">𝐍𝐎𝐓𝐈𝐅𝐈𝐂𝐀𝐂𝐎𝐄𝐒</a>
             </li>
           {/if}
           <!-- Carrinho Desktop -->
           <li>
             <a href="/carrinho" class="relative flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
               <span class="text-xl group-hover:text-pink-600">🛒</span>
-              <span class="font-semibold text-black">Carrinho</span>
+              
               {#if $totalItems > 0}
                 <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow">
                   {$totalItems}

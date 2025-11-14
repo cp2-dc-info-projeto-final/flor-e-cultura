@@ -2,6 +2,7 @@ import api from './api';
 
 export interface User {
   id: string; // bigint from database comes as string in JSON
+  nome:string;
   email: string;
   tipo_usuario: string;
 }

@@ -1,11 +1,11 @@
 <script lang="ts">
     const categorias = [
-      { nome: "Buquês", link: "/consultaplanta/buques", imagem: "/imagens/bqrosas.png" },
-      { nome: "Arranjos", link: "/consultaplanta/arranjos", imagem: "/imagens/bqmargarida.png" },
-      { nome: "Presentes", link: "/consultaplanta/presentes", imagem: "/imagens/vasovioleta.png" },
-      { nome: "Pelúcias", link: "/consultaplanta/pelucias", imagem: "/imagens/bqmargarida.png" },
-      { nome: "Sementes", link: "/consultaplanta/sementes", imagem: "/imagens/bqmargarida.png" },
-      { nome: "Vasos", link: "/consultaplanta/vasos", imagem: "/imagens/bqtulipas.png" }
+      { nome: "𝐁𝐮𝐪𝐮𝐞𝐬", link: "/consultaplanta/buques", imagem: "/imagens/bqrosas.png" },
+      { nome: "𝐀𝐫𝐫𝐚𝐧𝐣𝐨𝐬", link: "/consultaplanta/arranjos", imagem: "/imagens/bqmargarida.png" },
+      { nome: "𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐞𝐬", link: "/consultaplanta/presentes", imagem: "/imagens/vasovioleta.png" },
+      { nome: "𝐏𝐞𝐥𝐮𝐜𝐢𝐚𝐬", link: "/consultaplanta/pelucias", imagem: "/imagens/bqmargarida.png" },
+      { nome: "𝐒𝐞𝐦𝐞𝐧𝐭𝐞𝐬", link: "/consultaplanta/sementes", imagem: "/imagens/bqmargarida.png" },
+      { nome: "𝐕𝐚𝐬𝐨𝐬", link: "/consultaplanta/vasos", imagem: "/imagens/bqtulipas.png" }
     ];
   </script>
   
@@ -80,31 +80,11 @@
     <div class="produtos-bar">
         <div class="bg-white">
             <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      <h2 class="text-3xl font-bold tracking-tight text-pink-600 sm:text-4xl mb-8">Mais vendidos</h2>
+      <h2 class="text-3xl font-bold tracking-tight text-pink-600 sm:text-4xl mb-8">ᴍᴀɪꜱ ᴠᴇɴᴅɪᴅᴏꜱ</h2>
 
 
     <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-      <a href="wikipedia.com" class="group">
-        <img src="/imagens/vasovioleta.png" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8" />
-        <h3 class="mt-4 text-sm text-gray-700">Vaso de violetas</h3>
-        <p class="mt-1 text-lg font-medium text-gray-900">R$450</p>
-      </a>
-      <a href="wikipedia.com" class="group">
-        <img src="/imagens/bqrosas.png" alt="Olive drab green insulated bottle with flared screw lid and flat top." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8" />
-        <h3 class="mt-4 text-sm text-gray-700">Buquê de rosas</h3>
-        <p class="mt-1 text-lg font-medium text-gray-900">R$400</p>
-      </a>
-      <a href="wikipedia.com" class="group">
-        <img src="/imagens/bqmargarida.png" alt="Person using a pen to cross a task off a productivity paper card." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8" />
-        <h3 class="mt-4 text-sm text-gray-700">Buquê de margaridas</h3>
-        <p class="mt-1 text-lg font-medium text-gray-900">R$399</p>
-      </a>
-      <a href="wikipedia.com" class="group">
-        <img src="/imagens/bqtulipas.png" alt="Hand holding black machined steel mechanical pencil with brass tip and top." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8" />
-        <h3 class="mt-4 text-sm text-gray-700">Buquê de tulipas</h3>
-        <p class="mt-1 text-lg font-medium text-gray-900">R$430</p>
-      </a>
-
+     
       <!-- More products... -->
     </div>
   </div>
