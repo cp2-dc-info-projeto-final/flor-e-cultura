@@ -19,7 +19,8 @@ CREATE TABLE produtos (
   quantidade INT NOT NULL DEFAULT 0,   -- Estoque disponível
   criado_em TIMESTAMP DEFAULT NOW(),  -- Data de criação
   atualizado_em TIMESTAMP DEFAULT NOW(), -- Data da última atualização
-  imagem TEXT
+  imagem TEXT;
+   categoria TEXT
 );
 
 CREATE TABLE carrinho (

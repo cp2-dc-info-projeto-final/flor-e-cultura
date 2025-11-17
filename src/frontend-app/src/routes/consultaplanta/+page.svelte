@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import api from '$lib/api';
+  import { page } from '$app/stores';
   import { adicionarAoCarrinho, carrinho } from '$lib/stores/carrinho';
   import {getToken} from '$lib/auth';
 
@@ -16,9 +17,17 @@
     criado_em: string;
     atualizado_em: string;
     imagem?: string;
+    categoria: string;
   };
 
+
   let produtos: Produto[] = [];
+  // Get a specific query parameter
+  const categoria = $page.url.searchParams.get('categoria');
+
+  // Check if a query parameter exists
+  const filtraCategoria = $page.url.searchParams.has('categoria');
+  
   let erro = '';
   let search = '';
   let isAdmin = false;
@@ -71,7 +80,7 @@
     erro = '';
     loading = true;
     try {
-      const res = await api.get('/produtos');
+      const res = await api.get(`/produtos${filtraCategoria ? '?categoria=' + categoria : ''} `);
       produtos = res.data.data;
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao buscar produtos';
@@ -85,7 +94,7 @@
     erro = '';
     loading = true;
     try {
-      const res = await api.get(`/produtos/nome_produto/${encodeURIComponent(nome)}`);
+      const res = await api.get(`/produtos/nome_produto/${encodeURIComponent(nome)}${filtraCategoria ? '?categoria=' + categoria : ''} `);
       produtos = res.data.data;
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao buscar produtos por nome';

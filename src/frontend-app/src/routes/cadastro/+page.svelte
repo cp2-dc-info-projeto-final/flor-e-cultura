@@ -86,7 +86,7 @@
 
         <form on:submit|preventDefault={cadastrarUsuario} class="space-y-4 md:space-y-6">
           <div>
-            <label for="nome" class="block mb-2 text-sm font-medium">Nome</label>
+            <label for="nome" class="block mb-2 text-sm font-medium">𝐍𝐨𝐦𝐞</label>
             <input
               type="text"
               id="nome"
@@ -98,7 +98,7 @@
           </div>
 
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐄𝐦𝐚𝐢𝐥</label>
             <input
               type="email"
               id="email"
@@ -110,7 +110,7 @@
           </div>
 
           <div>
-            <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Data de nascimento</label>
+            <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐃𝐚𝐭𝐚 𝐝𝐞 𝐍𝐚𝐬𝐜𝐢𝐦𝐞𝐧𝐭𝐨</label>
             <input
               type="date"
               id="data-nascimento"
@@ -121,7 +121,7 @@
           </div>
 
           <div>
-            <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">CPF</label>
+            <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐂𝐏𝐅</label>
             <input
               type="text"
               id="cpf"
@@ -133,7 +133,7 @@
           </div>
 
           <div>
-            <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Telefone</label>
+            <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐓𝐞𝐥𝐞𝐟𝐨𝐧𝐞</label>
             <input
               type="text"
               id="telefone"
@@ -146,7 +146,7 @@
 
           <!-- Campo senha -->
           <div>
-            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Senha</label>
+            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐒𝐞𝐧𝐡𝐚</label>
             <div class="relative">
               <input
                 type={senhaVisivel ? 'text' : 'password'}
@@ -181,7 +181,7 @@
           <!-- Confirmar senha -->
           <div>
             <label for="confirmarSenha" class="block mb-2 text-sm font-medium text-gray-900 focus:border-pink-700">
-              Confirme sua senha
+              𝐂𝐨𝐧𝐟𝐢𝐫𝐦𝐞 𝐬𝐞𝐧𝐡𝐚
             </label>
             <div class="relative">
               <input

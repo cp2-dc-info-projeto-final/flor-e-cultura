@@ -44,10 +44,24 @@ const upload = multer({
 // Middleware para servir arquivos estáticos (adicionar no app principal também)
 // app.use('/uploads', express.static('uploads'));
 
-/* GET - Buscar todos os produtos (qualquer usuário autenticado) */
+/* GET - Buscar todos os produtos ou filtrar por categoria (qualquer usuário autenticado) */
 router.get('/', async function(req, res, next) {
   try {
-    const result = await pool.query('SELECT * FROM produtos ORDER BY id');
+    const { categoria } = req.query;
+
+    let query = {
+      text: 'SELECT * FROM produtos'
+    }
+  
+    if (categoria) {
+      query.text += ' WHERE categoria = $1';
+      query.values = [categoria]
+    }
+
+    query.text += 'ORDER BY id';
+
+    const result = await pool.query(query);
+
     res.json({
       success: true,
       data: result.rows
@@ -64,8 +78,20 @@ router.get('/', async function(req, res, next) {
 /* GET parametrizado - Buscar produto por nome (qualquer usuário autenticado) */
 router.get('/nome_produto/:nome_produto', async function(req, res, next) {
   try {
+    const { categoria } = req.query;
     const { nome_produto } = req.params;
-    const result = await pool.query('SELECT * FROM produtos WHERE nome_produto LIKE $1', ['%' + nome_produto + '%']);
+
+    let query = {
+      text: 'SELECT * FROM produtos WHERE nome_produto ILIKE $1',
+      values: ['%' + nome_produto + '%' ]
+    }
+
+    if (categoria) {
+      query.text += ' AND categoria ILIKE $2';
+      query.values.push(categoria);
+    }
+    const result = await pool.query(query);
+
 
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -116,10 +142,10 @@ router.get('/:id', async function(req, res, next) {
 /* POST - Criar novo produto (só admin) COM IMAGEM */
 router.post('/', verifyToken, isAdmin, upload.single('imagem'), async function(req, res) {
   try {
-    const { nome_produto, descricao, preco, quantidade, criado_em, atualizado_em } = req.body;
+    const { nome_produto, descricao, preco, quantidade, criado_em, atualizado_em, categoria} = req.body;
     
     // Verifica campos obrigatórios
-    if (!nome_produto || !descricao || !preco || !quantidade) {
+    if (!nome_produto || !descricao || !preco || !quantidade || !categoria) {
       // Se tem arquivo mas deu erro, remove
       if (req.file) {
         fs.unlinkSync(req.file.path);
@@ -137,8 +163,8 @@ router.post('/', verifyToken, isAdmin, upload.single('imagem'), async function(r
     }
 
     const result = await pool.query(
-      'INSERT INTO produtos (nome_produto, descricao, preco, quantidade, criado_em, atualizado_em, imagem) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [nome_produto, descricao, preco, quantidade, criado_em || new Date(), atualizado_em || new Date(), imagem]
+      'INSERT INTO produtos (nome_produto, descricao, preco, quantidade, criado_em, atualizado_em, imagem, categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [nome_produto, descricao, preco, quantidade, criado_em || new Date(), atualizado_em || new Date(), imagem, categoria]
     );
 
     res.status(201).json({
@@ -163,9 +189,9 @@ router.post('/', verifyToken, isAdmin, upload.single('imagem'), async function(r
 router.put('/:id', verifyToken, isAdmin, upload.single('imagem'), async function(req, res, next) {
   try {
     const { id } = req.params;
-    const { nome_produto, descricao, preco, quantidade, atualizado_em } = req.body;
+    const { nome_produto, descricao, preco, quantidade, atualizado_em, categoria } = req.body;
 
-    if (!nome_produto || !descricao || !preco || !quantidade) {
+    if (!nome_produto || !descricao || !preco || !quantidade || !categoria) {
       if (req.file) {
         fs.unlinkSync(req.file.path);
       }
@@ -201,8 +227,8 @@ router.put('/:id', verifyToken, isAdmin, upload.single('imagem'), async function
     }
 
     const result = await pool.query(
-      'UPDATE produtos SET nome_produto = $1, descricao = $2, preco = $3, quantidade = $4, atualizado_em = $5, imagem = $6 WHERE id = $7 RETURNING *',
-      [nome_produto, descricao, preco, quantidade, atualizado_em || new Date(), imagem, id]
+      'UPDATE produtos SET nome_produto = $1, descricao = $2, preco = $3, quantidade = $4, atualizado_em = $5, imagem = $6, categoria = $7 WHERE id = $8 RETURNING *',
+      [nome_produto, descricao, preco, quantidade, atualizado_em || new Date(), imagem, categoria, id]
     );
 
     res.json({
