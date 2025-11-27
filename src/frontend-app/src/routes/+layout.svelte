@@ -10,7 +10,13 @@
     export let children;
   
     async function handleLogout() {
-        console.log('Logout iniciado...');
+
+
+      // Exibe um pop-up de confirmação nativo do navegador
+    if (window.confirm('Tem certeza que deseja sair da sua conta?')) {
+      // Se o usuário confirmar (clicar em "OK"), a ação de logout é executada.
+      console.log('Usuário deslogado.');
+      console.log('Logout iniciado...');
         try {
             await logout();
             setTimeout(() => {
@@ -19,6 +25,16 @@
         } catch (error) {
             console.error('Erro no logout:', error);
         }
+      // Adicione aqui sua lógica real de logout (ex: limpar token, redirecionar)
+      // Exemplo: logoutFunction();
+    } else {
+      // Se o usuário cancelar, nada acontece.
+      console.log('Logout cancelado.');
+    }
+  
+       
+
+        
     }
   
     onMount(() => {

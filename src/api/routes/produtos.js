@@ -58,7 +58,7 @@ router.get('/', async function(req, res, next) {
       query.values = [categoria]
     }
 
-    query.text += 'ORDER BY id';
+    query.text += ' ORDER BY id';
 
     const result = await pool.query(query);
 

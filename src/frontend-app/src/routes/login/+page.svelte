@@ -60,7 +60,7 @@
         <form on:submit|preventDefault={loginUsuario} class="space-y-4 md:space-y-6">
 
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-green-900 ">Email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-green-900 ">𝐄𝐦𝐚𝐢𝐥</label>
             <input
               type="email"
               id="email"
@@ -72,7 +72,7 @@
           </div>
 
           <div class="relative">
-            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 ">Senha</label>
+            <label for="senha" class="block mb-2 text-sm font-medium text-gray-900 ">𝐒𝐞𝐧𝐡𝐚</label>
             <input
               type={showSenha ? 'text' : 'password'}
               id="senha"

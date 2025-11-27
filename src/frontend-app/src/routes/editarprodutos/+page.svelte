@@ -10,6 +10,7 @@
   let quantidade = '';
   let criado_em = '';
   let atualizado_em = '';
+  let categoria = '';
   let erro = '';
   let id: String | null = null;
   let carregando = true;
@@ -52,6 +53,7 @@
       quantidade = produto.quantidade;
       criado_em = produto.criado_em ? new Date(produto.criado_em).toISOString().split('T')[0] : '';
       atualizado_em = produto.atualizado_em ? new Date(produto.atualizado_em).toISOString().split('T')[0] : '';
+      categoria = produto.categoria;
       // Preview da imagem já cadastrada, se houver
       if(produto.imagem_url){
         previewUrl = produto.imagem_url;
@@ -102,6 +104,7 @@
     formData.append('quantidade', quantidade);
     formData.append('criado_em', criado_em);
     formData.append('atualizado_em', atualizado_em);
+    formData.append('categoria', categoria);
     if(imagemFile){
       formData.append('imagem', imagemFile);
     }
@@ -203,6 +206,11 @@
           <div class="w-full">
             <label for="atualizado_em" class="block mb-1 text-sm font-medium text-gray-900">Atualizado em</label>
             <input type="date" id="atualizado_em" bind:value={atualizado_em} required
+              class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label for="categoria" class="block mb-1 text-sm font-medium text-gray-900">Categoria</label>
+            <input type="text" id="categoria" bind:value={categoria} required placeholder="Buques"
               class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
           </div>
         </div>

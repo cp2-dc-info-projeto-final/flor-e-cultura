@@ -35,7 +35,7 @@ function finalizarCompra() {
 {/if}
   {#if $carrinho.length === 0}
     <div class="text-center py-12">
-      <p class="text-red-600 text-lg mb-4">Seu carrinho está vazio</p>
+      <p class="text-pink-600 text-lg mb-4">Seu carrinho está vazio</p>
       <button 
         on:click={() => goto('/consultaplanta')} 
         class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors"
