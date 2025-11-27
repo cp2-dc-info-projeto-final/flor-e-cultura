@@ -17,6 +17,7 @@
   let erro = '';
   let search = '';
 
+
   // Buscar todos os usuários
   async function buscarUsuarios() {
     erro = '';
@@ -41,12 +42,17 @@
 
   // Remover usuário
   async function removerUsuario(id: number) {
+    const confirmation = window.confirm("Tem certeza que deseja excluir este item? Esta ação é irreversível.");
+    if (confirmation) {
     try {
       await api.delete(`/users/${id}`);
       // Recarrega a lista após remoção
       search.length >= 3 ? buscarUsuariosPorNome(search) : buscarUsuarios();
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao remover usuário';
+    }
+  }else {
+      console.log(`Remoção do item ${id} cancelada.`);
     }
   }
 
@@ -91,12 +97,12 @@
       {#each usuarios as usuario}
         <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
           <div class="space-y-1">
-            <p><span class="font-semibold">Nome:</span> {usuario.nome_completo}</p>
-            <p><span class="font-semibold">Email:</span> {usuario.email}</p>
-            <p><span class="font-semibold">CPF:</span> {usuario.cpf}</p>
-            <p><span class="font-semibold">Telefone:</span> {usuario.telefone}</p>
-            <p><span class="font-semibold">Nascimento:</span> {usuario.data_nascimento}</p>
-            <p><span class="font-semibold">Tipo:</span> {usuario.tipo_usuario}</p>
+            <p><span class="font">𝐍𝐨𝐦𝐞:</span> {usuario.nome_completo}</p>
+            <p><span class="font">𝐄𝐦𝐚𝐢𝐥:</span> {usuario.email}</p>
+            <p><span class="font">𝐂𝐏𝐅:</span> {usuario.cpf}</p>
+            <p><span class="font">𝐓𝐞𝐥𝐞𝐟𝐨𝐧𝐞:</span> {usuario.telefone}</p>
+            <p><span class="font">𝐃𝐚𝐭𝐚 𝐝𝐞 𝐧𝐚𝐬𝐜𝐢𝐦𝐞𝐧𝐭𝐨:</span> {usuario.data_nascimento}</p>
+            <p><span class="font">𝐓𝐢𝐩𝐨:</span> {usuario.tipo_usuario}</p>
           </div>
 
           <!-- Botões -->

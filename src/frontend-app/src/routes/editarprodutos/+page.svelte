@@ -12,7 +12,7 @@
   let atualizado_em = '';
   let categoria = '';
   let erro = '';
-  let id: String | null = null;
+  let id: string | null = null; // Corrigido para 'string'
   let carregando = true;
 
   // Upload de imagem
@@ -30,7 +30,6 @@
       const usuario = response.data.data;
 
       if (usuario.tipo_usuario !== 'admin') {
-        // Se não for admin, redireciona
         goto('/');
         return;
       }
@@ -38,13 +37,14 @@
     } catch (err: any) {
       mensagemErro = 'Erro ao verificar permissões.';
       goto('/');
+      return;
     }
 
     const urlParams = new URLSearchParams(window.location.search);
     id = urlParams.get('id');    
 
     try {
-      const response = await api.get(`http://localhost:3000/produtos/${id}`);
+      const response = await api.get(`/produtos/${id}`);
       const produto = response.data.data || response.data;
 
       nome_produto = produto.nome_produto;
@@ -54,11 +54,10 @@
       criado_em = produto.criado_em ? new Date(produto.criado_em).toISOString().split('T')[0] : '';
       atualizado_em = produto.atualizado_em ? new Date(produto.atualizado_em).toISOString().split('T')[0] : '';
       categoria = produto.categoria;
-      // Preview da imagem já cadastrada, se houver
-      if(produto.imagem_url){
+      if (produto.imagem_url) {
         previewUrl = produto.imagem_url;
       }
-    } catch (err) {
+    } catch (err: any) {
       erro = 'Erro ao buscar dados do produto.';
       if (err.response) erro += ` ${err.response.data.message || err.response.status}`;
       carregando = false;
@@ -88,10 +87,10 @@
   }
 
   function resetImage() {
-      imagemFile = null;
-      previewUrl = '';
-      const fileInput = document.getElementById('imagem') as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
+    imagemFile = null;
+    previewUrl = '';
+    const fileInput = document.getElementById('imagem') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
   }
 
   async function editarProduto() {
@@ -105,7 +104,7 @@
     formData.append('criado_em', criado_em);
     formData.append('atualizado_em', atualizado_em);
     formData.append('categoria', categoria);
-    if(imagemFile){
+    if (imagemFile) {
       formData.append('imagem', imagemFile);
     }
 
@@ -116,7 +115,7 @@
         }
       });
       const result = response.data;
-      if(result.success || result){
+      if (result.success || result) {
         mensagemSucesso = 'Produto editado com sucesso!';
         mensagemErro = '';
 
@@ -137,88 +136,75 @@
 </script>
 
 {#if carregando}
-  <p class="text-center text-gray-700 my-8">Carregando dados da planta...</p>
+  <p class="text-center text-white">Carregando dados do usuário...</p>
 {:else}
-  <section class="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-2">
-    <div class="w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 sm:p-8 my-8">
-      <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 mb-4">
-        Editar produto
-      </h1>
-
-      {#if mensagemErro}
-        <div class="p-3 text-sm text-red-700 bg-red-100 rounded-lg border border-red-300 mb-3">
-          {mensagemErro}
-        </div>
-      {/if}
-      {#if mensagemSucesso}
-        <div class="p-3 text-sm text-green-700 bg-green-100 rounded-lg border border-green-300 mb-3">
-          {mensagemSucesso}
-        </div>
-      {/if}
-
-      <form on:submit|preventDefault={editarProduto} class="space-y-4">
-        <!-- Upload de Imagem -->
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-900">Imagem do Produto</label>
-          <input 
-            type="file" 
-            id="imagem"
-            accept="image/*"
-            on:change={handleImageSelect}
-            class="block w-full border border-gray-300 rounded-lg text-sm file:bg-blue-50 file:border-0 file:mr-3 file:py-1 file:px-2 file:text-blue-700 focus:ring-blue-500 focus:border-blue-500"
-          />
-          <small class="text-gray-500">Formatos: JPEG, PNG, GIF, WebP (máx. 5MB)</small>
-        </div>
-        {#if previewUrl}
-          <div class="flex justify-center">
-            <img src={previewUrl} alt="Preview" class="w-32 h-32 object-cover rounded-lg border border-gray-200 mt-2" />
+<section>
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-gray-700">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
+          Edite seus dados 
+        </h1>
+        {#if erro}
+          <div class="text-red-700 bg-red-100 border border-red-400 rounded px-4 py-2">
+            {erro}
           </div>
         {/if}
-
-        <div>
-          <label for="nome_produto" class="block mb-1 text-sm font-medium text-gray-900">Nome do produto</label>
-          <input type="text" id="nome_produto" bind:value={nome_produto} required placeholder="Margarida"
-            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-        <div>
-          <label for="descricao" class="block mb-1 text-sm font-medium text-gray-900">Descrição</label>
-          <input type="text" id="descricao" bind:value={descricao} required placeholder="Planta com flor"
-            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-        <div class="flex flex-col gap-4 sm:flex-row">
-          <div class="w-full">
-            <label for="preco" class="block mb-1 text-sm font-medium text-gray-900">Preço</label>
-            <input type="text" id="preco" bind:value={preco} required 
-              class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
+        {#if mensagemSucesso}
+          <div class="text-green-700 bg-green-100 border border-green-400 rounded px-4 py-2">
+            {mensagemSucesso}
           </div>
-          <div class="w-full">
-            <label for="quantidade" class="block mb-1 text-sm font-medium text-gray-900">Quantidade</label>
-            <input type="number" id="quantidade" bind:value={quantidade} required placeholder="10"
-              class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
-          </div>
-        </div>
-        <div class="flex flex-col gap-4 sm:flex-row">
-          <div class="w-full">
-            <label for="criado_em" class="block mb-1 text-sm font-medium text-gray-900">Criado em</label>
-            <input type="date" id="criado_em" bind:value={criado_em} required
-              class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
-          </div>
-          <div class="w-full">
-            <label for="atualizado_em" class="block mb-1 text-sm font-medium text-gray-900">Atualizado em</label>
-            <input type="date" id="atualizado_em" bind:value={atualizado_em} required
-              class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
+        {/if}
+        <form on:submit|preventDefault={editarProduto} class="space-y-4 md:space-y-6" action="#">
+          <div>
+            <label for="imagem" class="pb-2 block text-sm font-medium text-gray-900 dark:text-black">𝐈𝐦𝐚𝐠𝐞𝐦 𝐝𝐨 𝐩𝐫𝐨𝐝𝐮𝐭𝐨</label>
+            <input 
+              type="file" 
+              id="imagem"
+              accept="image/*"
+              on:change={handleImageSelect}
+              class="bg-gray-50 border border-gray-300 text-pink-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-pink-200 dark:border-gray-600 dark:text-black"
+            />
+            <small class="text-gray-500">Formatos: JPEG, PNG, GIF, WebP (máx. 5MB)</small>
+            {#if previewUrl}
+              <img src={previewUrl} alt="Prévia da imagem" class="mt-2 rounded-lg border" style="max-height: 200px;">
+            {/if}
+            {#if mensagemErro}
+              <div class="text-red-700 mt-2">{mensagemErro}</div>
+            {/if}
           </div>
           <div>
-            <label for="categoria" class="block mb-1 text-sm font-medium text-gray-900">Categoria</label>
-            <input type="text" id="categoria" bind:value={categoria} required placeholder="Buques"
-              class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" />
+            <label for="nome_produto" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐍𝐨𝐦𝐞 𝐝𝐨 𝐩𝐫𝐨𝐝𝐮𝐭𝐨</label>
+            <input type="text" name="nome_produto" id="nome_produto" bind:value={nome_produto} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
           </div>
-        </div>
-        <button type="submit"
-          class="mt-4 w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-150 shadow">
-          Salvar alterações
-        </button>
-      </form>
+          <div>
+            <label for="descricao" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐃𝐞𝐬𝐜𝐫𝐢𝐜𝐚𝐨</label>
+            <input type="text" name="descricao" id="descricao" bind:value={descricao} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+          </div>
+          <div>
+            <label for="preco" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐏𝐫𝐞𝐜𝐨</label>
+            <input type="number" name="preco" id="preco" bind:value={preco} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required step="any">
+          </div>
+          <div>
+            <label for="quantidade" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐐𝐮𝐚𝐧𝐭𝐢𝐝𝐚𝐝𝐞</label>
+            <input type="number" bind:value={quantidade} name="quantidade" id="quantidade" placeholder="Quantidade" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+          </div>
+          <div>
+            <label for="criado_em" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐂𝐫𝐢𝐚𝐝𝐨 𝐞𝐦</label>
+            <input type="date" bind:value={criado_em} name="criado_em" id="criado_em" placeholder="Criado em" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+          </div>
+          <div>
+            <label for="atualizado_em" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐀𝐭𝐮𝐚𝐥𝐢𝐳𝐚𝐝𝐨 𝐞𝐦</label>
+            <input type="date" bind:value={atualizado_em} name="atualizado_em" id="atualizado_em" placeholder="Atualizado em" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+          </div>
+          <div>
+            <label for="categoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐂𝐚𝐭𝐞𝐠𝐨𝐫𝐢𝐚</label>
+            <input type="text" bind:value={categoria} name="categoria" id="categoria" placeholder="Categoria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
+          </div>
+          <button id="cadastro" type="submit" class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-green-800">Confirme seus dados</button>
+        </form>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 {/if}
