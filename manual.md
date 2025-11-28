@@ -1,14 +1,14 @@
 # Manual do Usuário
+nosso site Flor & Cultura foi desenvolvido para facilitar a compra de sementes,vasos e flores da nossa loja. Mostramos também um catálogo com diferentes espécies de plantas e flores para que não falte variedade e opção para nossos clientes. Este manual foi criado para ajudar você a navegar pelo site, encontrar nossos produtos e utilizar todas as funcionalidades de maneirarápida e prática.
 
-Nullam vitae velit a eros dignissim bibendum id a enim. Vestibulum hendrerit nisl sed magna gravida, non elementum urna condimentum. Quisque porta tincidunt nunc. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis at varius mauris. Quisque molestie ante imperdiet elit blandit, ac volutpat sem efficitur. Donec nec sem tempus, ullamcorper nisl non, blandit tortor. Etiam suscipit rutrum laoreet. Donec facilisis eros ultrices, venenatis quam nec, feugiat ante. Donec ante eros, consequat nec nibh vitae, porta vehicula orci. Duis nec eros et lorem malesuada sodales. Praesent auctor accumsan ipsum, et volutpat ex porttitor eu. Vestibulum facilisis elementum elit, hendrerit mollis velit pretium in. Curabitur tristique vel augue a sodales. Sed malesuada lacinia porttitor.
 
 **Lista das Funcionalidades:**
 
- - [Funcionalidade X](#Funcionalidade-X)
+ - [Como comprar](#Como-comprar)
  - [Funcionalidade Y](#Funcionalidade-Y)
  - [Funcionalidade Z](#Funcionalidade-Z)
 
-## Funcionalidade X
+## Como comprar
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus volutpat molestie justo non tincidunt. Praesent tristique, elit convallis eleifend congue, nisl ex lobortis lorem, ac gravida tellus lacus eu enim. Aliquam urna turpis, convallis id turpis et, iaculis consequat nunc. Proin elit orci, imperdiet nec tristique nec, tincidunt ut nibh. Donec dignissim urna ut erat imperdiet aliquam. Vestibulum augue leo, pellentesque malesuada egestas quis, molestie at lacus. Donec rhoncus finibus lorem, accumsan interdum sapien facilisis sit amet. Integer odio magna, sodales at varius at, dapibus vitae ante. Sed ac ullamcorper ex. Ut in metus ipsum. Duis vulputate porta mi, id venenatis massa ornare vel. Nunc ornare malesuada elit sed feugiat.
 
