@@ -97,7 +97,7 @@
               <a on:click={handleLogout} class="text-black hover:text-pink-600 cursor-pointer">𝐋𝐎𝐆𝐎𝐔𝐓</a>
             </li>
           {/if}
-          {#if $isAdmin && !$isLoadingAuth}
+          {#if $isLoggedIn && !$isLoadingAuth}
             <li>
               <a href="/admcompras" class="text-black hover:text-pink-600">𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐃𝐎𝐑</a>
             </li>

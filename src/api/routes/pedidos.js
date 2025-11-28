@@ -13,8 +13,8 @@ const pool = new Pool({
   port: 5432,
 });
 
-// GET /api/admin/pedidos - Listar todos os pedidos
-router.get('/', verifyToken, isAdmin, async (req, res) => {
+// GET /api/pedidos - Listar todos os pedidos
+router.get('/', verifyToken, async (req, res) => {
   const client = await pool.connect();
   try {
     const result = await client.query(`
@@ -64,6 +64,67 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
     res.json(Object.values(pedidosMap));
   } catch (error) {
     console.error('Erro ao buscar pedidos:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  } finally {
+    client.release();
+  }
+});
+
+// GET /api/pedidos/:id - Detalhes de um pedido específico
+router.get('/:id', verifyToken, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { id } = req.params;
+
+    const result = await client.query(`
+      SELECT p.id, p.usuario_id, p.total, p.status, p.data_pedido,
+             u.nome_completo, u.email, u.telefone, u.cpf,
+             i.id AS item_id, i.quantidade, i.preco_unitario, i.subtotal,
+             pr.nome_produto, pr.descricao
+      FROM pedidos p
+      JOIN usuarios u ON p.usuario_id = u.id
+      LEFT JOIN itens_pedido i ON p.id = i.pedido_id
+      LEFT JOIN produtos pr ON i.produto_id = pr.id
+      WHERE p.id = $1
+    `, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Pedido não encontrado.' });
+    }
+
+    // Montar objeto do pedido
+    const pedido = {
+      id: result.rows[0].id,
+      usuario: {
+        nome_completo: result.rows[0].nome_completo,
+        email: result.rows[0].email,
+        telefone: result.rows[0].telefone,
+        cpf: result.rows[0].cpf
+      },
+      total: Number(result.rows[0].total),
+      status: result.rows[0].status,
+      data_pedido: result.rows[0].data_pedido,
+      itens: []
+    };
+
+    result.rows.forEach(row => {
+      if (row.item_id) {
+        pedido.itens.push({
+          id: row.item_id,
+          quantidade: row.quantidade,
+          preco_unitario: Number(row.preco_unitario),
+          subtotal: Number(row.subtotal),
+          produto: {
+            nome_produto: row.nome_produto,
+            descricao: row.descricao
+          }
+        });
+      }
+    });
+
+    res.json(pedido);
+  } catch (error) {
+    console.error('Erro ao buscar detalhes do pedido:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   } finally {
     client.release();

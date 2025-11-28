@@ -1,7 +1,7 @@
 <!-- routes/admin/pedidos/+page.svelte -->
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { currentUser, isLoggedIn } from '$lib/stores/auth';
+  import { currentUser, isLoggedIn, isLoadingAuth, isAdmin, } from '$lib/stores/auth';
   import { 
     pedidos, 
     pedidosFiltrados, 
@@ -92,7 +92,9 @@
 </script>
 
 <svelte:head>
+  {#if $isAdmin && !$isLoadingAuth}
   <title>Painel Administrativo - Pedidos</title>
+  {/if}
 </svelte:head>
 
 {#if $pedidosNaoVisualizados > 0}
