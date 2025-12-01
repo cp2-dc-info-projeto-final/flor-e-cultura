@@ -13,11 +13,14 @@ const pool = new Pool({
   port: 5432,
 });
 
-// GET /api/pedidos - Listar todos os pedidos
+// GET /api/pedidos - Listar pedidos (todos para admin, apenas do usuário para usuários comuns)
 router.get('/', verifyToken, async (req, res) => {
   const client = await pool.connect();
   try {
-    const result = await client.query(`
+    const userId = req.user.id;
+    const userIsAdmin = req.user.tipo_usuario === 'admin';
+
+    let query = `
       SELECT p.id, p.usuario_id, p.total, p.status, p.data_pedido,
              u.nome_completo, u.email, u.telefone, u.cpf,
              i.id AS item_id, i.quantidade, i.preco_unitario, i.subtotal,
@@ -26,8 +29,17 @@ router.get('/', verifyToken, async (req, res) => {
       JOIN usuarios u ON p.usuario_id = u.id
       LEFT JOIN itens_pedido i ON p.id = i.pedido_id
       LEFT JOIN produtos pr ON i.produto_id = pr.id
-      ORDER BY p.data_pedido DESC
-    `);
+    `;
+
+    // 🔐 SE NÃO FOR ADMIN, FILTRAR APENAS PELOS PEDIDOS DO USUÁRIO
+    if (!userIsAdmin) {
+      query += ` WHERE p.usuario_id = $1 `;
+    }
+
+    query += ` ORDER BY p.data_pedido DESC `;
+
+    const params = userIsAdmin ? [] : [userId];
+    const result = await client.query(query, params);
 
     // Agrupar pedidos com seus itens
     const pedidosMap = {};
@@ -35,6 +47,7 @@ router.get('/', verifyToken, async (req, res) => {
       if (!pedidosMap[row.id]) {
         pedidosMap[row.id] = {
           id: row.id,
+          usuario_id: row.usuario_id, // 🔑 IMPORTANTE: Incluir usuario_id para filtros no frontend
           usuario: {
             nome_completo: row.nome_completo,
             email: row.email,
@@ -75,8 +88,10 @@ router.get('/:id', verifyToken, async (req, res) => {
   const client = await pool.connect();
   try {
     const { id } = req.params;
+    const userId = req.user.id;
+    const userIsAdmin = req.user.tipo_usuario === 'admin';
 
-    const result = await client.query(`
+    let query = `
       SELECT p.id, p.usuario_id, p.total, p.status, p.data_pedido,
              u.nome_completo, u.email, u.telefone, u.cpf,
              i.id AS item_id, i.quantidade, i.preco_unitario, i.subtotal,
@@ -86,7 +101,15 @@ router.get('/:id', verifyToken, async (req, res) => {
       LEFT JOIN itens_pedido i ON p.id = i.pedido_id
       LEFT JOIN produtos pr ON i.produto_id = pr.id
       WHERE p.id = $1
-    `, [id]);
+    `;
+
+    // 🔐 SE NÃO FOR ADMIN, VERIFICAR SE O PEDIDO PERTENCE AO USUÁRIO
+    if (!userIsAdmin) {
+      query += ` AND p.usuario_id = $2 `;
+    }
+
+    const params = userIsAdmin ? [id] : [id, userId];
+    const result = await client.query(query, params);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Pedido não encontrado.' });
@@ -95,6 +118,7 @@ router.get('/:id', verifyToken, async (req, res) => {
     // Montar objeto do pedido
     const pedido = {
       id: result.rows[0].id,
+      usuario_id: result.rows[0].usuario_id,
       usuario: {
         nome_completo: result.rows[0].nome_completo,
         email: result.rows[0].email,
@@ -131,12 +155,104 @@ router.get('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// PATCH /api/admin/pedidos/:id - Atualizar status do pedido
+// POST /api/pedidos - Criar novo pedido (para usuários comuns)
+router.post('/', verifyToken, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const userId = req.user.id;
+    const { itens, total } = req.body;
+
+    // Iniciar transação
+    await client.query('BEGIN');
+
+    // 1. Criar o pedido
+    const pedidoResult = await client.query(
+      `INSERT INTO pedidos (usuario_id, total, status) 
+       VALUES ($1, $2, 'PENDENTE') 
+       RETURNING *`,
+      [userId, total]
+    );
+
+    const pedido = pedidoResult.rows[0];
+
+    // 2. Inserir os itens do pedido
+    for (const item of itens) {
+      await client.query(
+        `INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario, subtotal)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [pedido.id, item.produto_id, item.quantidade, item.preco_unitario, item.preco_unitario * item.quantidade]
+      );
+    }
+
+    // Commit da transação
+    await client.query('COMMIT');
+
+    // Buscar pedido completo com joins para retornar
+    const pedidoCompleto = await client.query(`
+      SELECT p.id, p.usuario_id, p.total, p.status, p.data_pedido,
+             u.nome_completo, u.email, u.telefone, u.cpf,
+             i.id AS item_id, i.quantidade, i.preco_unitario, i.subtotal,
+             pr.nome_produto, pr.descricao
+      FROM pedidos p
+      JOIN usuarios u ON p.usuario_id = u.id
+      LEFT JOIN itens_pedido i ON p.id = i.pedido_id
+      LEFT JOIN produtos pr ON i.produto_id = pr.id
+      WHERE p.id = $1
+    `, [pedido.id]);
+
+    // Montar resposta igual ao GET
+    const pedidoFormatado = {
+      id: pedidoCompleto.rows[0].id,
+      usuario_id: pedidoCompleto.rows[0].usuario_id,
+      usuario: {
+        nome_completo: pedidoCompleto.rows[0].nome_completo,
+        email: pedidoCompleto.rows[0].email,
+        telefone: pedidoCompleto.rows[0].telefone,
+        cpf: pedidoCompleto.rows[0].cpf
+      },
+      total: Number(pedidoCompleto.rows[0].total),
+      status: pedidoCompleto.rows[0].status,
+      data_pedido: pedidoCompleto.rows[0].data_pedido,
+      itens: []
+    };
+
+    pedidoCompleto.rows.forEach(row => {
+      if (row.item_id) {
+        pedidoFormatado.itens.push({
+          id: row.item_id,
+          quantidade: row.quantidade,
+          preco_unitario: Number(row.preco_unitario),
+          subtotal: Number(row.subtotal),
+          produto: {
+            nome_produto: row.nome_produto,
+            descricao: row.descricao
+          }
+        });
+      }
+    });
+
+    res.status(201).json(pedidoFormatado);
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Erro ao criar pedido:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  } finally {
+    client.release();
+  }
+});
+
+// PATCH /api/pedidos/:id - Atualizar status do pedido (APENAS ADMIN)
 router.patch('/:id', verifyToken, isAdmin, async (req, res) => {
   const client = await pool.connect();
   try {
     const { id } = req.params;
     const { status } = req.body;
+
+    // Validar status
+    const statusValidos = ['PENDENTE', 'CONFIRMADO', 'PREPARANDO', 'ENVIADO', 'ENTREGUE', 'CANCELADO'];
+    if (!statusValidos.includes(status)) {
+      return res.status(400).json({ error: 'Status inválido' });
+    }
 
     const result = await client.query(
       `UPDATE pedidos 

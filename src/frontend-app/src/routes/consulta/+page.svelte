@@ -112,7 +112,7 @@
               on:click={() => goto(`/editar?id=${usuario.id}`)}
               
             >
-              Editar
+            ✏️
             </button>
             <button
               class="bg-pink-400 hover:bg-pink-700 text-white px-3 py-2 rounded text-sm w-full"

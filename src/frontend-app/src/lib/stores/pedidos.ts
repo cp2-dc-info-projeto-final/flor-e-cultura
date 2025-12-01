@@ -1,63 +1,89 @@
-// lib/stores/pedidos.ts
-// lib/stores/pedidos.ts
-import { writable, derived, type Writable, type Readable } from 'svelte/store';
+import { writable, derived, type Writable, type Readable, get } from 'svelte/store';
 import { browser } from '$app/environment';
-import api from '$lib/api'; // Sua instância do Axios
+import api from '$lib/api';
+import { currentUser, isAdmin, isLoggedIn } from '$lib/stores/auth';
 
 // Tipos
 export interface Pedido {
   id: number;
+  usuario_id: number;
   status: string;
-  [key: string]: any; // Campos adicionais vindos da API
-}
-
-export interface Notificacao {
-  pedidoId: number;
-  vista: boolean;
-  dataVisualizacao: Date;
+  total: number;
+  data_pedido: string;
+  usuario: {
+    nome_completo: string;
+    email: string;
+    telefone: string;
+    cpf: string;
+  };
+  itens: Array<{
+    id: number;
+    quantidade: number;
+    preco_unitario: number;
+    subtotal: number;
+    produto: {
+      nome_produto: string;
+      descricao: string;
+    };
+  }>;
+  [key: string]: any;
 }
 
 // Stores
 export const pedidos: Writable<Pedido[]> = writable([]);
-export const notificacoes: Writable<Notificacao[]> = writable([]);
-
 export const filtroStatus: Writable<string> = writable('TODOS');
 export const pedidoSelecionado: Writable<Pedido | null> = writable(null);
 export const carregando: Writable<boolean> = writable(false);
 
-// Pedidos não visualizados
-export const pedidosNaoVisualizados: Readable<number> = derived(
-  [pedidos, notificacoes],
-  ([$pedidos, $notificacoes]) =>
-    $pedidos.filter(
-      (pedido) =>
-        !$notificacoes.some(
-          (notif) => notif.pedidoId === pedido.id && notif.vista
-        )
-    ).length
-);
-
-// Pedidos filtrados
+// Pedidos filtrados (funciona para ambos)
 export const pedidosFiltrados: Readable<Pedido[]> = derived(
-  [pedidos, filtroStatus],
-  ([$pedidos, $filtroStatus]) => {
-    if ($filtroStatus === 'TODOS') return $pedidos;
-    return $pedidos.filter((pedido) => pedido.status === $filtroStatus);
+  [pedidos, filtroStatus, currentUser, isAdmin],
+  ([$pedidos, $filtroStatus, $currentUser, $isAdmin]) => {
+    let pedidosParaFiltrar = $pedidos;
+    
+    // Se for usuário comum, mostrar apenas seus pedidos
+    if ($currentUser && !$isAdmin) {
+      pedidosParaFiltrar = $pedidos.filter(pedido => pedido.usuario_id === $currentUser.id);
+    }
+    
+    if ($filtroStatus === 'TODOS') return pedidosParaFiltrar;
+    return pedidosParaFiltrar.filter((pedido) => pedido.status === $filtroStatus);
   }
 );
 
-// Funções
+// Estatísticas (adaptáveis)
+export const estatisticasPedidos = derived(
+  [pedidos, currentUser, isAdmin],
+  ([$pedidos, $currentUser, $isAdmin]) => {
+    let pedidosParaCalcular = $pedidos;
+    
+    if ($currentUser && !$isAdmin) {
+      pedidosParaCalcular = $pedidos.filter(pedido => pedido.usuario_id === $currentUser.id);
+    }
+    
+    return {
+      total: pedidosParaCalcular.length,
+      pendentes: pedidosParaCalcular.filter(p => p.status === 'PENDENTE').length,
+      entregues: pedidosParaCalcular.filter(p => p.status === 'ENTREGUE').length,
+      enviados: pedidosParaCalcular.filter(p => p.status === 'ENVIADO').length,
+      confirmados: pedidosParaCalcular.filter(p => p.status === 'CONFIRMADO').length,
+      preparando: pedidosParaCalcular.filter(p => p.status === 'PREPARANDO').length,
+      cancelados: pedidosParaCalcular.filter(p => p.status === 'CANCELADO').length
+    };
+  }
+);
+
+// Funções principais
 export async function carregarPedidos(): Promise<void> {
+  // Verificar se está logado antes de carregar
+  if (!get(isLoggedIn)) {
+    throw new Error('Usuário não está logado');
+  }
+
   carregando.set(true);
   try {
     const response = await api.get<Pedido[]>('/pedidos');
     pedidos.set(response.data);
-
-    // Marcar como visualizados
-    if (browser) {
-      const novosIds = response.data.map((p) => p.id);
-      marcarComoVisualizado(novosIds);
-    }
   } catch (error) {
     console.error('Erro ao carregar pedidos:', error);
     throw error;
@@ -70,6 +96,11 @@ export async function atualizarStatusPedido(
   pedidoId: number,
   novoStatus: string
 ): Promise<boolean> {
+  // Verificar se é admin antes de tentar atualizar
+  if (!get(isAdmin)) {
+    throw new Error('Apenas administradores podem atualizar status de pedidos');
+  }
+
   try {
     const response = await api.patch<Partial<Pedido>>(
       `/pedidos/${pedidoId}`,
@@ -101,52 +132,38 @@ export async function obterDetalhesPedido(
   }
 }
 
-export function marcarComoVisualizado(pedidoIds: number | number[]): void {
-  if (!Array.isArray(pedidoIds)) pedidoIds = [pedidoIds];
+// Função para criar um novo pedido (para usuários comuns)
+export async function criarPedido(dadosPedido: {
+  itens: Array<{
+    produto_id: number;
+    quantidade: number;
+    preco_unitario: number;
+  }>;
+  total: number;
+}): Promise<Pedido> {
+  // Verificar se está logado antes de criar pedido
+  if (!get(isLoggedIn)) {
+    throw new Error('Usuário não está logado');
+  }
 
-  notificacoes.update((notifs) => {
-    const novasNotificacoes = [...notifs];
-
-    pedidoIds.forEach((id) => {
-      const index = novasNotificacoes.findIndex((n) => n.pedidoId === id);
-      if (index === -1) {
-        novasNotificacoes.push({
-          pedidoId: id,
-          vista: true,
-          dataVisualizacao: new Date(),
-        });
-      } else {
-        novasNotificacoes[index].vista = true;
-        novasNotificacoes[index].dataVisualizacao = new Date();
-      }
-    });
-
-    // Salvar na sessionStorage (apenas durante a sessão do admin)
-    if (browser) {
-      sessionStorage.setItem(
-        'notificacoesPedidos',
-        JSON.stringify(novasNotificacoes)
-      );
-    }
-
-    return novasNotificacoes;
-  });
-}
-
-// Carregar notificações salvas da sessão
-if (browser) {
-  const salvas = sessionStorage.getItem('notificacoesPedidos');
-  if (salvas) {
-    try {
-      const parsed: Notificacao[] = JSON.parse(salvas);
-      notificacoes.set(
-        parsed.map((n) => ({
-          ...n,
-          dataVisualizacao: new Date(n.dataVisualizacao),
-        }))
-      );
-    } catch {
-      console.error('Erro ao carregar notificações da sessão');
-    }
+  try {
+    const response = await api.post<Pedido>('/pedidos', dadosPedido);
+    
+    // Adiciona o novo pedido à store
+    pedidos.update(lista => [response.data, ...lista]);
+    
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao criar pedido:', error);
+    throw error;
   }
 }
+
+// Limpar store quando o usuário fizer logout
+isLoggedIn.subscribe(($isLoggedIn) => {
+  if (!$isLoggedIn) {
+    pedidos.set([]);
+    filtroStatus.set('TODOS');
+    pedidoSelecionado.set(null);
+  }
+});

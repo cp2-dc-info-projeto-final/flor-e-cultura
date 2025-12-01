@@ -85,7 +85,7 @@
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
-                    Edite seus dados 
+                    Edite os dados do usuário
                 </h1>
                 {#if erro}
                   <div class="text-red-700 bg-red-100 border border-red-400 rounded px-4 py-2">
@@ -99,27 +99,27 @@
                 {/if}
                 <form on:submit|preventDefault={editarUsuario} class="space-y-4 md:space-y-6" action="#">
                     <div>
-                        <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Nome</label>
+                        <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐍𝐨𝐦𝐞</label>
                         <input type="text" name="nome" id="nome" bind:value={nome} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" placeholder="Fulano Beltrano Silva" required>
                     </div>
                     <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Email</label>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐄𝐦𝐚𝐢𝐥</label>
                         <input type="email" name="email" id="email" bind:value={email} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" placeholder="nome@compania.com" required>
                     </div>
                     <div>
-                        <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Data de nascimento</label>
+                        <label for="data-nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐃𝐚𝐭𝐚 𝐝𝐞 𝐍𝐚𝐬𝐜𝐢𝐦𝐞𝐧𝐭𝐨</label>
                         <input type="date" name="data-nascimento" id="data-nascimento" bind:value={dataNascimento} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
                     <div>
-                        <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">CPF</label>
+                        <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐂𝐏𝐅</label>
                         <input type="text" bind:value={cpf} name="cpf" id="cpf" placeholder="Seu CPF" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
                     <div>
-                        <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">telefone</label>
+                        <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">𝐓𝐞𝐥𝐞𝐟𝐨𝐧𝐞</label>
                         <input type="text" bind:value={telefone} name="telefone" id="telefone" placeholder="Seu telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-pink-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-800 dark:focus:border-pink-800" required>
                     </div>
                     
-                    <button id="cadastro" type="submit" class="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Confirme seus dados</button>
+                    <button id="cadastro" type="submit" class="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Confirme os dados do usuário</button>
                 </form>
             </div>
         </div>
