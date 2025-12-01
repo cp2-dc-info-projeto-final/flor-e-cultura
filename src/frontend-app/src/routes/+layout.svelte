@@ -78,6 +78,9 @@
       {#if $isLoggedIn && !$isLoadingAuth}
         <li><a href="/listacompra" class="text-black hover:text-pink-600">𝐏𝐄𝐃𝐈𝐃𝐎𝐒</a></li>
       {/if}
+      {#if $isLoggedIn && $isAdmin && !$isLoadingAuth}
+      <li><a href="/cadastroplanta" class="text-black hover:text-pink-600">Cadastro Planta</a></li>
+      {/if}
       <!-- Carrinho Desktop -->
       <li>
         <a href="/carrinho" class="relative flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
