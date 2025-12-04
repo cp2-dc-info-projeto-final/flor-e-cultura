@@ -67,7 +67,7 @@
     <!-- DESKTOP NAV -->
     <ul class="hidden md:flex items-center gap-6 font-medium">
       <li><a href="/" class="text-black hover:text-pink-600">𝐈𝐍𝐈𝐂𝐈𝐎</a></li>
-      <li><a href="/consultaplanta" class="text-black hover:text-pink-600">𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐀𝐒</a></li>
+      <li><a href="/consultaplanta" class="text-black hover:text-pink-600">𝐂𝐀𝐓𝐀𝐋𝐎𝐆𝐎</a></li>
       {#if !$isLoggedIn && !$isLoadingAuth}
         <li><a href="/login" class="text-black hover:text-pink-600">𝐋𝐎𝐆𝐈𝐍</a></li>
         <li><a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 dark:bg-green-400 dark:hover:bg-green-700">𝐂𝐀𝐃𝐀𝐒𝐓𝐑𝐄-𝐒𝐄</a></li>
@@ -119,21 +119,43 @@
 <!-- MOBILE NAV -->
 <div class="md:hidden hidden" id="navbar-cta">
   <ul class="flex flex-col gap-4 p-4 font-medium">
-    <li><a href="/" class="text-black">Início</a></li>
-    <li><a href="/consultaplanta" class="text-black">Categorias</a></li>
+
+    <!-- Links padrão -->
+    <li><a href="/" class="text-black">𝐈𝐍𝐈𝐂𝐈𝐎</a></li>
+    <li><a href="/consultaplanta" class="text-black">𝐂𝐀𝐓𝐀𝐋𝐎𝐆𝐎</a></li>
+
+    <!-- Visitante -->
     {#if !$isLoggedIn && !$isLoadingAuth}
-      <li><a href="/login" class="text-black">Login</a></li>
-      <li><a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded">Cadastre-se</a></li>
+      <li><a href="/login" class="text-black">𝐋𝐎𝐆𝐈𝐍</a></li>
+      <li>
+        <a href="/cadastro" class="px-4 py-2 bg-blue-700 text-white rounded">
+          𝐂𝐀𝐃𝐀𝐒𝐓𝐑𝐄-𝐒𝐄
+        </a>
+      </li>
     {/if}
+
+    <!-- Usuário logado -->
     {#if $isLoggedIn && !$isLoadingAuth}
-      <li><a on:click={handleLogout} class="text-black cursor-pointer">Logout</a></li>
+      <li>
+        <a on:click={handleLogout} class="text-black cursor-pointer">
+          𝐋𝐎𝐆𝐎𝐔𝐓
+        </a>
+      </li>
+      <li><a href="/listacompra" class="text-black">𝐏𝐄𝐃𝐈𝐃𝐎𝐒</a></li>
     {/if}
-    
+
+    <!-- Admin -->
+    {#if $isLoggedIn && $isAdmin && !$isLoadingAuth}
+      <li><a href="/cadastroplanta" class="text-black">𝐂𝐀𝐃𝐏𝐋𝐀𝐍𝐓𝐀</a></li>
+      <li><a href="/consulta" class="text-black">𝐕𝐄𝐑-𝐔𝐒𝐔𝐀𝐑𝐈𝐎</a></li>
+    {/if}
+
     <!-- Carrinho Mobile -->
     <li>
       <a href="/carrinho" class="flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
         <span class="text-xl group-hover:text-pink-600">🛒</span>
         <span class="font-semibold text-black">Carrinho</span>
+
         {#if $totalItems > 0}
           <span class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow ml-2">
             {$totalItems}
@@ -141,12 +163,21 @@
         {/if}
       </a>
     </li>
+
     <!-- Avatar Mobile -->
     {#if $isLoggedIn && !$isLoadingAuth}
-      <li><img class="w-10 h-10 rounded-full border-2 border-pink-200" src="/docs/images/people/profile-picture-5.jpg" alt="Usuário" /></li>
+      <li>
+        <img
+          class="w-10 h-10 rounded-full border-2 border-pink-200"
+          src="/docs/images/people/profile-picture-5.jpg"
+          alt="Usuário"
+        />
+      </li>
     {/if}
+
   </ul>
 </div>
+
 </nav>
 
 <!-- Modal de confirmação -->
@@ -170,29 +201,24 @@
 {/if}
 
 
-<!-- Conteúdo principal -->
-{@render children()}
-  
-  <!-- Rodapé (apenas uma vez!) -->
+<div class="min-h-screen flex flex-col">
+  <!-- Conteúdo principal -->
+  <main class="flex-grow">
+    {@render children()}
+  </main>
+
+  <!-- Rodapé -->
   <footer class="bg-white border-gray-200 dark:bg-pink-100">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
       <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-        © 2023 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>. Todos os direitos reservados.
+        © 2025 <a href="" class="hover:underline">Flor&Cultura</a>. Todos os direitos reservados.
       </span>
       <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-        <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Sobre</a>
-        </li>
-        <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Política de Privacidade</a>
-        </li>
-        <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Licenciamento</a>
-        </li>
-        <li>
-          <a href="#" class="hover:underline">Contato</a>
-        </li>
+        <li><a href="#" class="hover:underline me-4 md:me-6">Sobre</a></li>
+        <li><a href="/termos" class="hover:underline me-4 md:me-6">Termos e condições</a></li>
+        <li><a href="#" class="hover:underline me-4 md:me-6">Licenciamento</a></li>
+        <li><a href="#" class="hover:underline">Contato</a></li>
       </ul>
     </div>
   </footer>
-  
+</div>
