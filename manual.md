@@ -10,8 +10,7 @@ Lista de funcionalidades do nosso site Flor&Cultura
  - [Login](#Login)
  - [Logout](#Logout)
  - [Adicionar produto ao carrinho](#Adicionar-produto-ao-carrinho)
- - [Relação de vendas](#Relação-de-vendas)
- - [Gerenciar vendas](#Gerenciar-vendas)
+ - [lista de compras](#listacompras)
  - [Administrador](#Administrador)
  - [Gerenciar usuários](#Gerenciar-usuários)
  - [Excluir conta de usuário](#Excluir-conta-de-usuário)
@@ -48,9 +47,10 @@ A página loguin pode ser acessada tanto pelos visitantes quanto para usuários 
 3. Acessa o carrinho e clique em "finalizar compra" e será encaminhado para a finalização da compra, onde será solicitado um endereço para fazer a sua entrega
  No site, o cliente pode visualizar e adiciona-los ao carrinho. É possível adicionar os produtos ao carrinho e depois visualizar na tela da compra final, podendo remover esses produtos do carrinho e também pode acrescentar mais quantidades daquele mesmo produto ou de outras diferentes mercadorias ao carrinho mas será necessário estar cadastrado no site para finalizar a compra.
 
-## Relação de vendas
+## Listacompras
+A página pode ser acessada pelo administrador e pelo o usuário, Porém, o administrador pode vizualizar toda compra de todos os usuários realizado no sistema. Já o usuário, pode vizualizar apenas suas compras realizadas.
+A página pode ser acessada através do botão da tela principal chamado "listacompras".
 
-## Gerenciar vendas
 
 ## Administrador
 parte do site feita exclusivamente para os administradores. 
@@ -60,6 +60,7 @@ permite:
 3.Ver dados do cliente
 
 ## Gerenciar usuários
+A página pode ser acessada apenas pelo administrador. Cujo vizualiza e pode atualizar os dados do cliente ou remover do sitema após a confirmação. 
 
 ## Excluir conta de usuário
 
