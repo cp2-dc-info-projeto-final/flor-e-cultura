@@ -17,6 +17,29 @@
   let erro = '';
   let search = '';
 
+  let showConfirm = false; // controla se o modal aparece
+  let idConfirmacao = 0;
+
+  async function confirmRemocao() {
+      try {
+          await removerUsuario(idConfirmacao);
+      } catch (error) {
+          console.error('Erro na remoção:', error);
+      }
+      showConfirm = false;
+      idConfirmacao = 0;
+  }
+
+  function cancelRemocao() {
+      showConfirm = false;
+      idConfirmacao = 0;
+  }
+
+  function handleRemocao(id: number) {
+      idConfirmacao = id;
+      showConfirm = true; // abre o modal
+  }
+
 
   // Buscar todos os usuários
   async function buscarUsuarios() {
@@ -42,17 +65,12 @@
 
   // Remover usuário
   async function removerUsuario(id: number) {
-    const confirmation = window.confirm("Tem certeza que deseja excluir este item? Esta ação é irreversível.");
-    if (confirmation) {
     try {
       await api.delete(`/users/${id}`);
       // Recarrega a lista após remoção
       search.length >= 3 ? buscarUsuariosPorNome(search) : buscarUsuarios();
     } catch (e: any) {
       erro = e.response?.data?.message || 'Erro ao remover usuário';
-    }
-  }else {
-      console.log(`Remoção do item ${id} cancelada.`);
     }
   }
 
@@ -116,7 +134,7 @@
             </button>
             <button
               class="bg-pink-400 hover:bg-pink-700 text-white px-3 py-2 rounded text-sm w-full"
-              on:click={() => removerUsuario(usuario.id)}
+              on:click={() => handleRemocao(usuario.id)}
              
             >
             🗑️
@@ -128,3 +146,22 @@
   {/if}
 </div>
 
+<!-- Modal de confirmação -->
+{#if showConfirm} 
+  <!-- Overlay transparente -->
+  <div class="fixed inset-0 flex items-center justify-center z-50">
+    <!-- Bloco do modal -->
+    <div class="bg-white rounded shadow-lg p-6 w-80 border-double border-4">
+      <h2 class="text-lg mb-4">𝐂𝐨𝐧𝐟𝐢𝐫𝐦𝐚𝐫 𝐑𝐞𝐦𝐨𝐜𝐚𝐨</h2>
+      <p class="mb-6">Tem certeza que deseja remover a conta deste usuário? Esta ação é irreversível</p>
+      <div class="flex justify-end gap-4">
+        <button on:click={cancelRemocao} class="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500">
+          Cancelar
+        </button>
+        <button on:click={confirmRemocao} class="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}

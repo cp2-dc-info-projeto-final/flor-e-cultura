@@ -20,7 +20,7 @@
   const STATUS_CLASSES: { [key: string]: string } = {
     'PENDENTE': 'bg-yellow-100 text-yellow-800 border-yellow-300',
     'CONFIRMADO': 'bg-blue-100 text-blue-800 border-blue-300',
-    'PREPARANDO': 'bg-orange-100 text-orange-800 border-orange-300',
+    'PREPARANDO': 'bg-pink-100 text-pink-800 border-pink-300',
     'ENVIADO': 'bg-purple-100 text-purple-800 border-purple-300',
     'ENTREGUE': 'bg-green-100 text-green-800 border-green-300',
     'CANCELADO': 'bg-red-100 text-red-800 border-red-300'
@@ -133,7 +133,7 @@
     <!-- Cabeçalho -->
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">{$isAdmin ? 'Painel de Pedidos' : 'Minhas Compras'}</h1>
+        <h1 class="text-2xl font-bold text-gray-800">{$isAdmin ? '𝐏𝐚𝐢𝐧𝐞𝐥 𝐝𝐞 𝐩𝐞𝐝𝐢𝐝𝐨𝐬' : 'Minhas Compras'}</h1>
         <p class="text-gray-600">{subtitulo}</p>
         {#if !$isAdmin}
           <p class="text-sm text-gray-500">Olá, {$currentUser?.nome_completo}!</p>
@@ -191,9 +191,9 @@
       <div class="p-4 bg-yellow-100 rounded shadow">{$estatisticasPedidos.pendentes} Pendentes</div>
       <div class="p-4 bg-green-100 rounded shadow">{$estatisticasPedidos.entregues} Entregues</div>
       {#if $isAdmin}
-        <div class="p-4 bg-blue-100 rounded shadow">{$estatisticasPedidos.preparando} Preparando</div>
+        <div class="p-4 bg-pink-100 rounded shadow">{$estatisticasPedidos.preparando} Preparando</div>
       {:else}
-        <div class="p-4 bg-blue-100 rounded shadow">{$estatisticasPedidos.enviados} Enviados</div>
+        <div class="p-4 bg-pink-100 rounded shadow">{$estatisticasPedidos.enviados} Enviados</div>
       {/if}
     </div>
 
@@ -305,7 +305,7 @@
 
     <!-- Modal de detalhes do pedido -->
     {#if $pedidoSelecionado}
-      <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           <div class="p-6">
             <div class="flex justify-between items-center mb-4">

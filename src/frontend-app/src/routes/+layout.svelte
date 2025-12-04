@@ -79,8 +79,13 @@
         <li><a href="/listacompra" class="text-black hover:text-pink-600">𝐏𝐄𝐃𝐈𝐃𝐎𝐒</a></li>
       {/if}
       {#if $isLoggedIn && $isAdmin && !$isLoadingAuth}
-      <li><a href="/cadastroplanta" class="text-black hover:text-pink-600">Cadastro Planta</a></li>
+      <li><a href="/cadastroplanta" class="text-black hover:text-pink-600">𝐂𝐀𝐃𝐏𝐋𝐀𝐍𝐓𝐀</a></li>
       {/if}
+
+      {#if $isAdmin && !$isLoadingAuth}
+      <li><a href="/consulta" class="text-black">𝐕𝐄𝐑-𝐔𝐒𝐔𝐀𝐑𝐈𝐎</a></li>
+      {/if}
+
       <!-- Carrinho Desktop -->
       <li>
         <a href="/carrinho" class="relative flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
@@ -123,9 +128,7 @@
     {#if $isLoggedIn && !$isLoadingAuth}
       <li><a on:click={handleLogout} class="text-black cursor-pointer">Logout</a></li>
     {/if}
-    {#if $isAdmin && !$isLoadingAuth}
-      <li><a href="/consulta" class="text-black">Ver Usuários</a></li>
-    {/if}
+    
     <!-- Carrinho Mobile -->
     <li>
       <a href="/carrinho" class="flex items-center gap-1 px-3 py-2 rounded hover:bg-pink-50 transition group">
@@ -151,14 +154,14 @@
   <!-- Overlay transparente -->
   <div class="fixed inset-0 flex items-center justify-center z-50">
     <!-- Bloco do modal -->
-    <div class="bg-white rounded shadow-lg p-6 w-80">
-      <h2 class="text-lg font-bold mb-4">Confirmar Logout</h2>
+    <div class="bg-white rounded shadow-lg p-6 w-80 border-double border-4">
+      <h2 class="text-lg mb-4">𝐂𝐨𝐧𝐟𝐢𝐫𝐦𝐚𝐫 𝐋𝐨𝐠𝐨𝐮𝐭</h2>
       <p class="mb-6">Tem certeza que deseja sair da sua conta?</p>
       <div class="flex justify-end gap-4">
-        <button on:click={cancelLogout} class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+        <button on:click={cancelLogout} class="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500">
           Cancelar
         </button>
-        <button on:click={confirmLogout} class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+        <button on:click={confirmLogout} class="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600">
           Confirmar
         </button>
       </div>
