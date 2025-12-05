@@ -99,9 +99,11 @@
       </li>
     </ul>
 
-    <!-- Avatar Desktop -->
+    <!-- Bem-vindo Desktop em vez do Avatar -->
     {#if $isLoggedIn && !$isLoadingAuth}
-      <img class="hidden md:block w-10 h-10 rounded-full border-2 border-pink-200" src="/docs/images/people/profile-picture-5.jpg" alt="Usuário" />
+      <span class="hidden md:block font-semibold text-pink-700 bg-pink-200 px-4 py-2 rounded">
+        Bem-vindo, {$currentUser.nome_completo}
+      </span>
     {/if}
 
     <!-- Botão menu mobile -->
@@ -164,14 +166,12 @@
       </a>
     </li>
 
-    <!-- Avatar Mobile -->
+    <!-- Bem-vindo Mobile em vez do Avatar -->
     {#if $isLoggedIn && !$isLoadingAuth}
       <li>
-        <img
-          class="w-10 h-10 rounded-full border-2 border-pink-200"
-          src="/docs/images/people/profile-picture-5.jpg"
-          alt="Usuário"
-        />
+        <span class="font-semibold text-pink-700 bg-pink-200 px-4 py-2 rounded">
+          Bem-vindo, {$currentUser.nome_completo}
+        </span>
       </li>
     {/if}
 
