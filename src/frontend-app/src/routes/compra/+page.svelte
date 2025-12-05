@@ -8,6 +8,18 @@
   $: total = $totalPrice;
   let mensagem: string | null = null;
 
+  // Modal e endereço
+  let mostrarModal = false;
+  let endereco = {
+    rua: '',
+    numero: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+    cep: ''
+  };
+  let enderecoErro = '';
+
   // Protege a rota: se não estiver logado, guarda intenção e manda para login
   if (!$isLoggedIn) {
     mensagem = 'Você precisa estar logado para acessar a página de compra!';
@@ -15,13 +27,33 @@
     setTimeout(() => goto('/login'), 2000);
   }
 
-  async function confirmarCompra() {
+  function abrirModal() {
+    mostrarModal = true;
+  }
+
+  async function confirmarCompraComEndereco() {
+    // Validação simples dos campos do endereço
+    if (
+      !endereco.rua ||
+      !endereco.numero ||
+      !endereco.bairro ||
+      !endereco.cidade ||
+      !endereco.estado ||
+      !endereco.cep
+    ) {
+      enderecoErro = 'Preencha todos os campos!';
+      return;
+    }
+    enderecoErro = '';
+    mostrarModal = false;
+
     try {
       const response = await api.post('/checkout', {
         itens: $carrinho.map(item => ({
           produtoId: item.id,
           quantidade: item.quantidade
-        }))
+        })),
+        endereco: { ...endereco }
       });
       mensagem = `Compra confirmada para ${$currentUser?.nome_completo}! Total: R$ ${total.toFixed(2)}`;
       limparCarrinho();
@@ -46,6 +78,29 @@
     </div>
   {/if}
 
+  {#if mostrarModal}
+    <div class="fixed inset-0  flex items-center justify-center z-50">
+      <div class="bg-white rounded p-6 w-full max-w-md shadow-lg">
+        <h2 class="text-lg font-bold mb-4">Informe seu endereço</h2>
+        <div class="mb-2">
+          <input class="border p-2 w-full mb-2" placeholder="Rua" bind:value={endereco.rua} />
+          <input class="border p-2 w-full mb-2" placeholder="Número" bind:value={endereco.numero} />
+          <input class="border p-2 w-full mb-2" placeholder="Bairro" bind:value={endereco.bairro} />
+          <input class="border p-2 w-full mb-2" placeholder="Cidade" bind:value={endereco.cidade} />
+          <input class="border p-2 w-full mb-2" placeholder="Estado" bind:value={endereco.estado} />
+          <input class="border p-2 w-full mb-2" placeholder="CEP" bind:value={endereco.cep} />
+          {#if enderecoErro}
+            <div class="text-red-500 text-sm mb-2">{enderecoErro}</div>
+          {/if}
+        </div>
+        <div class="flex gap-2 justify-end">
+          <button class="px-4 py-2 bg-gray-200 rounded" on:click={() => mostrarModal = false}>Cancelar</button>
+          <button class="px-4 py-2 bg-green-600 text-white rounded" on:click={confirmarCompraComEndereco}>Confirmar</button>
+        </div>
+      </div>
+    </div>
+  {/if}
+
   {#if $isLoggedIn}
     <p class="mb-4">Usuário: {$currentUser?.nome}</p>
 
@@ -67,7 +122,7 @@
     </div>
 
     <button
-      on:click={confirmarCompra}
+      on:click={abrirModal}
       class="mt-6 w-full bg-green-500 hover:bg-green-700 text-white py-3 rounded-lg"
     >
       Confirmar Compra
