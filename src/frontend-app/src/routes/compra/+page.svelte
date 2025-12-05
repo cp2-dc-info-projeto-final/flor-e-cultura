@@ -80,7 +80,7 @@
 
   {#if mostrarModal}
     <div class="fixed inset-0  flex items-center justify-center z-50">
-      <div class="bg-white rounded p-6 w-full max-w-md shadow-lg">
+      <div class="bg-white rounded p-6 w-full max-w-md shadow-lg border-double border-4">
         <h2 class="text-lg font-bold mb-4">Informe seu endereço</h2>
         <div class="mb-2">
           <input class="border p-2 w-full mb-2" placeholder="Rua" bind:value={endereco.rua} />
@@ -94,8 +94,8 @@
           {/if}
         </div>
         <div class="flex gap-2 justify-end">
-          <button class="px-4 py-2 bg-gray-200 rounded" on:click={() => mostrarModal = false}>Cancelar</button>
-          <button class="px-4 py-2 bg-green-600 text-white rounded" on:click={confirmarCompraComEndereco}>Confirmar</button>
+          <button class="px-4 py-2 bg-gray-200 rounded bg-gray-300" on:click={() => mostrarModal = false}>Cancelar</button>
+          <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" on:click={confirmarCompraComEndereco}>Confirmar</button>
         </div>
       </div>
     </div>

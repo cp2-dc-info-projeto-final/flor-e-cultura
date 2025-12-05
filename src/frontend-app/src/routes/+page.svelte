@@ -1,11 +1,11 @@
 <script lang="ts">
   const categorias = [
-    { nome: "𝐁𝐮𝐪𝐮𝐞𝐬", link: "/consultaplanta?categoria=buque", imagem: "/imagens/bqrosas.png" },
-    { nome: "𝐀𝐫𝐫𝐚𝐧𝐣𝐨𝐬", link: "/consultaplanta?categoria=arranjo", imagem: "/imagens/bqmargarida.png" },
-    { nome: "𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐞𝐬", link: "/consultaplanta?categoria=presente", imagem: "/imagens/vasovioleta.png" },
-    { nome: "𝐏𝐞𝐥𝐮𝐜𝐢𝐚𝐬", link: "/consultaplanta?categoria=pelucia", imagem: "/imagens/bqmargarida.png" },
-    { nome: "𝐒𝐞𝐦𝐞𝐧𝐭𝐞𝐬", link: "/consultaplanta?categoria=semente", imagem: "/imagens/bqmargarida.png" },
-    { nome: "𝐕𝐚𝐬𝐨𝐬", link: "/consultaplanta?categoria=vaso", imagem: "/imagens/bqtulipas.png" }
+    { nome: "𝐁𝐮𝐪𝐮𝐞𝐬", link: "/consultaplanta?categoria=buque", imagem: "/imagens/categoria_flores.jpeg" },
+    { nome: "𝐀𝐫𝐫𝐚𝐧𝐣𝐨𝐬", link: "/consultaplanta?categoria=arranjo", imagem: "/imagens/categoria_arranjos.jpg" },
+    { nome: "𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐞𝐬", link: "/consultaplanta?categoria=presente", imagem: "/imagens/categoria_presentes.jpeg" },
+    { nome: "𝐏𝐞𝐥𝐮𝐜𝐢𝐚𝐬", link: "/consultaplanta?categoria=pelucia", imagem: "/imagens/categoria_pelucias.jpeg" },
+    { nome: "𝐒𝐞𝐦𝐞𝐧𝐭𝐞𝐬", link: "/consultaplanta?categoria=semente", imagem: "/imagens/categoria_sementes.jpeg" },
+    { nome: "𝐕𝐚𝐬𝐨𝐬", link: "/consultaplanta?categoria=vaso", imagem: "/imagens/categoria_vasos.jpeg" }
   ];
 </script>
 
