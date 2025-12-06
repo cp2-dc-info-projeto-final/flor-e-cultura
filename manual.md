@@ -59,7 +59,7 @@ Os campos requisitados (obrigatórios) são: nome, senha, confirmação de senha
 
 
 
-![Logout](/screenshots/paginainicialadmlogout.png)
+![Logout](/screenshots/paginainicialadmcomlogout.png)
 
 
 
