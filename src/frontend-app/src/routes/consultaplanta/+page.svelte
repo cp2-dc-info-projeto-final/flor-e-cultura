@@ -20,12 +20,8 @@
     categoria: string;
   };
 
-
   let produtos: Produto[] = [];
-  // Get a specific query parameter
   const categoria = $page.url.searchParams.get('categoria');
-
-  // Check if a query parameter exists
   const filtraCategoria = $page.url.searchParams.has('categoria');
   
   let erro = '';
@@ -34,6 +30,8 @@
   let loading = false;
 
   let produtoAdicionado: number | null = null;
+  let produtoAExcluir: Produto | null = null;
+  let mostrandoConfirmacao = false;
 
   function mostrarFeedback(id: number) {
       produtoAdicionado = id;
@@ -104,11 +102,27 @@
     }
   }
 
-  async function removerProduto(id: number) {
-    if (!confirm('Tem certeza que deseja remover este produto?')) {
-      return;
-    }
+  // NOVAS FUNÇÕES PARA MODAL DE CONFIRMAÇÃO
 
+  function solicitarRemocao(produto: Produto) {
+    produtoAExcluir = produto;
+    mostrandoConfirmacao = true;
+  }
+
+  async function confirmarRemocao() {
+    if (produtoAExcluir) {
+      await removerProduto(produtoAExcluir.id);
+    }
+    mostrandoConfirmacao = false;
+    produtoAExcluir = null;
+  }
+
+  function cancelarRemocao() {
+    mostrandoConfirmacao = false;
+    produtoAExcluir = null;
+  }
+
+  async function removerProduto(id: number) {
     erro = '';
     try {
       await api.delete(`/produtos/${id}`);
@@ -138,6 +152,23 @@
     }
   }
 </script>
+
+<!-- MODAL DE CONFIRMAÇÃO DE REMOÇÃO DE PRODUTO -->
+{#if mostrandoConfirmacao && produtoAExcluir}
+  <div class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="bg-white rounded p-6 shadow-lg max-w-sm w-full text-center">
+      <p class="mb-4 text-lg">Tem certeza que deseja remover o produto <b>{produtoAExcluir.nome_produto}</b>?</p>
+      <div class="flex justify-center gap-4">
+        <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded" on:click={confirmarRemocao}>
+          Sim, remover
+        </button>
+        <button class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded" on:click={cancelarRemocao}>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}
 
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
   <h1 class="text-2xl font-bold text-center mb-6">𝐋𝐢𝐬𝐭𝐚 𝐝𝐞 𝐏𝐥𝐚𝐧𝐭𝐚𝐬</h1>
@@ -211,7 +242,7 @@
               </button>
               <button
                 class="bg-red-400 hover:bg-red-600 text-white px-3 py-2 rounded text-sm w-full transition-colors"
-                on:click={() => removerProduto(produto.id)}
+                on:click={() => solicitarRemocao(produto)}
               >
                 Remover
               </button>

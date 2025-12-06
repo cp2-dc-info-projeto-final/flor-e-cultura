@@ -143,7 +143,7 @@
     <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-gray-700">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
-          Edite seus dados 
+          Edite o Produto 
         </h1>
         {#if erro}
           <div class="text-red-700 bg-red-100 border border-red-400 rounded px-4 py-2">
