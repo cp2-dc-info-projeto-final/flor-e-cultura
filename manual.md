@@ -97,10 +97,10 @@ Se o cliente quiser acompanhar sua compra, poderá acessar a opção "Pedidos", 
 
 ##  Lista de Pedidos
 
-![PaginaProdutos](/screenshots/listapedidoadm.png)
+![PaginaPedidos](/screenshots/listapedidoadm.png)
 
 
-![PaginaProdutos](/screenshots/listapedidousuario.png)
+![PaginaPedidos](/screenshots/listapedidousuario.png)
 
 
 
@@ -113,9 +113,14 @@ A página é acessada através do botão "Pedidos" na tela principal.
 
 
 ##  Gerenciar Usuários
+
+![PaginaVerUsuarios](/screenshots/listausuarioadm.png)
+
+![PaginaEditaUsuario](/screenshots/editausuarioadm.png)
+
 Esta página é de acesso exclusivo para o administrador.
 
-O administrador acessa a opção "Consulta" em sua tela principal, onde pode visualizar e atualizar os dados do cliente (Nome, E-mail, CPF, Telefone, Data de Nascimento e Tipo de Usuário) ou remover o usuário do sistema após a confirmação.
+O administrador acessa a opção "Ver-Usuario" em sua tela principal, onde pode visualizar e atualizar os dados do cliente (Nome, E-mail, CPF, Telefone, Data de Nascimento e Tipo de Usuário) ou remover o usuário do sistema após a confirmação.
 
 ##  Cadastrar/Editar Produtos
 Esta página é de acesso exclusivo para o administrador.
