@@ -21,9 +21,7 @@ Lista das Funcionalidades:
    
 O site Flor & Cultura foi desenvolvido para facilitar a compra de sementes, vasos e flores da nossa loja. Mostramos também um catálogo com diferentes espécies de plantas e flores para que não falte variedade e opção para nossos clientes. Este manual foi criado para ajudar você a navegar pelo site, encontrar nossos produtos e utilizar todas as funcionalidades de maneira rápida e prática. 
 
-Que ótimo! Fiz a revisão completa do seu texto, corrigindo erros de ortografia, pontuação, concordância e removendo repetições para deixar a leitura mais clara e profissional.
 
-Aqui está o texto revisado:
 
 ##  Página Principal
 Na página principal, todos podem visualizar os produtos e as opções disponíveis nas categorias.
