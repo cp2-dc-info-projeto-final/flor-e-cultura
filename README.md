@@ -7,6 +7,7 @@ Integrantes:
  - Leslie 
  - Karoline Maehara
  - Luiz Eduardo
+ - Moisés Cardoso Evaristo
 
  ## Tecnologias
 
