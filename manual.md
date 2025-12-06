@@ -72,6 +72,18 @@ Quando o usuário estiver logado, a opção de deslogar aparecerá na tela princ
 
 
 ##  Como Comprar
+
+
+![PaginaProdutos](/screenshots/listaprodutousuario.png)
+
+![PaginaCarrinho](/screenshots/carrinho.png)
+
+![PaginaCompra](/screenshots/finalizarcompra.png)
+
+![PaginaCompraComEndereco](/screenshots/finalizarcompracomendereco.png)
+
+
+
 O usuário escolhe seus produtos nas categorias.
 
 1.  Ao selecionar um produto, o usuário clica em "Adicionar ao Carrinho".
