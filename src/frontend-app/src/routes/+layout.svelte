@@ -102,7 +102,7 @@
     <!-- Bem-vindo Desktop em vez do Avatar -->
     {#if $isLoggedIn && !$isLoadingAuth}
       <span class="hidden md:block font-semibold text-pink-700 bg-pink-200 px-4 py-2 rounded">
-        Bem-vindo, {$currentUser.nome_completo}
+        Olá, {$currentUser.nome_completo}
       </span>
     {/if}
 
