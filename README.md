@@ -40,4 +40,4 @@ Seja para celebrar um momento, decorar seu espaço ou simplesmente espalhar aleg
 
 **Modelagem do Banco de Dados**
 
-![Diagrama de Banco de Dados](diagramas/diagramaFlor&Cultura.drawio (1).pdf)
+![Diagrama de Banco de Dados](diagramaFlor&Cultura.drawio (1).pdf)
