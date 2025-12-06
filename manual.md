@@ -123,6 +123,13 @@ Esta página é de acesso exclusivo para o administrador.
 O administrador acessa a opção "Ver-Usuario" em sua tela principal, onde pode visualizar e atualizar os dados do cliente (Nome, E-mail, CPF, Telefone, Data de Nascimento e Tipo de Usuário) ou remover o usuário do sistema após a confirmação.
 
 ##  Cadastrar/Editar Produtos
+
+![PaginaProdutos](/screenshots/cadastroprodutoadm.png)
+
+![PaginaProdutos](/screenshots/editaprodutoadm.png)
+
+
+
 Esta página é de acesso exclusivo para o administrador.
 
 Ao cadastrar um produto, o administrador deve inserir as informações obrigatórias: imagem, nome, descrição, preço, quantidade em estoque, categoria e data de criação. Após a confirmação, o produto estará cadastrado.
