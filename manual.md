@@ -95,13 +95,21 @@ O usuário escolhe seus produtos nas categorias.
 Se o cliente quiser acompanhar sua compra, poderá acessar a opção "Pedidos", onde será exibido o **status do produto** e os detalhes da transação.
 
 
-##  Lista de Compras
+##  Lista de Pedidos
+
+![PaginaProdutos](/screenshots/listapedidooadm.png)
+
+
+![PaginaProdutos](/screenshots/listapedidousuario.png)
+
+
+
 A página pode ser acessada pelo administrador e pelo usuário.
 
-* O administrador pode visualizar todas as compras realizadas por todos os usuários no sistema.
+* O administrador pode visualizar todas as compras realizadas por todos os usuários no sistema e atualizar status do pedido.
 * O usuário pode visualizar apenas as suas compras realizadas.
 
-A página é acessada através do botão "Lista de Compras" na tela principal.
+A página é acessada através do botão "Pedidos" na tela principal.
 
 
 ##  Gerenciar Usuários
