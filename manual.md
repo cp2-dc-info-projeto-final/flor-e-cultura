@@ -53,6 +53,17 @@ Os campos requisitados (obrigatórios) são: nome, senha, confirmação de senha
 
 
 ## Login e Logout
+
+
+![PaginaDeLogin](/screenshots/paginalogin.png)
+
+
+
+![Logout](/screenshots/paginainicialadmlogout.png)
+
+
+
+
 A página de login pode ser acessada tanto por visitantes quanto por usuários já cadastrados.
 
 São solicitados o e-mail e a senha como campos obrigatórios. Se as informações forem válidas, o indivíduo será logado com sucesso.
