@@ -28,6 +28,12 @@ O site Flor & Cultura foi desenvolvido para facilitar a compra de sementes, vaso
 ![PaginaPrincipal](/screenshots/paginainicialvisitante.png)
 
 
+![PaginaPrincipal](/screenshots/paginainicialusuario.png)
+
+
+![PaginaPrincipal](/screenshots/paginainicialadm.png)
+
+
 Na página principal, todos podem visualizar os produtos e as opções disponíveis nas categorias.
 
 * Visitantes podem optar por fazer seu cadastro como usuário ou realizar o login em uma conta já existente.
