@@ -97,7 +97,7 @@ Se o cliente quiser acompanhar sua compra, poderá acessar a opção "Pedidos", 
 
 ##  Lista de Pedidos
 
-![PaginaProdutos](/screenshots/listapedidooadm.png)
+![PaginaProdutos](/screenshots/listapedidoadm.png)
 
 
 ![PaginaProdutos](/screenshots/listapedidousuario.png)
