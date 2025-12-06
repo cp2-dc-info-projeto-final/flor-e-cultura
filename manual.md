@@ -40,6 +40,11 @@ Na página principal, todos podem visualizar os produtos e as opções disponív
 * Usuários podem acessar seu carrinho, ver seus pedidos e efetuar o logout.
 
 ##  Cadastro
+
+![PaginaDeCadastro](/screenshots/cadastropagina.png)
+
+
+
 A página de cadastro pode ser acessada por todos.
 
 O usuário que deseja se cadastrar deve inserir informações válidas e originais, não sendo permitido repetir dados como e-mail e CPF já registrados.
