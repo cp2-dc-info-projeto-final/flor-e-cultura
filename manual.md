@@ -38,6 +38,7 @@ Na página principal, todos podem visualizar os produtos e as opções disponív
 
 * Visitantes podem optar por fazer seu cadastro como usuário ou realizar o login em uma conta já existente.
 * Usuários podem acessar seu carrinho, ver seus pedidos e efetuar o logout.
+*  Administradores podem acessar todos os pedidos, ver os usuarios, cadastro de planta e efetuar o logout.
 
 ##  Cadastro
 
