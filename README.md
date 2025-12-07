@@ -6,7 +6,7 @@ Integrantes:
  - Beatriz valentina 
  - Leslie 
  - Karoline Maehara
- - Luiz Eduardo
+ - Luís Eduardo
  - Moisés Cardoso Evaristo
 
  ## Tecnologias
