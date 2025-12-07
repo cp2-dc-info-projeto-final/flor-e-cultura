@@ -27,11 +27,9 @@
           </h1>
           <div class="flex gap-3">
             <button
-              type="button"
-              on:click={voltar}
-              class="px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 text-sm text-gray-900"
-            >
-              ← Voltar
+              type="button" on:click={voltar}
+                class="w-full sm:w-auto px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 text-sm text-gray-900">
+                ← Voltar
             </button>
           </div>
         </header>
@@ -121,11 +119,11 @@
           <section>
             <h2 class="font-semibold text-gray-900 dark:text-black">Contato</h2>
             <p>Em caso de dúvidas, entre em contato pelos canais abaixo:</p>
-            <ul class="list-disc ml-5">
-              <li>📞 Telefone: [número]</li>
-              <li>📧 E-mail: [e-mail]</li>
-              <li>📍 Endereço: [endereço físico da loja]</li>
-              <li>💬 WhatsApp: [número]</li>
+            <ul class="list-disc pl-5">
+              <li>📞 Telefone: 9999-9999</li>
+              <li>📧 E-mail: contato@florecultura.com</li>
+              <li>📍 Endereço: Rua Doutor Manoel Reis, 501, Duque de Caxias </li>
+              <li>💬 WhatsApp: 21 99999-9999</li>
             </ul>
           </section>
 

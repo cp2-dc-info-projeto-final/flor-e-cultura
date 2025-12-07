@@ -214,10 +214,9 @@
         © 2025 <a href="" class="hover:underline">Flor&Cultura</a>. Todos os direitos reservados.
       </span>
       <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-        <li><a href="#" class="hover:underline me-4 md:me-6">Sobre</a></li>
+        <li><a href="/sobre" class="hover:underline me-4 md:me-6">Sobre</a></li>
         <li><a href="/termos" class="hover:underline me-4 md:me-6">Termos e condições</a></li>
-        <li><a href="#" class="hover:underline me-4 md:me-6">Licenciamento</a></li>
-        <li><a href="#" class="hover:underline">Contato</a></li>
+        <li><a href="/licenciamento" class="hover:underline me-4 md:me-6">Licenciamento</a></li>
       </ul>
     </div>
   </footer>
