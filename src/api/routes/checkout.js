@@ -1,17 +1,11 @@
 // routes/checkout.js
 const express = require('express');
 const router = express.Router();
-const { Pool } = require('pg');
+const pool = require('../db/config');
 const { verifyToken } = require('../middlewares/auth');
 
 // Configuração da conexão com PostgreSQL
-const pool = new Pool({
-  user: 'floriculturatcc2025',
-  host: 'localhost',
-  database: 'flor_e_cultura',
-  password: 'tcc2025flower',
-  port: 5432,
-});
+
 
 // POST /api/checkout
 router.post('/', verifyToken, async (req, res) => {

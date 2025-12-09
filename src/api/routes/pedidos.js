@@ -1,17 +1,11 @@
 // routes/admin/pedidos.js
 const express = require('express');
 const router = express.Router();
-const { Pool } = require('pg');
+const pool = require('../db/config');
 const { verifyToken, isAdmin } = require('../middlewares/auth');
 
 // Configuração da conexão com PostgreSQL
-const pool = new Pool({
-  user: 'floriculturatcc2025',
-  host: 'localhost',
-  database: 'flor_e_cultura',
-  password: 'tcc2025flower',
-  port: 5432,
-});
+
 
 // GET /api/pedidos - Listar pedidos (todos para admin, apenas do usuário para usuários comuns)
 router.get('/', verifyToken, async (req, res) => {
